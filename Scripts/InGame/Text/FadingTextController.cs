@@ -20,8 +20,8 @@ public class FadingTextController : MonoBehaviour
 
     void Start()
     {
-        FadingTextAnimationReceiver fadingTextAnimationReceiver = textMesh.GetComponent<FadingTextAnimationReceiver>();
-        fadingTextAnimationReceiver.AddListenerAnimationOver(AnimationFadeOver);
+        AnimationOverReceiver animationOverReceiver = textMesh.GetComponent<AnimationOverReceiver>();
+        animationOverReceiver.AddListenerOver(AnimationFadeOver);
     }
 
     void OnEnable()
