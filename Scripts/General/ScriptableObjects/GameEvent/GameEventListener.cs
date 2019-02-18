@@ -5,8 +5,10 @@ using UnityEngine.Events;
 
 public class GameEventListener : MonoBehaviour
 {
+	static bool DEBUG = false;
+
 	[SerializeField]
-	GameEvent gameEvent;
+	List<GameEvent> gameEvents;
 	[SerializeField]
 	UnityEvent response;
 	[SerializeField]
@@ -14,24 +16,36 @@ public class GameEventListener : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if (gameEvent != null)
+		if (gameEvents != null && gameEvents.Count > 0)
 			Register();
+		else if (DEBUG)
+			Debug.LogWarning("[GameEventListener] No event registered for '" + name + "'");
 	}
 
 	private void OnDisable()
 	{
-		if (gameEvent != null)
+		if (gameEvents != null && gameEvents.Count > 0)
 			Unregister();
 	}
 
 	public void Register()
 	{
+		foreach (GameEvent gameEvent in gameEvents)
+			gameEvent.RegisterListener(this);
+	}
+
+	public void Register(GameEvent gameEvent)
+	{
+		if (gameEvents == null)
+			gameEvents = new List<GameEvent>();
+		gameEvents.Add(gameEvent);
 		gameEvent.RegisterListener(this);
 	}
 
 	public void Unregister()
 	{
-		gameEvent.UnregisterListener(this);
+		foreach (GameEvent gameEvent in gameEvents)
+			gameEvent.UnregisterListener(this);
 	}
 
 	public void AddListenerResponse(UnityAction callback)

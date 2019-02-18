@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Variable/Int List")]
-public class IntListVariable : ScriptableObject
+public class IntListVariable : RegisterableScriptableObject
 {
 	[SerializeField]
 	List<int> initialValue;
@@ -13,12 +13,13 @@ public class IntListVariable : ScriptableObject
 	public List<int> Value
 	{
 		get { return value; }
-		set { this.value = new List<int>(value); }
+		set { this.value = new List<int>(value); TriggerChange(); }
 	}
 
 	public void Add(int i)
 	{
 		value.Add(i);
+		TriggerChange();
 	}
 
 	void OnEnable()
