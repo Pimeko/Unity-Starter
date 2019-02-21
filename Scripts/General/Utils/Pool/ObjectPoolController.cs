@@ -65,6 +65,7 @@ public class ObjectPoolController : MonoBehaviour
             RectTransform rectTransform = pooledObject.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = rectTransform.transform.position;
             rectTransform.localPosition = objectPoolItem.ObjectToPool.transform.localPosition;
+            rectTransform.localScale = objectPoolItem.ObjectToPool.transform.localScale;
         }
         pooledObject.SetActive(false);
         pooledObject.name = objectPoolItem.Type.ToString();
