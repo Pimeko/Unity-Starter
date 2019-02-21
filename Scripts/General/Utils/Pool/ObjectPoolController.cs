@@ -24,6 +24,12 @@ public class ObjectPoolController : MonoBehaviour
     List<ObjectPoolItem> objectPoolItems;
 
     List<GameObject> pooledObjects;
+    bool isUI;
+
+    void Awake()
+    {
+        isUI = GetComponent<RectTransform>() != null;
+    }
 
     void OnEnable()
     {
@@ -31,9 +37,19 @@ public class ObjectPoolController : MonoBehaviour
 
         foreach (ObjectPoolItem objectPoolItem in objectPoolItems)
         {
-            GameObject parent = new GameObject();
-            parent.name = objectPoolItem.Type.ToString();
+            GameObject parent = null;
+            if (isUI)
+                parent = new GameObject(objectPoolItem.Type.ToString(), typeof(RectTransform));
+            else
+                parent = new GameObject(objectPoolItem.Type.ToString());
             parent.transform.SetParent(transform);
+
+            if (isUI)
+            {
+                RectTransform rectTransform = parent.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition = rectTransform.transform.position;
+                rectTransform.localPosition = Vector3.zero;
+            }
 
             for (int i = 0; i < objectPoolItem.AmountToPool; i++)
                 InstantiatePooledObject(objectPoolItem, parent.transform);
@@ -44,6 +60,12 @@ public class ObjectPoolController : MonoBehaviour
     {
         GameObject pooledObject = Instantiate(objectPoolItem.ObjectToPool);
         pooledObject.transform.SetParent(parent.transform);
+        if (isUI)
+        {
+            RectTransform rectTransform = pooledObject.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = rectTransform.transform.position;
+            rectTransform.localPosition = objectPoolItem.ObjectToPool.transform.localPosition;
+        }
         pooledObject.SetActive(false);
         pooledObject.name = objectPoolItem.Type.ToString();
         pooledObjects.Add(pooledObject);
