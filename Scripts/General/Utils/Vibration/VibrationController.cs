@@ -8,8 +8,6 @@ public class VibrationController : MonoBehaviour
 	{
 		#if UNITY_IOS
 			iOSHapticFeedback.Instance.Trigger(iOSHapticFeedback.iOSFeedbackType.ImpactLight);
-		#elif UNITY_ANDROID
-			Handheld.Vibrate();
 		#endif
 	} 
 
@@ -17,8 +15,6 @@ public class VibrationController : MonoBehaviour
 	{
 		#if UNITY_IOS
 			iOSHapticFeedback.Instance.Trigger(iOSHapticFeedback.iOSFeedbackType.ImpactMedium);
-		#elif UNITY_ANDROID
-			Handheld.Vibrate();
 		#endif
 	}
 
