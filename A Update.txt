@@ -1,12 +1,3 @@
 A update dans Unity Starter
 
-X TransformExtensions
-X GameEventListener
-X GameEventRaiser
-X InteractionController
-X PoolSpawner
-X SpawnerListener
-X FadingText
-X SaveLoad
-X Base64Encoder
-X Registerable SO
+- VibrationController
