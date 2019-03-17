@@ -5,11 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class UnityEventInt : UnityEvent<int>
-{
-    public int value;
-}
-
 public class CarouselView : MonoBehaviour
 {
     public RectTransform[] introImages;
