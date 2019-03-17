@@ -26,6 +26,8 @@ public class PoolSpawner : MonoBehaviour
     [SerializeField]
     int nbSpawnedInitial;
     [SerializeField]
+    bool randomPositionInsideSurface = false;
+    [SerializeField]
     GameObject surfacesContainer;
     
     IEnumerator currentCoroutine;
@@ -61,7 +63,10 @@ public class PoolSpawner : MonoBehaviour
     {
         ObjectPoolTypeVariable objectPoolTypeVariable = typesToPool[Random.Range(0, typesToPool.Count)];
         GameObject pooledObject = objectPoolController.GetPooledObject(objectPoolTypeVariable);
-        pooledObject.transform.position = GetRandomPosition();
+        if (randomPositionInsideSurface)
+            pooledObject.transform.position = GetRandomPosition();
+        else
+            pooledObject.transform.position = transform.position;
         InvokeOnSpawn(pooledObject);
         pooledObject.SetActive(true);
     }

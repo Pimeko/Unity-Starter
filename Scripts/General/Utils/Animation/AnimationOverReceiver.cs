@@ -5,18 +5,11 @@ using UnityEngine.Events;
 
 public class AnimationOverReceiver : MonoBehaviour
 {
-    UnityEvent over;
-    
-    public void AddListenerOver(UnityAction callback)
-    {
-        if (over == null)
-            over = new UnityEvent();
-        over.AddListener(callback);
-    }
+    public delegate void OverDelegate();
+    public OverDelegate OnOver;
     
     public void InvokeOver()
     {
-        if (over != null)
-            over.Invoke();
+        OnOver();
     }
 }
