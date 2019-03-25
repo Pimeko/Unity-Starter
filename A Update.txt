@@ -1,1 +1,12 @@
 A update dans Unity Starter
+
+O Remove prefabs
+O DevTools (new folder)
+O ObjectPoolController (GetPooledObject sans type)
+O InteractionController
+O UnityEvent custom dans un dossier special
+O Dev tools (shortcut for remove copy names)
+O PoolSpawner / PoolSpawnerListener (delegate a la place de unityevent, stop)
+O PlayerDataController (variablesToSaveOnChange)
+O SceneLoader
+O AndroidSettings.png

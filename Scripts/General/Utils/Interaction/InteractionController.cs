@@ -23,40 +23,40 @@ public class Interaction
     }
 }
 
-public class UnityEventInteraction : UnityEvent<Interaction>
-{
-    Interaction interaction;
-}
-
 public class InteractionController : MonoBehaviour
 {
     [SerializeField]
+    bool checkAutoInteractions = true;
+    [SerializeField]
     bool isTrigger = true;
 
-    UnityEventInteraction onTrigger;
-    
-    public void AddListenerOnTrigger(UnityAction<Interaction> callback)
+    public delegate void OnInteractionDelegate(Interaction interaction);
+    public OnInteractionDelegate OnInteraction;
+
+    public void TriggerInteraction()
     {
-        if (onTrigger == null)
-            onTrigger = new UnityEventInteraction();
-        onTrigger.AddListener(callback);
+        if (OnInteraction != null)
+            OnInteraction(null);
     }
-    
-    public void InvokeOnTrigger(Interaction value)
+
+    void OnDestroy()
     {
-        if (onTrigger != null)
-            onTrigger.Invoke(value);
+        if (OnInteraction != null)
+        {
+            foreach(OnInteractionDelegate currentDelegate in OnInteraction.GetInvocationList())
+                OnInteraction -= currentDelegate;
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (isTrigger)
-            InvokeOnTrigger(new Interaction(other.gameObject));
+        if (checkAutoInteractions && isTrigger && OnInteraction != null)
+            OnInteraction(new Interaction(other.gameObject));
     }
 
     void OnCollisionEnter(Collision other)
     {
-        if (!isTrigger)
-            InvokeOnTrigger(new Interaction(other.gameObject));
+        if (checkAutoInteractions && !isTrigger && OnInteraction != null)
+            OnInteraction(new Interaction(other.gameObject));
     }
 }

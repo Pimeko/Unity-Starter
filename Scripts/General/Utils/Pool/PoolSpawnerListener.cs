@@ -4,10 +4,18 @@ using UnityEngine;
 
 public abstract class PoolSpawnerListener : MonoBehaviour
 {
+    PoolSpawner poolSpawner;
+
     void Start()
     {
-        PoolSpawner poolSpawner = GetComponent<PoolSpawner>();
-        poolSpawner.AddListenerOnSpawn(OnSpawn);
+        poolSpawner = GetComponent<PoolSpawner>();
+        
+        poolSpawner.OnSpawn += OnSpawn;
+    }
+
+    void OnDestroy()
+    {
+        poolSpawner.OnSpawn -= OnSpawn;
     }
 
     protected abstract void OnSpawn(GameObject spawnedObject);

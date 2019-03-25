@@ -73,11 +73,11 @@ public class ObjectPoolController : MonoBehaviour
         return pooledObject;
     }
 
-    public GameObject GetPooledObject(ObjectPoolTypeVariable type)
+    public GameObject GetPooledObject(ObjectPoolTypeVariable type = null)
     {
         foreach (GameObject pooledObject in pooledObjects)
         {
-            if (!pooledObject.activeInHierarchy && pooledObject.name == type.ToString())
+            if (!pooledObject.activeInHierarchy && (type == null || pooledObject.name == type.ToString()))
                 return pooledObject;
         }
         
@@ -85,7 +85,7 @@ public class ObjectPoolController : MonoBehaviour
         ObjectPoolItem objectPoolItemToUse = null;
         foreach (ObjectPoolItem objectPoolItem in objectPoolItems)
         {
-            if (objectPoolItem.Type.ToString() == type.ToString())
+            if (type == null || objectPoolItem.Type.ToString() == type.ToString())
             {
                 objectPoolItemToUse = objectPoolItem;
                 break;
@@ -93,7 +93,7 @@ public class ObjectPoolController : MonoBehaviour
         }
         foreach (Transform child in transform)
         {
-            if (child.name == type.ToString())
+            if (type == null || child.name == type.ToString())
                 return InstantiatePooledObject(objectPoolItemToUse, child);
         }
         return null;

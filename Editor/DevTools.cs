@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 
 public class DevTools : Editor
 {
-    [MenuItem("Custom/Remove Copy Names")]
+    [MenuItem("Custom/Remove Copy Names &b")]
     private static void RemoveCopyNames()
     {
         GameObject[] objs = Selection.gameObjects;
@@ -35,5 +35,11 @@ public class DevTools : Editor
     {
         EditorSceneManager.OpenScene("Assets/_Scenes/Menu.unity");
         EditorApplication.isPlaying = true;
+    }
+
+    [MenuItem("Custom/New folder &n")]
+    private static void NewFolder()
+    {
+        EditorApplication.ExecuteMenuItem("Assets/Create/Folder");
     }
 }

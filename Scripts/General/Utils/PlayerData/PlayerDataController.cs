@@ -8,22 +8,26 @@ public class PlayerDataController : MonoBehaviour
     [SerializeField]
     List<GameEvent> saveOn;
     [SerializeField]
+    List<RegisterableScriptableObject> variablesToSaveOnChange;
+    [SerializeField]
     List<GameEvent> loadOn;
     [SerializeField]
-    bool loadOnStart;
+    bool loadOnAwake;
+
+    bool JSON_ONLY = false;
 
     string dataPath;
 	IPlayerData[] playerDataVariables;
 
-    void Start()
+    void Awake()
     {
         dataPath = Path.Combine(Application.persistentDataPath, "data");
 		playerDataVariables = GetComponents<IPlayerData>();
 
-        AddListeners();
-
-        if (loadOnStart)
+        if (loadOnAwake)
             Load();
+
+        AddListeners();
     }
 
     void AddListeners()
@@ -33,17 +37,29 @@ public class PlayerDataController : MonoBehaviour
             saveOnListener.Register(gameEvent);
         saveOnListener.AddListenerResponse(Save);
 
+        foreach (RegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
+            variableToSaveOnChange.OnChange += Save;
+        
         GameEventListener loadOnListener = gameObject.AddComponent<GameEventListener>();
         foreach (GameEvent gameEvent in loadOn)
             loadOnListener.Register(gameEvent);
         loadOnListener.AddListenerResponse(Load);
     }
 
+    void OnDisable()
+    {
+        foreach (RegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
+            variableToSaveOnChange.OnChange -= Save;
+    }
+
     void FirstSave()
     {
         FileInfo file = new FileInfo(dataPath);
         file.Directory.Create();
-        File.WriteAllText(dataPath, Base64Encoder.Encode(JsonUtility.ToJson(new PlayerData())));
+        if (JSON_ONLY)
+            File.WriteAllText(dataPath, JsonUtility.ToJson(new PlayerData()));
+        else
+            File.WriteAllText(dataPath, Base64Encoder.Encode(JsonUtility.ToJson(new PlayerData())));
     }
 
     // Save the content of each related-scriptable objects in the save file
@@ -55,7 +71,10 @@ public class PlayerDataController : MonoBehaviour
         
         FileInfo file = new FileInfo(dataPath);
         file.Directory.Create();
-        File.WriteAllText(dataPath, Base64Encoder.Encode(JsonUtility.ToJson(playerData)));
+        if (JSON_ONLY)
+            File.WriteAllText(dataPath, JsonUtility.ToJson(playerData));
+        else
+            File.WriteAllText(dataPath, Base64Encoder.Encode(JsonUtility.ToJson(playerData)));
     }
 
     // Load each data in the related-scriptable objects
@@ -64,7 +83,12 @@ public class PlayerDataController : MonoBehaviour
         if (!File.Exists(dataPath))
             FirstSave();
 
-        PlayerData playerData = JsonUtility.FromJson<PlayerData>(Base64Encoder.Decode(File.ReadAllText(dataPath)));
+        PlayerData playerData;
+        
+        if (JSON_ONLY)
+            playerData = JsonUtility.FromJson<PlayerData>(File.ReadAllText(dataPath));
+        else
+            playerData = JsonUtility.FromJson<PlayerData>(Base64Encoder.Decode(File.ReadAllText(dataPath)));
 		foreach (IPlayerData playerDataController in playerDataVariables)
 			playerDataController.Load(playerData);
     }
