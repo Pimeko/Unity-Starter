@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[System.Serializable]
-public class UnityEventInt : UnityEvent<int>
+public class UnityEventGameObject : UnityEvent<GameObject>
 {
-    public int value;
+    GameObject value;
 }
