@@ -34,11 +34,11 @@ public class DisplayIntVariable : MonoBehaviour
 
     void OnEnable()
     {
-        variable.OnChange += UpdateText;
+        variable.AddOnChangeCallback(UpdateText);
     }
 
     void OnDisable()
     {
-        variable.OnChange -= UpdateText;
+        variable.RemoveOnChangeCallback(UpdateText);
     }
 }

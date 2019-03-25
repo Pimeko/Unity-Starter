@@ -8,7 +8,7 @@ public class PlayerDataController : MonoBehaviour
     [SerializeField]
     List<GameEvent> saveOn;
     [SerializeField]
-    List<RegisterableScriptableObject> variablesToSaveOnChange;
+    List<IRegisterableScriptableObject> variablesToSaveOnChange;
     [SerializeField]
     List<GameEvent> loadOn;
     [SerializeField]
@@ -37,8 +37,8 @@ public class PlayerDataController : MonoBehaviour
             saveOnListener.Register(gameEvent);
         saveOnListener.AddListenerResponse(Save);
 
-        foreach (RegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
-            variableToSaveOnChange.OnChange += Save;
+        foreach (IRegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
+            variableToSaveOnChange.AddOnChangeCallback(Save);
         
         GameEventListener loadOnListener = gameObject.AddComponent<GameEventListener>();
         foreach (GameEvent gameEvent in loadOn)
@@ -48,8 +48,8 @@ public class PlayerDataController : MonoBehaviour
 
     void OnDisable()
     {
-        foreach (RegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
-            variableToSaveOnChange.OnChange -= Save;
+        foreach (IRegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
+            variableToSaveOnChange.RemoveOnChangeCallback(Save);
     }
 
     void FirstSave()
