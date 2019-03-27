@@ -5,7 +5,6 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 Packages/
-ProjectSettings/
 
 # Visual Studio cache directory
 .vs/
@@ -39,5 +38,3 @@ sysinfo.txt
 *.unitypackage
 
 .DS_Store
-.gitignore
-*.meta
