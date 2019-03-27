@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Event/Int")]
-public class GameEventInt : ScriptableObject
+public class GameEventInt : GameEvent
 {
 	private List<GameEventIntListener> eventListeners = new List<GameEventIntListener>();
 
 	public void Raise(int value)
 	{
+		Log(value);
 		for(int i = eventListeners.Count -1; i >= 0; i--)
 			eventListeners[i].OnEventRaised(value);
 	}

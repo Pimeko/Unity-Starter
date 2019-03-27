@@ -1,5 +1,4 @@
 A update dans Unity Starter
 
-- Add .vscode to .gitignore
-- GameEventLogger that calls the overrided ToString (to handle basic and payloaded game events)
 - SimpleRegisterableScriptableObject<T> that derives from RegisterableScriptableObject
+- GameEventLogger that calls the overrided ToString (to handle basic and payloaded game events)

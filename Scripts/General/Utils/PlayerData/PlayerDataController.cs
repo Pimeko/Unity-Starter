@@ -6,11 +6,11 @@ using UnityEngine;
 public class PlayerDataController : MonoBehaviour
 {
     [SerializeField]
-    List<GameEvent> saveOn;
+    List<BasicGameEvent> saveOn;
     [SerializeField]
     List<IRegisterableScriptableObject> variablesToSaveOnChange;
     [SerializeField]
-    List<GameEvent> loadOn;
+    List<BasicGameEvent> loadOn;
     [SerializeField]
     bool loadOnAwake;
 
@@ -32,16 +32,16 @@ public class PlayerDataController : MonoBehaviour
 
     void AddListeners()
     {
-        GameEventListener saveOnListener = gameObject.AddComponent<GameEventListener>();
-        foreach (GameEvent gameEvent in saveOn)
+        BasicGameEventListener saveOnListener = gameObject.AddComponent<BasicGameEventListener>();
+        foreach (BasicGameEvent gameEvent in saveOn)
             saveOnListener.Register(gameEvent);
         saveOnListener.AddListenerResponse(Save);
 
         foreach (IRegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
             variableToSaveOnChange.AddOnChangeCallback(Save);
         
-        GameEventListener loadOnListener = gameObject.AddComponent<GameEventListener>();
-        foreach (GameEvent gameEvent in loadOn)
+        BasicGameEventListener loadOnListener = gameObject.AddComponent<BasicGameEventListener>();
+        foreach (BasicGameEvent gameEvent in loadOn)
             loadOnListener.Register(gameEvent);
         loadOnListener.AddListenerResponse(Load);
     }

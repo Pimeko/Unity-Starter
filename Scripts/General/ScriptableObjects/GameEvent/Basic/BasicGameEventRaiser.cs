@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEventRaiser : MonoBehaviour 
+public class BasicGameEventRaiser : MonoBehaviour 
 {
 	[SerializeField]
-	GameEvent toRaise;
+	BasicGameEvent toRaise;
 
 	public void Raise()
 	{

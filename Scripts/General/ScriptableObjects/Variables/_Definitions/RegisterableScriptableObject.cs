@@ -3,22 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class RegisterableScriptableObject<T> : ScriptableObject, IRegisterableScriptableObject
+public abstract class RegisterableScriptableObject : ScriptableObject, IRegisterableScriptableObject
 {
 	delegate void OnChangeDelegate();
     OnChangeDelegate OnChange;
 
-	[SerializeField]
-	protected T initialValue;
-
-	[SerializeField]
-	protected T value;
-	public T Value { get { return value; } set { this.value = value; TriggerChange(); } }
-	
 	void OnEnable()
 	{
         OnInit();
-		Value = initialValue;
 	}
 
     protected virtual void OnInit() { }

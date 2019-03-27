@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameEventListener : MonoBehaviour
+public class BasicGameEventListener : MonoBehaviour
 {
 	static bool DEBUG = false;
 
 	[SerializeField]
-	List<GameEvent> gameEvents;
+	List<BasicGameEvent> gameEvents;
 	[SerializeField]
 	UnityEvent response;
 	[SerializeField]
@@ -19,7 +19,7 @@ public class GameEventListener : MonoBehaviour
 		if (gameEvents != null && gameEvents.Count > 0)
 			Register();
 		else if (DEBUG)
-			Debug.LogWarning("[GameEventListener] No event registered for '" + name + "'");
+			Debug.LogWarning("[BasicGameEventListener] No event registered for '" + name + "'");
 	}
 
 	private void OnDisable()
@@ -30,21 +30,21 @@ public class GameEventListener : MonoBehaviour
 
 	public void Register()
 	{
-		foreach (GameEvent gameEvent in gameEvents)
+		foreach (BasicGameEvent gameEvent in gameEvents)
 			gameEvent.RegisterListener(this);
 	}
 
-	public void Register(GameEvent gameEvent)
+	public void Register(BasicGameEvent gameEvent)
 	{
 		if (gameEvents == null)
-			gameEvents = new List<GameEvent>();
+			gameEvents = new List<BasicGameEvent>();
 		gameEvents.Add(gameEvent);
 		gameEvent.RegisterListener(this);
 	}
 
 	public void Unregister()
 	{
-		foreach (GameEvent gameEvent in gameEvents)
+		foreach (BasicGameEvent gameEvent in gameEvents)
 			gameEvent.UnregisterListener(this);
 	}
 

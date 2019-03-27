@@ -33,7 +33,7 @@ public class CarouselView : MonoBehaviour
     UnityEventInt changedIndex;
 
     [SerializeField]
-    GameEvent swipedSkins;
+    BasicGameEvent swipedSkins;
 
     #region mono functions
 
