@@ -1,4 +1,1 @@
 A update dans Unity Starter
-
-- SimpleRegisterableScriptableObject<T> that derives from RegisterableScriptableObject
-- GameEventLogger that calls the overrided ToString (to handle basic and payloaded game events)
