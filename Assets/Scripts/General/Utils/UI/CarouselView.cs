@@ -7,39 +7,37 @@ using UnityEngine.Events;
 
 public class CarouselView : MonoBehaviour
 {
-    public RectTransform[] introImages;
+    [SerializeField]
+    RectTransform[] introImages;
 
-    private float scrollZoneYMin, scrollZoneYMax;
-
-    private float wide;
-
-    private float mousePositionStartX, mousePositionEndX;
-    private float dragAmount;
-    private float screenPosition, lastScreenPosition;
-    private float lerpTimer, lerpPage;
-
-    public int pageCount = 1;
-    public string side = "";
-
-    public int swipeThrustHold = 30;
-    public int spaceBetweenProfileImages = 30;
-    private bool canSwipe;
-
-    public GameObject cartoonWindow;
-
-    public Texture2D userPic;
-
-    int currentIndex = 0;
-    UnityEventInt changedIndex;
+    float scrollZoneYMin, scrollZoneYMax;
+    float wide, mousePositionStartX, mousePositionEndX, dragAmount;
+    float screenPosition, lastScreenPosition;
+    float lerpTimer, lerpPage;
 
     [SerializeField]
-    BasicGameEvent swipedSkins;
+    int pageCount = 1;
+    [SerializeField]
+    string side = "";
 
-    #region mono functions
+    [SerializeField]
+    int swipeThrustHold = 30;
+    [SerializeField]
+    int spaceBetweenProfileImages = 30;
+    bool canSwipe;
 
-    private void OnEnable()
+    [SerializeField]
+    GameObject cartoonWindow;
+
+    int currentIndex = 0;
+
+    [SerializeField]
+    GameEventInt changedIndex;
+
+    void OnEnable()
     {
-        InvokeChangedIndex();
+        if (changedIndex != null)
+            changedIndex.Raise(currentIndex);
     }
 
     void Start()
@@ -50,11 +48,7 @@ public class CarouselView : MonoBehaviour
         wide = cartoonWindow.GetComponent<RectTransform>().rect.width;
 
         for (int i = 1; i < introImages.Length; i++)
-        {
-
             introImages[i].anchoredPosition = new Vector2(((wide + spaceBetweenProfileImages) * i), 0);
-
-        }
 
         side = "left";
 
@@ -63,7 +57,6 @@ public class CarouselView : MonoBehaviour
 
     void Update()
     {
-
         lerpTimer = lerpTimer + Time.deltaTime;
         if (lerpTimer < .333)
         {
@@ -113,9 +106,7 @@ public class CarouselView : MonoBehaviour
         if (Input.GetMouseButtonUp(0) || (touch.HasValue && touch.Value.phase == TouchPhase.Ended))
         {
             if (Mathf.Abs(dragAmount) < swipeThrustHold)
-            {
                 lerpTimer = 0;
-            }
         }
 
         for (int i = 0; i < introImages.Length; i++)
@@ -125,46 +116,25 @@ public class CarouselView : MonoBehaviour
 
             if (side == "right")
             {
-                if (i == pageCount - 1)
-                {
-                    introImages[i].localScale = Vector3.Lerp(introImages[i].localScale, new Vector3(1.4f, 1.4f, 1.4f), Time.deltaTime * 5);
-                    Color temp = introImages[i].GetComponent<Image>().color;
-                    introImages[i].GetComponent<Image>().color = new Color(temp.r, temp.g, temp.b, 1);
-                }
-                else
-                {
-                    introImages[i].localScale = Vector3.Lerp(introImages[i].localScale, new Vector3(0.7f, 0.7f, 0.7f), Time.deltaTime * 5);
-                    Color temp = introImages[i].GetComponent<Image>().color;
-                    introImages[i].GetComponent<Image>().color = new Color(temp.r, temp.g, temp.b, 0.5f);
-                }
+                float value = i == pageCount - 1 ? 1.4f : 0.7f;
+                introImages[i].localScale = Vector3.Lerp(
+                    introImages[i].localScale,
+                    new Vector3(value, value, value),
+                    Time.deltaTime * 5);
             }
             else
             {
-                if (i == pageCount)
-                {
-                    introImages[i].localScale = Vector3.Lerp(introImages[i].localScale, new Vector3(1.4f, 1.4f, 1.4f), Time.deltaTime * 5);
-                    Color temp = introImages[i].GetComponent<Image>().color;
-                    introImages[i].GetComponent<Image>().color = new Color(temp.r, temp.g, temp.b, 1);
-                }
-                else
-                {
-                    introImages[i].localScale = Vector3.Lerp(introImages[i].localScale, new Vector3(0.7f, 0.7f, 0.7f), Time.deltaTime * 5);
-                    Color temp = introImages[i].GetComponent<Image>().color;
-                    introImages[i].GetComponent<Image>().color = new Color(temp.r, temp.g, temp.b, 0.5f);
-                }
+                float value = i == pageCount ? 1.4f : 0.7f;
+                introImages[i].localScale = Vector3.Lerp(
+                    introImages[i].localScale,
+                    new Vector3(value, value, value),
+                    Time.deltaTime * 5);
             }
         }
-
-
     }
 
-    #endregion
-
-
-
-    private void OnSwipeComplete()
+    void OnSwipeComplete()
     {
-
         lastScreenPosition = screenPosition;
 
         if (dragAmount > 0)
@@ -188,14 +158,11 @@ public class CarouselView : MonoBehaviour
                     if (pageCount < 0)
                         pageCount = 0;
                     lerpPage = (wide + spaceBetweenProfileImages) * pageCount;
-                    //introimage[pagecount] is the current picture
                 }
 
             }
             else
-            {
                 lerpTimer = 0;
-            }
 
         }
         else if (dragAmount < 0)
@@ -217,32 +184,15 @@ public class CarouselView : MonoBehaviour
                     lerpTimer = 0;
                     lerpPage = (wide + spaceBetweenProfileImages) * pageCount;
                     pageCount++;
-                    //introimage[pagecount] is the current picture
                 }
 
             }
             else
-            {
-
                 lerpTimer = 0;
-            }
         }
+
         currentIndex = pageCount - (side == "right" ? 1 : 0);
-        InvokeChangedIndex();
-        if (swipedSkins != null)
-            swipedSkins.Raise();
-    }
-
-    public void AddListenerChangedIndex(UnityAction<int> callback)
-    {
-        if (changedIndex == null)
-            changedIndex = new UnityEventInt();
-        changedIndex.AddListener(callback);
-    }
-
-    void InvokeChangedIndex()
-    {
         if (changedIndex != null)
-            changedIndex.Invoke(currentIndex);
+            changedIndex.Raise(currentIndex);
     }
 }

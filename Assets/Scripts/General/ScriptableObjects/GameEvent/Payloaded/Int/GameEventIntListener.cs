@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PayloadedGameEventListenerInt : PayloadedGameEventListener<int, PayloadedGameEventInt, UnityEventInt>
+public class GameEventIntListener : PayloadedGameEventListener<int, GameEventInt, UnityEventInt>
 {
     [SerializeField]
     UnityEventInt actions;
