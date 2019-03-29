@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPayloadedGameEvent
+public class PayloadedGameEvent<T> : ScriptableObject, IPayloadedGameEvent
 {
-    void AddListener(object listener);
-    void RemoveListener(object listener);
-}
+    List<IGameEventListener> listeners = new List<IGameEventListener>();
 
-public abstract class GameEvent : ScriptableObject
-{
-    protected List<IGameEventListener> listeners = new List<IGameEventListener>();
+    public void Raise(T value)
+    {
+        foreach (IGameEventListener listener in listeners)
+            listener.Invoke(value);
+    }
 
     public void AddListener(object listener)
     {

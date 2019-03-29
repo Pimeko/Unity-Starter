@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BasicGameEventListener<T_GAME_EVENT, T_UNITY_EVENT> : MonoBehaviour, IGameEventListener
+public interface IGameEventListener
+{
+    void Invoke(object value = null);
+}
+
+public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT> : MonoBehaviour, IGameEventListener
     where T_GAME_EVENT : IPayloadedGameEvent
     where T_UNITY_EVENT : UnityEvent<T>
 {

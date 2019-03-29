@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class BasicGameEventListener<T_GAME_EVENT, T_UNITY_EVENT> : MonoBehaviour, IGameEventListener
+public abstract class GameEventListener<T_GAME_EVENT, T_UNITY_EVENT> : MonoBehaviour, IGameEventListener
     where T_GAME_EVENT : IPayloadedGameEvent
     where T_UNITY_EVENT : UnityEvent<T>
 {
