@@ -2,29 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PayloadedGameEvent<T> : ScriptableObject, IPayloadedGameEvent
-{
-    List<IGameEventListener> listeners = new List<IGameEventListener>();
+public interface IPayloadedGameEvent { }
 
+public abstract class PayloadedGameEvent<T> : GameEvent, IPayloadedGameEvent
+{
     public void Raise(T value)
     {
-        foreach (IGameEventListener listener in listeners)
+        Log(value);
+        foreach (IPayloadedGameEventListener listener in listeners)
             listener.Invoke(value);
-    }
-
-    public void AddListener(object listener)
-    {
-        IGameEventListener castedListener = (IGameEventListener)listener;
-
-        if (!listeners.Contains(castedListener))
-            listeners.Add(castedListener);
-    }
-
-    public void RemoveListener(object listener)
-    {
-        IGameEventListener castedListener = (IGameEventListener)listener;
-        
-        if (listeners.Contains(castedListener))
-            listeners.Remove(castedListener);
     }
 }

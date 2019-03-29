@@ -3,51 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BasicGameEventListener<T_GAME_EVENT, T_UNITY_EVENT> : MonoBehaviour, IGameEventListener
-    where T_GAME_EVENT : IPayloadedGameEvent
-    where T_UNITY_EVENT : UnityEvent<T>
+public interface IBasicGameEventListener
+{
+    void Invoke();
+}
+
+public class BasicGameEventListener: GameEventListener<BasicGameEvent>, IBasicGameEventListener
 {
     [SerializeField]
-    protected List<T_GAME_EVENT> gameEvents;
-    [SerializeField]
-    float delayBeforeAction;
-
-    void OnEnable()
+    UnityEvent actions;
+    UnityEvent Actions
     {
-        if (gameEvents == null)
-            gameEvents = new List<T_GAME_EVENT>();
-        Subscribe();
+        get
+        {
+            if (actions == null)
+                actions = new UnityEvent();
+            return actions;
+        }
     }
     
-    void OnDisable()
+    void IBasicGameEventListener.Invoke()
     {
-        Unsubscribe();
+        StartCoroutine(InvokeAfterDelay());
     }
 
-    protected void Subscribe()
-    {
-		foreach (T_GAME_EVENT gameEvent in gameEvents)
-            gameEvent.AddListener(this);
-    }
-
-    protected void Unsubscribe()
-    {
-		foreach (T_GAME_EVENT gameEvent in gameEvents)
-            gameEvent.RemoveListener(this);
-    }
-
-    protected void Invoke(T_UNITY_EVENT actions, object value)
-    {
-        StartCoroutine(InvokeAfterDelay(actions, value));
-    }
-
-    IEnumerator InvokeAfterDelay(T_UNITY_EVENT actions, object value)
+    IEnumerator InvokeAfterDelay()
 	{
 		yield return new WaitForSeconds(delayBeforeAction);
-        actions.Invoke((T)value);
+        Actions.Invoke();
 	}
 
-    public abstract void AddCallback(UnityAction<T> callback);
+    public void AddCallback(UnityAction callback)
+    {
+        Actions.AddListener(callback);
+    }
 
-    public abstract void Invoke(object value);
 }

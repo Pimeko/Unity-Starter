@@ -11,3 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 346309215b22cc643807494c16455b70, type: 3}
   m_Name: TestInt
   m_EditorClassIdentifier: 
+  logOnRaise: 1

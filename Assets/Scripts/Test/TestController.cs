@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class TestController : MonoBehaviour
 {
+    public void OnBasicEvent()
+    {
+        print("basic event");
+    }
+    
     public void OnEvent(int x)
     {
-        print("event " + x);
+        print("TEST : " + x);
     }
 }

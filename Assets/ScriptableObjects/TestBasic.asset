@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 346309215b22cc643807494c16455b70, type: 3}
-  m_Name: TestInt2
+  m_Script: {fileID: 11500000, guid: 8957daafe8f51124b8a818fa5e02ba6d, type: 3}
+  m_Name: TestBasic
   m_EditorClassIdentifier: 
   logOnRaise: 1

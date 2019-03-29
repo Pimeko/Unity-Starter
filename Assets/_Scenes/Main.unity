@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 480122097}
   - component: {fileID: 480122096}
   - component: {fileID: 480122095}
+  - component: {fileID: 480122098}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -252,6 +253,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &480122098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 480122094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9934e5a34bd1bde47843d2ebde37fbc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvents:
+  - {fileID: 11400000, guid: 8ce2b3d95d3abf642bc6c4dc6e63a08f, type: 2}
+  delayBeforeAction: 0
+  actions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 480122096}
+        m_MethodName: OnBasicEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   testInt: {fileID: 11400000, guid: 50bc333c07156db4294860ed467cabd3, type: 2}
   testInt2: {fileID: 11400000, guid: 4f6a562fe9c3dbe4f84422d38622edb2, type: 2}
+  basicEvent: {fileID: 11400000, guid: 8ce2b3d95d3abf642bc6c4dc6e63a08f, type: 2}
 --- !u!4 &585076316
 Transform:
   m_ObjectHideFlags: 0

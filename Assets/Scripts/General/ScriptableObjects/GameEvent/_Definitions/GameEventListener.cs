@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GameEventListener<T_GAME_EVENT, T_UNITY_EVENT> : MonoBehaviour, IGameEventListener
-    where T_GAME_EVENT : IPayloadedGameEvent
-    where T_UNITY_EVENT : UnityEvent<T>
+public interface IGameEventListener { }
+
+public abstract class GameEventListener<T_GAME_EVENT> : MonoBehaviour, IGameEventListener
+    where T_GAME_EVENT : IGameEvent
 {
     [SerializeField]
     protected List<T_GAME_EVENT> gameEvents;
     [SerializeField]
-    float delayBeforeAction;
+    protected float delayBeforeAction;
 
     void OnEnable()
     {
@@ -35,18 +36,13 @@ public abstract class GameEventListener<T_GAME_EVENT, T_UNITY_EVENT> : MonoBehav
             gameEvent.RemoveListener(this);
     }
 
-    protected void Invoke(T_UNITY_EVENT actions, object value)
+    public void AddGameEvent(T_GAME_EVENT gameEvent)
     {
-        StartCoroutine(InvokeAfterDelay(actions, value));
+        gameEvents.Add(gameEvent);
     }
 
-    IEnumerator InvokeAfterDelay(T_UNITY_EVENT actions, object value)
-	{
-		yield return new WaitForSeconds(delayBeforeAction);
-        actions.Invoke((T)value);
-	}
-
-    public abstract void AddCallback(UnityAction<T> callback);
-
-    public abstract void Invoke(object value);
+    public void RemoveGameEvent(T_GAME_EVENT gameEvent)
+    {
+        gameEvents.Remove(gameEvent);
+    }
 }

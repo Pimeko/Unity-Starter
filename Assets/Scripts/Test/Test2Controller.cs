@@ -8,6 +8,8 @@ public class Test2Controller : MonoBehaviour
     PayloadedGameEventInt testInt;
     [SerializeField]
     PayloadedGameEventInt testInt2;
+    [SerializeField]
+    BasicGameEvent basicEvent;
 
     void Update()
     {
@@ -15,5 +17,7 @@ public class Test2Controller : MonoBehaviour
             testInt.Raise(1);
         if (Input.GetKeyDown(KeyCode.Z))
             testInt2.Raise(2);
+        if (Input.GetKeyDown(KeyCode.B))
+            basicEvent.Raise();
     }
 }

@@ -3,44 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public interface IGameEventListener
+public interface IPayloadedGameEventListener
 {
-    void Invoke(object value = null);
+    void Invoke(object value);
 }
 
-public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT> : MonoBehaviour, IGameEventListener
-    where T_GAME_EVENT : IPayloadedGameEvent
+public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT> : GameEventListener<T_GAME_EVENT>, IPayloadedGameEventListener
+    where T_GAME_EVENT : IGameEvent, IPayloadedGameEvent
     where T_UNITY_EVENT : UnityEvent<T>
 {
-    [SerializeField]
-    protected List<T_GAME_EVENT> gameEvents;
-    [SerializeField]
-    float delayBeforeAction;
-
-    void OnEnable()
-    {
-        if (gameEvents == null)
-            gameEvents = new List<T_GAME_EVENT>();
-        Subscribe();
-    }
-    
-    void OnDisable()
-    {
-        Unsubscribe();
-    }
-
-    protected void Subscribe()
-    {
-		foreach (T_GAME_EVENT gameEvent in gameEvents)
-            gameEvent.AddListener(this);
-    }
-
-    protected void Unsubscribe()
-    {
-		foreach (T_GAME_EVENT gameEvent in gameEvents)
-            gameEvent.RemoveListener(this);
-    }
-
     protected void Invoke(T_UNITY_EVENT actions, object value)
     {
         StartCoroutine(InvokeAfterDelay(actions, value));
