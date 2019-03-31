@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class SimpleRegisterableScriptableObject<T> : RegisterableScriptableObject
 {
-	[SerializeField]
-	protected T initialValue;
+    [SerializeField]
+    protected T initialValue;
 
-	[SerializeField]
-	protected T value;
-	public T Value { get { return value; } set { this.value = value; TriggerChange(); } }
-    
+    [SerializeField]
+    protected T value, previousValue;
+    public T Value { get { return value; } set { previousValue = this.value; this.value = value; TriggerChange(); } }
+	public T PreviousValue { get { return previousValue; } }
+	
     protected override void OnInit()
     {
-		Value = initialValue;
+        Value = initialValue;
     }
 }
