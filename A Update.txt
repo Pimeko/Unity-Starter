@@ -1,4 +1,1 @@
 A update dans Unity Starter
-
-- Update en 2018.3.12f1
-- Package NaughtyAttributes
