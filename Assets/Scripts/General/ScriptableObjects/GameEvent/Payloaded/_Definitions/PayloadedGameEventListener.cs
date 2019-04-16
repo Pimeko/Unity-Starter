@@ -25,7 +25,7 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
         }
     }
 
-    protected void Invoke(T_UNITY_EVENT actions, object value)
+    void Invoke(T_UNITY_EVENT actions, object value)
     {
         StartCoroutine(InvokeAfterDelay(actions, value));
     }
