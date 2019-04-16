@@ -3,27 +3,4 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameEvent[PASCAL]Listener : PayloadedGameEventListener<[TYPE], GameEvent[PASCAL], UnityEvent[PASCAL]>
-{
-    [SerializeField]
-    UnityEvent[PASCAL] actions;
-    UnityEvent[PASCAL] Actions
-    {
-        get
-        {
-            if (actions == null)
-                actions = new UnityEvent[PASCAL]();
-            return actions;
-        }
-    }
-
-    public override void Invoke(object value)
-    {
-        Invoke(Actions, value);
-    }
-    
-    public override void AddCallback(UnityAction<[TYPE]> callback)
-    {
-        Actions.AddListener(callback);
-    }
-}
+public class GameEvent[PASCAL]Listener : PayloadedGameEventListener<[TYPE], GameEvent[PASCAL], UnityEvent[PASCAL]> {}

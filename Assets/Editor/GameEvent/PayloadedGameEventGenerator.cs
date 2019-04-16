@@ -37,10 +37,12 @@ public class PayloadedGameEventGenerator : EditorWindow
             string basicPath = Application.dataPath + "/Scripts/General/ScriptableObjects/GameEvent/Payloaded/" + pascalType + "/";
             string gameEventPath = basicPath + "GameEvent" + pascalType + ".cs";
             string gameEventListenerPath = basicPath + "GameEvent" + pascalType + "Listener.cs";
+            string gameEventRaiserPath = basicPath + "GameEvent" + pascalType + "Raiser.cs";
             string unityEventPath = Application.dataPath + "/Scripts/General/UnityEvents/UnityEvent" + pascalType + ".cs";
 
             GenerateFile(gameEventPath, Application.dataPath + "/Editor/GameEvent/GameEventTemplate.txt");
             GenerateFile(gameEventListenerPath, Application.dataPath + "/Editor/GameEvent/GameEventListenerTemplate.txt");
+            GenerateFile(gameEventRaiserPath, Application.dataPath + "/Editor/GameEvent/GameEventRaiserTemplate.txt");
             GenerateFile(unityEventPath, Application.dataPath + "/Editor/GameEvent/UnityEventTemplate.txt");
             
             AssetDatabase.Refresh();

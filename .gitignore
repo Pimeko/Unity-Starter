@@ -43,3 +43,4 @@ sysinfo.txt
 *.meta
 
 Assets/TO_IGNORE/
+Logs/
