@@ -4,7 +4,4 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class UnityEvent[PASCAL] : UnityEvent<[TYPE]>
-{
-    public [TYPE] value;
-}
+public class UnityEvent[PASCAL] : UnityEvent<[TYPE]> {}
