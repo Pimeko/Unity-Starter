@@ -11,7 +11,7 @@ public interface IPayloadedGameEventListener
 
 public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT> : GameEventListener<T_GAME_EVENT>, IPayloadedGameEventListener
     where T_GAME_EVENT : IGameEvent, IPayloadedGameEvent
-    where T_UNITY_EVENT : UnityEvent<T>
+    where T_UNITY_EVENT : UnityEvent<T>, new()
 {
     [SerializeField]
     T_UNITY_EVENT actions;
@@ -20,7 +20,7 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
         get
         {
             if (actions == null)
-                actions = (T_UNITY_EVENT)Activator.CreateInstance(typeof(T_UNITY_EVENT));
+                actions = new T_UNITY_EVENT();
             return actions;
         }
     }
