@@ -25,11 +25,6 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
         }
     }
 
-    void Invoke(T_UNITY_EVENT actions, object value)
-    {
-        StartCoroutine(InvokeAfterDelay(actions, value));
-    }
-
     IEnumerator InvokeAfterDelay(T_UNITY_EVENT actions, object value)
 	{
 		yield return new WaitForSeconds(delayBeforeAction);
@@ -43,6 +38,6 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
 
     public void Invoke(object value)
     {
-        Invoke(Actions, value);
+        StartCoroutine(InvokeAfterDelay(Actions, value));
     }
 }
