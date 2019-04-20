@@ -39,10 +39,12 @@ public abstract class GameEventListener<T_GAME_EVENT> : MonoBehaviour, IGameEven
     public void AddGameEvent(T_GAME_EVENT gameEvent)
     {
         gameEvents.Add(gameEvent);
+        gameEvent.AddListener(this);
     }
 
     public void RemoveGameEvent(T_GAME_EVENT gameEvent)
     {
         gameEvents.Remove(gameEvent);
+        gameEvent.RemoveListener(this);
     }
 }
