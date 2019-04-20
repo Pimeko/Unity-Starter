@@ -8,12 +8,12 @@ public class PlayerDataController : MonoBehaviour
     [SerializeField]
     List<BasicGameEvent> saveOn;
     [SerializeField]
-    List<IRegisterableScriptableObject> variablesToSaveOnChange;
+    List<RegisterableScriptableObject> variablesToSaveOnChange;
     [SerializeField]
     List<BasicGameEvent> loadOn;
     [SerializeField]
     bool loadOnAwake;
-
+    [SerializeField]
     bool JSON_ONLY = false;
 
     string dataPath;
@@ -32,18 +32,24 @@ public class PlayerDataController : MonoBehaviour
 
     void AddListeners()
     {
-        BasicGameEventListener saveOnListener = gameObject.AddComponent<BasicGameEventListener>();
-        foreach (BasicGameEvent gameEvent in saveOn)
-            saveOnListener.AddGameEvent(gameEvent);
-        saveOnListener.AddCallback(Save);
-
-        foreach (IRegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
-            variableToSaveOnChange.AddOnChangeCallback(Save);
+        if (saveOn.Count > 0)
+        {
+            BasicGameEventListener saveOnListener = gameObject.AddComponent<BasicGameEventListener>();
+            foreach (BasicGameEvent gameEvent in saveOn)
+                saveOnListener.AddGameEvent(gameEvent);
+            saveOnListener.AddCallback(Save);
+        }
         
-        BasicGameEventListener loadOnListener = gameObject.AddComponent<BasicGameEventListener>();
-        foreach (BasicGameEvent gameEvent in loadOn)
-            loadOnListener.AddGameEvent(gameEvent);
-        loadOnListener.AddCallback(Load);
+        if (loadOn.Count > 0)
+        {
+            BasicGameEventListener loadOnListener = gameObject.AddComponent<BasicGameEventListener>();
+            foreach (BasicGameEvent gameEvent in loadOn)
+                loadOnListener.AddGameEvent(gameEvent);
+            loadOnListener.AddCallback(Load);
+        }
+
+        foreach (RegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
+            variableToSaveOnChange.AddOnChangeCallback(Save);
     }
 
     void OnDisable()
@@ -56,10 +62,11 @@ public class PlayerDataController : MonoBehaviour
     {
         FileInfo file = new FileInfo(dataPath);
         file.Directory.Create();
-        if (JSON_ONLY)
-            File.WriteAllText(dataPath, JsonUtility.ToJson(new PlayerData()));
-        else
-            File.WriteAllText(dataPath, Base64Encoder.Encode(JsonUtility.ToJson(new PlayerData())));
+        PlayerData playerData = new PlayerData();
+		foreach (IPlayerData playerDataController in playerDataVariables)
+			playerDataController.Init(ref playerData);
+        string jsonEncoded = JsonUtility.ToJson(playerData);
+        File.WriteAllText(dataPath, JSON_ONLY ? jsonEncoded : Base64Encoder.Encode(jsonEncoded));
     }
 
     // Save the content of each related-scriptable objects in the save file
@@ -67,14 +74,12 @@ public class PlayerDataController : MonoBehaviour
     {
         PlayerData playerData = new PlayerData();
 		foreach (IPlayerData playerDataController in playerDataVariables)
-			playerData = playerDataController.Save(playerData);
+			playerDataController.Save(ref playerData);
+        string jsonEncoded = JsonUtility.ToJson(playerData);
         
         FileInfo file = new FileInfo(dataPath);
         file.Directory.Create();
-        if (JSON_ONLY)
-            File.WriteAllText(dataPath, JsonUtility.ToJson(playerData));
-        else
-            File.WriteAllText(dataPath, Base64Encoder.Encode(JsonUtility.ToJson(playerData)));
+        File.WriteAllText(dataPath, JSON_ONLY ? jsonEncoded : Base64Encoder.Encode(jsonEncoded));
     }
 
     // Load each data in the related-scriptable objects
@@ -84,12 +89,10 @@ public class PlayerDataController : MonoBehaviour
             FirstSave();
 
         PlayerData playerData;
-        
-        if (JSON_ONLY)
-            playerData = JsonUtility.FromJson<PlayerData>(File.ReadAllText(dataPath));
-        else
-            playerData = JsonUtility.FromJson<PlayerData>(Base64Encoder.Decode(File.ReadAllText(dataPath)));
-		foreach (IPlayerData playerDataController in playerDataVariables)
+        string asJSON = File.ReadAllText(dataPath);
+        playerData = JsonUtility.FromJson<PlayerData>(JSON_ONLY ? asJSON : Base64Encoder.Decode(asJSON));
+		
+        foreach (IPlayerData playerDataController in playerDataVariables)
 			playerDataController.Load(playerData);
     }
 }

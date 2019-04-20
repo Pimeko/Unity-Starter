@@ -2,19 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDataNbCoins : MonoBehaviour, IPlayerData
+public partial class PlayerData
 {
-    [SerializeField]
-    IntVariable nbCoins;
+    public int nbCoins;
+}
 
-    public PlayerData Save(PlayerData playerData)
+public class PlayerDataNbCoins : PlayerDataVariable<IntVariable>
+{
+    public override void Init(ref PlayerData playerData)
     {
-        playerData.nbCoins = nbCoins.Value;
-        return playerData;
+        playerData.nbCoins = 0;
     }
 
-    public void Load(PlayerData playerData)
+    public override void Save(ref PlayerData playerData)
     {
-        nbCoins.Value = playerData.nbCoins;
+        playerData.nbCoins = variable.Value;
+    }
+
+    public override void Load(PlayerData playerData)
+    {
+        variable.Value = playerData.nbCoins;
     }
 }

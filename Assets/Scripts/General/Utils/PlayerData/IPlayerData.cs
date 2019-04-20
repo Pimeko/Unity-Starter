@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IPlayerData
 {
-	PlayerData Save(PlayerData playerData);
+    void Init(ref PlayerData playerData);
+	void Save(ref PlayerData playerData);
     void Load(PlayerData playerData);
 }
