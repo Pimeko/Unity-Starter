@@ -23,11 +23,10 @@ public class PayloadedGameEventGenerator : EditorWindow
 
     void OnGUI()
     {
-        GUILayout.Label("Type", EditorStyles.boldLabel);
-        type = EditorGUILayout.TextField(
-            "Type (int, PlayerData..)",
-            type,
-            GUILayout.Width(300));
+        GUILayout.Label("Generate payloaded game event, listener and raiser", EditorStyles.boldLabel);
+
+        GUILayout.Label("Type (int, PlayerData..)", EditorStyles.label);
+        type = EditorGUILayout.TextField("", type, GUILayout.Width(300));
 
         if (GUILayout.Button("Generate", GUILayout.Width(150)))
         {
