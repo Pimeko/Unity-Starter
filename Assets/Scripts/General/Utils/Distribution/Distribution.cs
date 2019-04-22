@@ -44,7 +44,10 @@ public class Distribution : MonoBehaviour
 
     void UpdatePreviousItems()
     {
-        previousItems.Clear();
+        if (previousItems == null)
+            previousItems = new List<DistributionItem>();
+        else
+            previousItems.Clear();
         foreach (DistributionItem item in items)
             previousItems.Add(new DistributionItem(item));
     }
@@ -80,6 +83,13 @@ public class Distribution : MonoBehaviour
         // Nothing changed
         if (IsTheSameInAnyOrder() || index == -1)
         {
+            UpdatePreviousItems();
+            return;
+        }
+
+        if (items.Count == 1)
+        {
+            items[0].Percentage = 100;
             UpdatePreviousItems();
             return;
         }
@@ -177,6 +187,8 @@ public class Distribution : MonoBehaviour
 
     public void Remove(int index)
     {
+        if (index > items.Count - 1)
+            return;
         items.RemoveAt(index);
         OnItemsChange();
     }

@@ -157,7 +157,10 @@ public class PoolSpawner : MonoBehaviour
 
     void UpdatePreviousItems()
     {
-        previousObjectsToPool.Clear();
+        if (previousObjectsToPool == null)
+            previousObjectsToPool = new List<ObjectPoolTypeVariable>();
+        else
+            previousObjectsToPool.Clear();
         foreach (ObjectPoolTypeVariable objectToPool in objectsToPool)
             previousObjectsToPool.Add(objectToPool);
     }
