@@ -135,11 +135,18 @@ public class Distribution : MonoBehaviour
     {
         float sum = items.Sum((DistributionItem item) => item.Percentage);
         if (sum == 100)
+        {
+            foreach (DistributionItem item in items)
+                item.Percentage = Mathf.Round(item.Percentage);
             return;
+        }
 
         float toAdd = (100 - sum) / items.Count;
         foreach (DistributionItem item in items)
+        {
             item.Percentage += toAdd;
+            item.Percentage = Mathf.Round(item.Percentage);
+        }
     }
 
     int FindChangedIndex()
