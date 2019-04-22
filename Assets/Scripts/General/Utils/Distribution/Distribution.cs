@@ -182,12 +182,12 @@ public class Distribution : MonoBehaviour
     public void Add(string name = "")
     {
         items.Add(new DistributionItem());
-        OnItemsChange();
+        OnItemsChange(); 
     }
 
     public void Remove(int index)
     {
-        if (index > items.Count - 1)
+        if (items.Count - 1 < index || index < 0)
             return;
         items.RemoveAt(index);
         OnItemsChange();

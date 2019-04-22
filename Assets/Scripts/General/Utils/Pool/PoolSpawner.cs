@@ -169,20 +169,15 @@ public class PoolSpawner : MonoBehaviour
     {
         if (objectsToPool == null)
             return;
-            
+
         if (previousObjectsToPool == null)
             UpdatePreviousItems();
 
         // On Delete
         if (objectsToPool.Count < previousObjectsToPool.Count)
         {
-            int deletedIndex = objectsToPool.Count;
-            for (int i = 0; i < objectsToPool.Count; i++)
-            {
-                if (objectsToPool[i] != previousObjectsToPool[i])
-                    deletedIndex = i;
-            }
-            CurrentDistribution.Remove(deletedIndex);
+            int index = objectsToPool.Count - 1;
+            CurrentDistribution.Remove(index < 0 ? 0 : index);
             UpdatePreviousItems();
         }
         // On Add
