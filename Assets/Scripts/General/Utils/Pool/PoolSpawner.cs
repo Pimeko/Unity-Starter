@@ -2,27 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using NaughtyAttributes;
 
-[System.Serializable]
-public class ObjectToPool
-{
-    [SerializeField]
-    ObjectPoolTypeVariable type;
-    public ObjectPoolTypeVariable Type { get { return type; } }
-    
-    [SerializeField]
-    [Range(0f, 1f)]
-    float spawnProbability;
-    public float SpawnProbability { get { return spawnProbability; } }
-}
-
+[RequireComponent(typeof(Distribution))]
 public class PoolSpawner : MonoBehaviour
 {
     [Header("Pool")]
     [SerializeField]
     ObjectPoolController objectPoolController;
+    [ReorderableList]
     [SerializeField]
-    List<ObjectToPool> objectsToPool;
+    List<ObjectPoolTypeVariable> objectsToPool;
+
+    List<ObjectPoolTypeVariable> previousObjectsToPool;
     
     [Header("Initial")]
     [SerializeField]
@@ -53,6 +45,17 @@ public class PoolSpawner : MonoBehaviour
     Coroutine currentCoroutine;
     public delegate void OnSpawnDelegate(GameObject o);
     public OnSpawnDelegate OnSpawn;
+
+    Distribution currentDistribution;
+    Distribution CurrentDistribution
+    {
+        get
+        {
+            if (currentDistribution == null)
+                currentDistribution = GetComponent<Distribution>();
+            return currentDistribution;
+        }
+    }
 
     void Start()
     {
@@ -126,16 +129,7 @@ public class PoolSpawner : MonoBehaviour
 
     ObjectPoolTypeVariable GetRandomObjectPoolTypeVariable()
     {
-        ObjectPoolTypeVariable objectPoolTypeVariable = objectsToPool[Random.Range(0, objectsToPool.Count)].Type;
-        float random = Random.Range(0f, 1f);
-        float currentProbability = 0;
-        foreach (ObjectToPool objectToPool in objectsToPool)
-        {
-            currentProbability += objectToPool.SpawnProbability;
-            if (random <= currentProbability)
-                return objectToPool.Type;
-        }
-        return objectsToPool[objectsToPool.Count - 1].Type;
+        return objectsToPool[CurrentDistribution.Draw()];
     }
 
     Vector3 GetRandomPosition(GameObject surfaces)
@@ -159,5 +153,40 @@ public class PoolSpawner : MonoBehaviour
     {
         if (OnSpawn != null)
             OnSpawn(spawnedObject);
+    }
+
+    void UpdatePreviousItems()
+    {
+        previousObjectsToPool.Clear();
+        foreach (ObjectPoolTypeVariable objectToPool in objectsToPool)
+            previousObjectsToPool.Add(objectToPool);
+    }
+
+    void OnValidate()
+    {
+        if (objectsToPool == null)
+            return;
+            
+        if (previousObjectsToPool == null)
+            UpdatePreviousItems();
+
+        // On Delete
+        if (objectsToPool.Count < previousObjectsToPool.Count)
+        {
+            int deletedIndex = objectsToPool.Count;
+            for (int i = 0; i < objectsToPool.Count; i++)
+            {
+                if (objectsToPool[i] != previousObjectsToPool[i])
+                    deletedIndex = i;
+            }
+            CurrentDistribution.Remove(deletedIndex);
+            UpdatePreviousItems();
+        }
+        // On Add
+        else if (objectsToPool.Count > previousObjectsToPool.Count)
+        {
+            CurrentDistribution.Add();
+            UpdatePreviousItems();
+        }
     }
 }

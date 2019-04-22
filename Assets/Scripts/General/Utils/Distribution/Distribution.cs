@@ -15,6 +15,12 @@ public class DistributionItem
     float percentage = 0;
     public float Percentage { get { return percentage; } set { if (value >= 0 && value <= 100) percentage = value; } }
 
+    public DistributionItem()
+    {
+        name = "";
+        percentage = 0;
+    }
+
     public DistributionItem(DistributionItem item)
     {
         name = item.name;
@@ -24,11 +30,6 @@ public class DistributionItem
     public bool IsEqualTo(DistributionItem other)
     {
         return other != null && percentage == other.percentage;
-    }
-
-    public override string ToString()
-    {
-        return name + " " + percentage;
     }
 }
 
@@ -47,15 +48,15 @@ public class Distribution : MonoBehaviour
         foreach (DistributionItem item in items)
             previousItems.Add(new DistributionItem(item));
     }
-    
-    void OnValidate()
+
+    void OnItemsChange()
     {
         // Adding the component
         if (items == null)
             return;
             
         if (previousItems == null)
-            previousItems = new List<DistributionItem>();
+            UpdatePreviousItems();
 
         // On Delete
         if (items.Count < previousItems.Count)
@@ -87,6 +88,12 @@ public class Distribution : MonoBehaviour
         DiluteFrom(index);
         Normalize();
         UpdatePreviousItems();
+    }
+
+    
+    void OnValidate()
+    {
+        OnItemsChange();
     }
 
     void DiluteFrom(int index)
@@ -160,5 +167,17 @@ public class Distribution : MonoBehaviour
                 return i;
         }
         return 0;
+    }
+
+    public void Add(string name = "")
+    {
+        items.Add(new DistributionItem());
+        OnItemsChange();
+    }
+
+    public void Remove(int index)
+    {
+        items.RemoveAt(index);
+        OnItemsChange();
     }
 }
