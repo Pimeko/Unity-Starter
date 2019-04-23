@@ -4,17 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using NaughtyAttributes;
 
-[RequireComponent(typeof(Distribution))]
+[RequireComponent(typeof(DistributionPool))]
 public class PoolSpawner : MonoBehaviour
 {
     [Header("Pool")]
     [SerializeField]
     ObjectPoolController objectPoolController;
-    [ReorderableList]
-    [SerializeField]
-    List<ObjectPoolTypeVariable> objectsToPool;
-
-    List<ObjectPoolTypeVariable> previousObjectsToPool;
     
     [Header("Initial")]
     [SerializeField]
@@ -46,13 +41,13 @@ public class PoolSpawner : MonoBehaviour
     public delegate void OnSpawnDelegate(GameObject o);
     public OnSpawnDelegate OnSpawn;
 
-    Distribution currentDistribution;
-    Distribution CurrentDistribution
+    DistributionPool currentDistribution;
+    DistributionPool CurrentDistribution
     {
         get
         {
             if (currentDistribution == null)
-                currentDistribution = GetComponent<Distribution>();
+                currentDistribution = GetComponent<DistributionPool>();
             return currentDistribution;
         }
     }
@@ -129,7 +124,7 @@ public class PoolSpawner : MonoBehaviour
 
     ObjectPoolTypeVariable GetRandomObjectPoolTypeVariable()
     {
-        return objectsToPool[CurrentDistribution.Draw()];
+        return CurrentDistribution.Draw();
     }
 
     Vector3 GetRandomPosition(GameObject surfaces)
@@ -153,38 +148,5 @@ public class PoolSpawner : MonoBehaviour
     {
         if (OnSpawn != null)
             OnSpawn(spawnedObject);
-    }
-
-    void UpdatePreviousItems()
-    {
-        if (previousObjectsToPool == null)
-            previousObjectsToPool = new List<ObjectPoolTypeVariable>();
-        else
-            previousObjectsToPool.Clear();
-        foreach (ObjectPoolTypeVariable objectToPool in objectsToPool)
-            previousObjectsToPool.Add(objectToPool);
-    }
-
-    void OnValidate()
-    {
-        if (objectsToPool == null)
-            return;
-
-        if (previousObjectsToPool == null)
-            UpdatePreviousItems();
-
-        // On Delete
-        if (objectsToPool.Count < previousObjectsToPool.Count)
-        {
-            int index = objectsToPool.Count - 1;
-            CurrentDistribution.Remove(index < 0 ? 0 : index);
-            UpdatePreviousItems();
-        }
-        // On Add
-        else if (objectsToPool.Count > previousObjectsToPool.Count)
-        {
-            CurrentDistribution.Add();
-            UpdatePreviousItems();
-        }
     }
 }

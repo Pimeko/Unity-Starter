@@ -5,51 +5,49 @@ using NaughtyAttributes;
 using System.Linq;
 
 [System.Serializable]
-public class DistributionItem
+public class DistributionItem<T>
 {
     [SerializeField]
-    string name;
+    float weight;
+    public float Weight { get { return weight; } set { weight = value; } }
 
-    [Range(0, 100)]
-    [SerializeField]
-    float percentage = 0;
+    public float CombinedWeight { get; set; }
+
+    [Range(0f, 100f), SerializeField]
+    float percentage;
     public float Percentage { get { return percentage; } set { if (value >= 0 && value <= 100) percentage = value; } }
+
+    [SerializeField]
+    T value;
+    public T Value { get { return value; } set { value = this.value; } }
 
     public DistributionItem()
     {
-        name = "";
+        CombinedWeight = 0;
         percentage = 0;
-    }
-
-    public DistributionItem(DistributionItem item)
-    {
-        name = item.name;
-        percentage = item.percentage;
-    }
-
-    public bool IsEqualTo(DistributionItem other)
-    {
-        return other != null && percentage == other.percentage;
     }
 }
 
-public class Distribution : MonoBehaviour
+public abstract class Distribution<T, T_ITEM> : MonoBehaviour
+    where T_ITEM : DistributionItem<T>, new()
 {
     [ReorderableList]
     [SerializeField]
-    List<DistributionItem> items;
-    public List<DistributionItem> Items { get { return items; } }
+    List<T_ITEM> items;
+    public List<T_ITEM> Items { get { return items; } }
 
-    List<DistributionItem> previousItems;
+    List<T_ITEM> previousItems;
+
+    float combinedWeight;
 
     void UpdatePreviousItems()
     {
         if (previousItems == null)
-            previousItems = new List<DistributionItem>();
+            previousItems = new List<T_ITEM>();
         else
             previousItems.Clear();
-        foreach (DistributionItem item in items)
-            previousItems.Add(new DistributionItem(item));
+        foreach (T_ITEM item in items)
+            previousItems.Add(new T_ITEM());
     }
 
     void OnItemsChange()
@@ -57,138 +55,60 @@ public class Distribution : MonoBehaviour
         // Adding the component
         if (items == null)
             return;
-            
+        
         if (previousItems == null)
             UpdatePreviousItems();
 
-        // On Delete
-        if (items.Count < previousItems.Count)
-        {
-            Normalize();
-            UpdatePreviousItems();
-            return;
-        }
-        // On Add
-        else if (items.Count > previousItems.Count)
+        if (items.Count > previousItems.Count)
         {
             if (items.Count == 1)
-                items[0].Percentage = 100;
+                items[0].Weight = 1;
             else
-                items[items.Count - 1].Percentage = 0;
-            UpdatePreviousItems();
-            return;
+                items[items.Count - 1].Weight = 0;
         }
 
-        int index = FindChangedIndex();
-        // Nothing changed
-        if (IsTheSameInAnyOrder() || index == -1)
-        {
-            UpdatePreviousItems();
-            return;
-        }
-
-        if (items.Count == 1)
-        {
-            items[0].Percentage = 100;
-            UpdatePreviousItems();
-            return;
-        }
-
-        // On Change
-        DiluteFrom(index);
-        Normalize();
+        ComputePercentages();
         UpdatePreviousItems();
     }
-
     
+    void ComputePercentages()
+    {
+        combinedWeight = 0;
+
+        foreach (T_ITEM item in items)
+        {
+            combinedWeight += item.Weight;
+            item.CombinedWeight = combinedWeight;
+        }
+
+        foreach (T_ITEM item in items)
+            item.Percentage = item.Weight * 100 / combinedWeight;
+    }
+
     void OnValidate()
     {
         OnItemsChange();
     }
 
-    void DiluteFrom(int index)
-    {
-        int otherIndex = -1;
-
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (i == index)
-                continue;
-            
-            DistributionItem item = items[i];
-            if (item.Percentage > 0)
-            {
-                otherIndex = i;
-                break;
-            }
-        }
-        otherIndex = otherIndex == -1 ? index == 0 ? 1 : 0 : otherIndex;
-        
-        float previousPercentage = previousItems[index].Percentage;
-        float newPercentage = items[index].Percentage;
-        float difference = Mathf.Abs(previousPercentage - newPercentage);
-        bool added = previousPercentage < newPercentage;
-        items[otherIndex].Percentage += difference * (added ? -1 : 1);
-    }
-
-    void Normalize()
-    {
-        float sum = items.Sum((DistributionItem item) => item.Percentage);
-        if (sum == 100)
-        {
-            foreach (DistributionItem item in items)
-                item.Percentage = Mathf.Round(item.Percentage);
-            return;
-        }
-
-        float toAdd = (100 - sum) / items.Count;
-        foreach (DistributionItem item in items)
-        {
-            item.Percentage += toAdd;
-            item.Percentage = Mathf.Round(item.Percentage);
-        }
-    }
-
-    int FindChangedIndex()
-    {
-        int i = 0;
-
-        foreach (DistributionItem item in items)
-        {
-            DistributionItem previousItem = previousItems[i];
-            if (!item.IsEqualTo(previousItem))
-                return i;
-            i++;
-        }
-        
-        return -1;
-    }
-
-    bool IsTheSameInAnyOrder()
-    {
-        return previousItems.Sum((DistributionItem item) => item.Percentage) == items.Sum((DistributionItem item) => item.Percentage);
-    }
-
-    public int Draw()
+    public T Draw()
     {
         if (items.Count == 0)
             throw new UnityException("Can't draw an item from an empty distribution!");
 
-        float random = Random.Range(0f, 100f);
-        float currentProbability = 0;
+        float random = Random.Range(0f, combinedWeight);
         for (int i = 0; i < items.Count; i++)
         {
-            DistributionItem item = items[i];
-            currentProbability += item.Percentage;
-            if (random <= currentProbability)
-                return i;
+            T_ITEM item = items[i];
+            if (item.CombinedWeight <= random)
+                return item.Value;
         }
-        return 0;
+
+        throw new UnityException("Error while drawing");
     }
 
     public void Add(string name = "")
     {
-        items.Add(new DistributionItem());
+        items.Add(new T_ITEM());
         OnItemsChange(); 
     }
 

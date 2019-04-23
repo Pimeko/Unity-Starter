@@ -10,8 +10,7 @@ public class SimpleRegisterableScriptableObject<T> : RegisterableScriptableObjec
 
     [SerializeField]
     protected T value;
-    [SerializeField]
-    [ReadOnly]
+    [SerializeField, ReadOnly]
     protected T previousValue;
     public T Value { get { return value; } set { previousValue = this.value; this.value = value; TriggerChange(); } }
 	public T PreviousValue { get { return previousValue; } }
