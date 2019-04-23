@@ -5,7 +5,7 @@ using NaughtyAttributes;
 using System.Linq;
 
 [System.Serializable]
-public abstract class DistributionItem<T>
+public class DistributionItem<T>
 {
     [SerializeField]
     float weight;
@@ -19,13 +19,7 @@ public abstract class DistributionItem<T>
 
     [SerializeField]
     T value;
-    public T Value { get { return value; } set { value = this.value; } }
-
-    public DistributionItem()
-    {
-        CombinedWeight = 0;
-        percentage = 0;
-    }
+    public T Value { get { return value; } set { this.value = value; } }
 }
 
 public abstract class Distribution<T, T_ITEM> : MonoBehaviour
@@ -36,40 +30,26 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
     List<T_ITEM> items;
     public List<T_ITEM> Items { get { return items; } }
 
-    List<T_ITEM> previousItems;
-
+    int nbItems = 0;
     float combinedWeight;
 
-    void UpdatePreviousItems()
-    {
-        if (previousItems == null)
-            previousItems = new List<T_ITEM>();
-        else
-            previousItems.Clear();
-        foreach (T_ITEM item in items)
-            previousItems.Add(new T_ITEM());
-    }
-
-    void OnItemsChange()
+    void OnItemsChange(bool addedItem = false)
     {
         // On Add Component
         if (items == null)
             return;
         
-        if (previousItems == null)
-            UpdatePreviousItems();
-
         // On Add Item
-        if (items.Count > previousItems.Count)
+        if (items.Count > nbItems)
         {
             if (items.Count == 1)
                 items[0].Weight = 1;
-            else
+            else if (!addedItem)
                 items[items.Count - 1].Weight = 0;
         }
 
         ComputePercentages();
-        UpdatePreviousItems();
+        nbItems = items.Count;
     }
     
     void ComputePercentages()
@@ -106,13 +86,13 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
         throw new UnityException("Error while drawing an item.");
     }
 
-    public void Add()
+    public void Add(T value, float weight)
     {
-        items.Add(new T_ITEM());
-        OnItemsChange(); 
+        items.Add(new T_ITEM { Value = value, Weight = weight });
+        OnItemsChange(true); 
     }
 
-    public void Remove(int index)
+    public void RemoveAt(int index)
     {
         if (items.Count - 1 < index || index < 0)
             return;
