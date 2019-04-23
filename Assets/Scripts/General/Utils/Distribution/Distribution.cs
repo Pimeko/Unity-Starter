@@ -5,11 +5,11 @@ using NaughtyAttributes;
 using System.Linq;
 
 [System.Serializable]
-public class DistributionItem<T>
+public abstract class DistributionItem<T>
 {
     [SerializeField]
     float weight;
-    public float Weight { get { return weight; } set { weight = value; } }
+    public float Weight { get { return weight; } set { if (weight >= 0) weight = value; } }
 
     public float CombinedWeight { get; set; }
 
@@ -52,13 +52,14 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
 
     void OnItemsChange()
     {
-        // Adding the component
+        // On Add Component
         if (items == null)
             return;
         
         if (previousItems == null)
             UpdatePreviousItems();
 
+        // On Add Item
         if (items.Count > previousItems.Count)
         {
             if (items.Count == 1)
@@ -96,17 +97,16 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
             throw new UnityException("Can't draw an item from an empty distribution!");
 
         float random = Random.Range(0f, combinedWeight);
-        for (int i = 0; i < items.Count; i++)
+        foreach (T_ITEM item in items)
         {
-            T_ITEM item = items[i];
-            if (item.CombinedWeight <= random)
+            if (random <= item.CombinedWeight)
                 return item.Value;
         }
 
-        throw new UnityException("Error while drawing");
+        throw new UnityException("Error while drawing an item.");
     }
 
-    public void Add(string name = "")
+    public void Add()
     {
         items.Add(new T_ITEM());
         OnItemsChange(); 
