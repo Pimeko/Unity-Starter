@@ -43,6 +43,7 @@ public class PayloadedGameEventGenerator : EditorWindow
             GenerateFile(gameEventListenerPath, Application.dataPath + "/Editor/GameEvent/GameEventListenerTemplate.txt");
             GenerateFile(gameEventRaiserPath, Application.dataPath + "/Editor/GameEvent/GameEventRaiserTemplate.txt");
             GenerateFile(unityEventPath, Application.dataPath + "/Editor/GameEvent/UnityEventTemplate.txt");
+            GenerateIcon();
             
             AssetDatabase.Refresh();
         }
@@ -56,5 +57,12 @@ public class PayloadedGameEventGenerator : EditorWindow
         content = content.Replace("[TYPE]", type);
         file.Directory.Create();
         File.WriteAllText(filePath, content);
+    }
+
+    void GenerateIcon()
+    {
+        File.Copy(
+            Application.dataPath + "/Gizmos/BasicGameEvent Icon.png",
+            Application.dataPath + "/Gizmos/GameEvent" + pascalType + " Icon.png");
     }
 }
