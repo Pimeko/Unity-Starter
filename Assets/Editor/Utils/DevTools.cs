@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 
 public class DevTools : Editor
 {
-    [MenuItem("Custom/Remove Copy Names &b")]
+    [MenuItem("Custom/Shortcuts/Remove Copy Names &b")]
     private static void RemoveCopyNames()
     {
         GameObject[] objs = Selection.gameObjects;
@@ -14,7 +14,7 @@ public class DevTools : Editor
             o.name = o.name.Substring(0, o.name.Length - 4);
     }
 
-	[MenuItem("Custom/Clear console &x")]
+	[MenuItem("Custom/Shortcuts/Clear console &x")]
     private static void ClearConsole()
     {
         var logEntries = System.Type.GetType("UnityEditor.LogEntries, UnityEditor.dll");
@@ -24,20 +24,20 @@ public class DevTools : Editor
         clearMethod.Invoke(null, null);
     }
 
-	[MenuItem("Custom/Pause Game %e")]
+	[MenuItem("Custom/Shortcuts/Pause Game %e")]
     private static void PauseTheGame()
     {
         EditorApplication.isPaused = !EditorApplication.isPaused;
     }
 
-    [MenuItem("Custom/Play &p")]
+    [MenuItem("Custom/Shortcuts/Play &p")]
     private static void Play()
     {
         EditorSceneManager.OpenScene("Assets/_Scenes/Menu.unity");
         EditorApplication.isPlaying = true;
     }
 
-    [MenuItem("Custom/New folder &n")]
+    [MenuItem("Custom/Shortcuts/New folder &n")]
     private static void NewFolder()
     {
         EditorApplication.ExecuteMenuItem("Assets/Create/Folder");

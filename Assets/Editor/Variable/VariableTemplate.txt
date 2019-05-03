@@ -1,0 +1,4 @@
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Variable/[PASCAL]")]
+public class [PASCAL]Variable : SimpleRegisterableScriptableObject<[TYPE]> {}

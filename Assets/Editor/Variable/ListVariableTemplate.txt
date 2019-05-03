@@ -1,0 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Variable/[PASCAL] List")]
+public class [PASCAL]ListVariable : RegisterableListVariable<[TYPE]> {}
