@@ -5,8 +5,7 @@ using UnityEngine;
 
 public abstract class RegisterableScriptableObject : ScriptableObject, IRegisterableScriptableObject
 {
-	delegate void OnChangeDelegate();
-    OnChangeDelegate OnChange;
+    Action OnChange;
 
 	void OnEnable()
 	{
@@ -23,11 +22,11 @@ public abstract class RegisterableScriptableObject : ScriptableObject, IRegister
 
     public void AddOnChangeCallback(Action callback)
     {
-        OnChange += () => { callback(); };
+        OnChange += callback;
     }
 
     public void RemoveOnChangeCallback(Action callback)
     {
-        OnChange -= () => { callback(); };
+        OnChange -= callback;
     }
 }

@@ -38,7 +38,8 @@ public class VariableGenerator : EditorWindow
 
             string pascalName = pascalType + (isList ? "List" : "") + "Variable";
 
-            string path = Application.dataPath + "/Scripts/General/ScriptableObjects/Variables/" + pascalType + "/" + pascalName + ".cs";
+            string path = Application.dataPath + "/Scripts/General/ScriptableObjects/Variables/" +
+                pascalType + "/" + pascalName + (isList ? "List" : "") + ".cs";
             string templatePath = Application.dataPath + "/Editor/Variable/" + (isList ? "List" : "") + "VariableTemplate.txt";
             
             GenerateFile(path, templatePath);

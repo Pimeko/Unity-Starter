@@ -5,11 +5,16 @@ using TMPro;
 
 public class DisplayIntVariable : MonoBehaviour
 {
+
     [Header("Meta")]
     [SerializeField]
     string prefix;
     [SerializeField]
     string suffix;
+    [SerializeField]
+    int toAdd = 0;
+    [SerializeField]
+    bool onlyOnStart = false;
 
     [Header("Variable")]
     [SerializeField]
@@ -29,16 +34,18 @@ public class DisplayIntVariable : MonoBehaviour
 
     void UpdateText()
     {
-        textMesh.text = prefix + variable.Value + suffix;
+        textMesh.text = prefix + (variable.Value + toAdd) + suffix;
     }
 
     void OnEnable()
     {
-        variable.AddOnChangeCallback(UpdateText);
+        if (!onlyOnStart)
+            variable.AddOnChangeCallback(UpdateText);
     }
 
     void OnDisable()
     {
-        variable.RemoveOnChangeCallback(UpdateText);
+        if (!onlyOnStart)
+            variable.AddOnChangeCallback(UpdateText);
     }
 }
