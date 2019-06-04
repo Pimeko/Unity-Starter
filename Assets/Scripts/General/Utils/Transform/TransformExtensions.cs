@@ -21,9 +21,7 @@ public static class TransformExtensions
     
     public static Transform GetTopLevelParent(this Transform t)
     {
-        if (IsNull(t.parent))
-            return t;
-        return GetTopLevelParent(t.parent);
+        return t.root != t ? t.root : null;
     }
 
     public static T GetComponentOrInChildren<T>(this Transform t)
