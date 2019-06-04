@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,8 +39,7 @@ public class PoolSpawner : MonoBehaviour
     float variationTime;
     
     Coroutine currentCoroutine;
-    public delegate void OnSpawnDelegate(GameObject o);
-    public OnSpawnDelegate OnSpawn;
+    public Action<GameObject> OnSpawn;
 
     DistributionPool currentDistribution;
     DistributionPool CurrentDistribution
@@ -81,7 +81,7 @@ public class PoolSpawner : MonoBehaviour
 
     IEnumerator InstantiateAfterDuration()
     {
-        float randomDuration = averageTime + Random.Range(-variationTime, variationTime);
+        float randomDuration = averageTime + UnityEngine.Random.Range(-variationTime, variationTime);
         yield return new WaitForSeconds(randomDuration);
 
         Instantiate(surfacesContainer);
@@ -129,7 +129,7 @@ public class PoolSpawner : MonoBehaviour
 
     Vector3 GetRandomPosition(GameObject surfaces)
     {
-        Transform randomSurface = surfaces.transform.GetChild(Random.Range(0, surfaces.transform.childCount));
+        Transform randomSurface = surfaces.transform.GetChild(UnityEngine.Random.Range(0, surfaces.transform.childCount));
 
         Mesh planeMesh = randomSurface.GetComponent<MeshFilter>().mesh;
         Bounds bounds = planeMesh.bounds;
@@ -138,8 +138,8 @@ public class PoolSpawner : MonoBehaviour
         float halfY = randomSurface.localScale.y * bounds.size.y / 2;
 
         return new Vector3(
-            Random.Range(randomSurface.position.x - halfX, randomSurface.position.x + halfX), 
-            Random.Range(randomSurface.position.y - halfY, randomSurface.position.y + halfY),
+            UnityEngine.Random.Range(randomSurface.position.x - halfX, randomSurface.position.x + halfX), 
+            UnityEngine.Random.Range(randomSurface.position.y - halfY, randomSurface.position.y + halfY),
             randomSurface.position.z
         );
     }

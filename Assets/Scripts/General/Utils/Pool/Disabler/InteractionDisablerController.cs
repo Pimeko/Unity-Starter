@@ -1,11 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InteractionDisablerController : MonoBehaviour
 {
-    public delegate void DisableDelegate();
-    public DisableDelegate OnDisable;
+    public Action OnDisable;
 
     void OnTriggerEnter(Collider other)
     {

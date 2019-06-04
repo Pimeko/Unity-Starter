@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,8 +31,7 @@ public class InteractionController : MonoBehaviour
     [SerializeField]
     bool isTrigger = true;
 
-    public delegate void OnInteractionDelegate(Interaction interaction);
-    public OnInteractionDelegate OnInteraction;
+    public Action<Interaction> OnInteraction;
 
     public void TriggerInteraction()
     {
@@ -43,8 +43,8 @@ public class InteractionController : MonoBehaviour
     {
         if (OnInteraction != null)
         {
-            foreach(OnInteractionDelegate currentDelegate in OnInteraction.GetInvocationList())
-                OnInteraction -= currentDelegate;
+            foreach(Action<Interaction> currentAction in OnInteraction.GetInvocationList())
+                OnInteraction -= currentAction;
         }
     }
 
