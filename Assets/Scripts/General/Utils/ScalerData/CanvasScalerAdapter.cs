@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CanvasScalerAdapter : MonoBehaviour
 {
     [SerializeField]
-    CanvasScalerDataVariable data;
+    ScalerDataVariable data;
 
     CanvasScaler canvasScaler;
 

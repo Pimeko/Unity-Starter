@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Variable/Canvas/Scaler Data")]
-public class CanvasScalerDataVariable : ScriptableObject
+[CreateAssetMenu(menuName = "Variable/Scaler Data")]
+public class ScalerDataVariable : ScriptableObject
 {
     public enum CanvasScalerType
     {
@@ -15,8 +15,7 @@ public class CanvasScalerDataVariable : ScriptableObject
     public class CanvasScalerData
     {
         public CanvasScalerType type;
-        [Range(0, 1)]
-        public float match = 0f;
+        public float value = 0f;
     }
     [SerializeField]
 	List<CanvasScalerData> data;
@@ -24,6 +23,6 @@ public class CanvasScalerDataVariable : ScriptableObject
     public float GetCurrentMatch()
     {
         CanvasScalerType type = Screen.width > 1440 ? CanvasScalerType.IPAD : CanvasScalerType.IPHONE;
-        return data.Find((CanvasScalerData data) => data.type == type).match;
+        return data.Find((CanvasScalerData data) => data.type == type).value;
     }
 }
