@@ -1,1 +1,0 @@
-public class GameEventIntRaiser : PayloadedGameEventRaiser<int, GameEventInt> {}
