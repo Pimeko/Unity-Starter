@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectPoolController : MonoBehaviour
@@ -23,7 +24,7 @@ public class ObjectPoolController : MonoBehaviour
     [SerializeField]
     List<ObjectPoolItem> objectPoolItems;
 
-    List<GameObject> pooledObjects;
+    Dictionary<ObjectPoolTypeVariable, List<GameObject>> pooledObjects;
     bool isUI;
 
     void Awake()
@@ -31,9 +32,9 @@ public class ObjectPoolController : MonoBehaviour
         isUI = GetComponent<RectTransform>() != null;
     }
 
-    void OnEnable()
+    void Start()
     {
-        pooledObjects = new List<GameObject>();
+        pooledObjects = new Dictionary<ObjectPoolTypeVariable, List<GameObject>>();
 
         foreach (ObjectPoolItem objectPoolItem in objectPoolItems)
         {
@@ -43,6 +44,8 @@ public class ObjectPoolController : MonoBehaviour
             else
                 parent = new GameObject(objectPoolItem.Type.ToString());
             parent.transform.SetParent(transform);
+
+            pooledObjects.Add(objectPoolItem.Type, new List<GameObject>());
 
             if (isUI)
             {
@@ -69,15 +72,18 @@ public class ObjectPoolController : MonoBehaviour
         }
         pooledObject.SetActive(false);
         pooledObject.name = objectPoolItem.Type.ToString();
-        pooledObjects.Add(pooledObject);
+        pooledObjects[objectPoolItem.Type].Add(pooledObject);
         return pooledObject;
     }
 
     public GameObject GetPooledObject(ObjectPoolTypeVariable type = null)
     {
-        foreach (GameObject pooledObject in pooledObjects)
+        if (type == null)
+            type = pooledObjects.Keys.First();
+
+        foreach (GameObject pooledObject in pooledObjects[type])
         {
-            if (!pooledObject.activeInHierarchy && (type == null || pooledObject.name == type.ToString()))
+            if (!pooledObject.activeInHierarchy)
                 return pooledObject;
         }
         

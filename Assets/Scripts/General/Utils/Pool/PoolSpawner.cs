@@ -124,7 +124,9 @@ public class PoolSpawner : MonoBehaviour
 
     ObjectPoolTypeVariable GetRandomObjectPoolTypeVariable()
     {
-        return CurrentDistribution.Draw();
+        var res = CurrentDistribution.Draw();
+        print(res);
+        return res;
     }
 
     Vector3 GetRandomPosition(GameObject surfaces)

@@ -30,7 +30,8 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
     List<T_ITEM> items;
     public List<T_ITEM> Items { get { return items; } }
 
-    int nbItems = 0;
+    bool firstCompute = false;
+    int nbItems;
     float combinedWeight;
 
     void OnItemsChange(bool addedItem = false)
@@ -38,6 +39,12 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
         // On Add Component
         if (items == null)
             return;
+
+        if (!firstCompute)
+        {
+            nbItems = items.Count;
+            firstCompute = true;
+        }
         
         // On Add Item
         if (!addedItem && items.Count > nbItems)
@@ -78,6 +85,7 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
         OnItemsChange();
     }
 
+    [Button]
     public T Draw()
     {
         if (items.Count == 0)
