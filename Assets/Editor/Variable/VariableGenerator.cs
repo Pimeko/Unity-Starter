@@ -36,14 +36,14 @@ public class VariableGenerator : EditorWindow
             if (type == "")
                 return;
 
-            string pascalName = pascalType + (isList ? "List" : "") + "Variable";
+            string pascalNameWithListVariable = pascalType + (isList ? "List" : "") + "Variable";
 
             string path = Application.dataPath + "/Scripts/General/ScriptableObjects/Variables/" +
-                pascalType + "/" + pascalName + (isList ? "List" : "") + ".cs";
+                pascalType + "/" + pascalNameWithListVariable + ".cs";
             string templatePath = Application.dataPath + "/Editor/Variable/" + (isList ? "List" : "") + "VariableTemplate.txt";
             
             GenerateFile(path, templatePath);
-            GenerateIcon(pascalName);
+            GenerateIcon(pascalNameWithListVariable);
             
             AssetDatabase.Refresh();
         }

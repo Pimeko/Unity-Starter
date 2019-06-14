@@ -18,6 +18,10 @@ public class DistributionItem<T>
     public float Percentage { get { return percentage; } set { if (value >= 0 && value <= 100) percentage = value; } }
 
     [SerializeField]
+    bool unique;
+    public bool Unique { get { return unique; } }
+
+    [SerializeField]
     T value;
     public T Value { get { return value; } set { this.value = value; } }
 }
@@ -31,8 +35,13 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
     public List<T_ITEM> Items { get { return items; } }
 
     bool firstCompute = false;
-    int nbItems;
+    int nbItems, lastIndex;
     float combinedWeight;
+
+    void Start()
+    {
+        lastIndex = -1;
+    }
 
     void OnItemsChange(bool addedItem = false)
     {
@@ -85,17 +94,32 @@ public abstract class Distribution<T, T_ITEM> : MonoBehaviour
         OnItemsChange();
     }
 
-    [Button]
     public T Draw()
     {
         if (items.Count == 0)
             throw new UnityException("Can't draw an item from an empty distribution!");
 
-        float random = Random.Range(0f, combinedWeight);
-        foreach (T_ITEM item in items)
+        ComputePercentages();
+
+        int nbIterationsMax = 40;
+        int nbIterations = 0;
+        bool isUnique = lastIndex == -1 || items[lastIndex].Unique;
+
+        while (nbIterations < nbIterationsMax)
         {
-            if (random <= item.CombinedWeight)
-                return item.Value;
+            int index = 0;
+            float random = Random.Range(0f, combinedWeight);
+            foreach (T_ITEM item in items)
+            {
+                if ((!isUnique || index != lastIndex) && random <= item.CombinedWeight)
+                {
+                    lastIndex = index;
+                    return item.Value;
+                }
+                index++;
+            }
+
+            nbIterations++;
         }
 
         throw new UnityException("Error while drawing an item.");
