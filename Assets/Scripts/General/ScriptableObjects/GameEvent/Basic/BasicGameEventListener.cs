@@ -73,6 +73,4 @@ public class BasicGameEventListener: GameEventListener<BasicGameEvent>, IBasicGa
         else
             Actions.AddListener(callback);
     }
-    
-    public void Print(string str) { print(str); }
 }
