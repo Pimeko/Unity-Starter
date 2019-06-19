@@ -12,7 +12,26 @@ public class SimpleRegisterableScriptableObject<T> : RegisterableScriptableObjec
     protected T value;
     [SerializeField, ReadOnly]
     protected T previousValue;
-    public T Value { get { return value; } set { previousValue = this.value; this.value = value; TriggerChange(); } }
+    [SerializeField]
+    bool triggerIfSameValue = false;
+    
+    public T Value
+    {
+        get
+        {
+            return value;
+        }
+        set
+        {
+            previousValue = this.value;
+            this.value = value;
+
+            bool equals = (previousValue != null && value != null) ? value.Equals(previousValue) : false;
+
+            if (!equals || triggerIfSameValue)
+                TriggerChange();
+        }
+    }
 	public T PreviousValue { get { return previousValue; } }
 	
     protected override void OnInit()

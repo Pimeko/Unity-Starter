@@ -13,13 +13,11 @@ public class PointerInteractable : MonoBehaviour, IPointerDownHandler, IPointerU
 
     public void OnPointerDown(PointerEventData eventData)
     {
-		if (onPointerDown != null)
-			onPointerDown.Invoke();
+		onPointerDown?.Invoke();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-		if (onPointerUp != null)
-			onPointerUp.Invoke();
+		onPointerUp?.Invoke();
     }
 }
