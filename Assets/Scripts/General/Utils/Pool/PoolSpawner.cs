@@ -146,7 +146,6 @@ public class PoolSpawner : MonoBehaviour
     
     public void InvokeOnSpawn(GameObject spawnedObject)
     {
-        if (OnSpawn != null)
-            OnSpawn(spawnedObject);
+        OnSpawn?.Invoke(spawnedObject);
     }
 }

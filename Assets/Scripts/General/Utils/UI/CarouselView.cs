@@ -36,8 +36,7 @@ public class CarouselView : MonoBehaviour
 
     void OnEnable()
     {
-        if (changedIndex != null)
-            changedIndex.Raise(currentIndex);
+        changedIndex?.Raise(currentIndex);
     }
 
     void Start()
@@ -192,7 +191,6 @@ public class CarouselView : MonoBehaviour
         }
 
         currentIndex = pageCount - (side == "right" ? 1 : 0);
-        if (changedIndex != null)
-            changedIndex.Raise(currentIndex);
+        changedIndex?.Raise(currentIndex);
     }
 }

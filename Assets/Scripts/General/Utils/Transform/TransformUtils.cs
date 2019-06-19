@@ -14,16 +14,12 @@ public class TransformUtils
         while (t < duration)
         {
             currentPosition = Mathf.Lerp(from, to, (t / duration));
-            if (onChange != null)
-                onChange(currentPosition);
+            onChange?.Invoke(currentPosition);
             t += Time.deltaTime;
             yield return null;
         }
-        if (onChange != null)
-            onChange(to);
-
-        if (onOver != null)
-            onOver();
+        onChange?.Invoke(to);
+        onOver?.Invoke();
     }
 
     public static IEnumerator MoveTo(Vector3 from, Vector3 to, float duration,
@@ -35,16 +31,12 @@ public class TransformUtils
         while (t < duration)
         {
             currentPosition = Vector3.Lerp(from, to, (t / duration));
-            if (onChange != null)
-                onChange(currentPosition);
+            onChange?.Invoke(currentPosition);
             t += Time.deltaTime;
             yield return null;
         }
-        if (onChange != null)
-            onChange(to);
-
-        if (onOver != null)
-            onOver();
+        onChange?.Invoke(to);
+        onOver?.Invoke();
     }
 
     public static float Distance(float a, float b)

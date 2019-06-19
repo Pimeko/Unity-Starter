@@ -16,8 +16,7 @@ public abstract class RegisterableScriptableObject : ScriptableObject, IRegister
 
     protected void TriggerChange()
     {
-        if (OnChange != null)
-            OnChange();
+        OnChange?.Invoke();
     }
 
     public void AddOnChangeCallback(Action callback)

@@ -56,10 +56,7 @@ public class BasicGameEventListener: GameEventListener<BasicGameEvent>, IBasicGa
 	{
 		yield return new WaitForSecondsRealtime(delayBeforeAction);
         foreach (UnityEvent action in actions)
-        {
-            if (action != null)
-                action.Invoke();
-        }
+            action?.Invoke();
 	}
 
     public void AddCallback(UnityAction callback)

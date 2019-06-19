@@ -15,15 +15,11 @@ public class AnimationCurveVariable : ScriptableObject
         float t = 0;
         while (t < duration)
         {
-            if (onChange != null)
-                onChange(curve.Evaluate(t / duration));
+            onChange?.Invoke(curve.Evaluate(t / duration));
             t += Time.deltaTime;
             yield return null;
         }
-        if (onChange != null)
-            onChange(curve.Evaluate(1));
-
-        if (onOver != null)
-            onOver();
+        onChange?.Invoke(curve.Evaluate(1));
+        onOver?.Invoke();
     }
 }

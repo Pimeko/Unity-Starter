@@ -18,7 +18,6 @@ public class NativeCallback : MonoBehaviour
     IEnumerator DoActionsAfterDuration()
     {
         yield return new WaitForSeconds(delayBeforeActions);
-        if (actions != null)
-            actions.Invoke();
+        actions?.Invoke();
     }
 }

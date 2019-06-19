@@ -51,10 +51,7 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
 	{
 		yield return new WaitForSecondsRealtime(delayBeforeAction);
         foreach (T_UNITY_EVENT action in actions)
-        {
-            if (action != null)
-                action.Invoke((T)value);
-        }
+            action?.Invoke((T)value);
 	}
 
     public void AddCallback(UnityAction<T> callback)
