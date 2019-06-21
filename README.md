@@ -10,6 +10,8 @@
 	- [Weighted Distribution](#distribution)
 	- [Encoder](#encoder)
 	- [Generator](#generator)
+	- [Input](#input)
+	- [Interaction](#interaction)
 
 # Events
 
@@ -27,12 +29,10 @@ A compilation of amazing tools of all kinds.
 > Location: General/Utils/Animation
 
 #### Random Speed
-> AnimationRandomSpeedController.cs
 
 Changes the speed parameter of an animator to a random value between the specified ranges.
 
 #### Over Receiver
-> AnimationOverControllerController.cs
 
 Contains an action to trigger when an animation is over. To place on the same level as an Animator Controller to easily subscribe to animation ending events.
 
@@ -40,13 +40,12 @@ Contains an action to trigger when an animation is over. To place on the same le
 > Location: General/Utils/Debug
 
 #### String Printer
-> StringPrinter.cs
 
 Prints a string. Useful to quick test stuff in the inspector. 
 *Example :* add an event listener and make it print a string to check if it is correctly called. 
 
 ## Weighted Distribution
-> Location: General/Utils/Distribution.cs
+> Location: General/Utils/Distribution
 
 It allows easy percentage distribution across different values, based on weights. Its generic implementation allows **any type** for the returned value.
 
@@ -115,7 +114,6 @@ Removes an item from the list at the specified index.
 > Location: General/Utils/Encoder
 
 #### Base64Encoder
-> Base64Encoder.cs
 
 Allows to encode and decode a file in base 64, without any class instance with static methods. Useful to encrypt data in an external file.
 
@@ -123,6 +121,29 @@ Allows to encode and decode a file in base 64, without any class instance with s
 > Location: General/Utils/Generator
 
 #### RandomGenerator
-> RandomGenerator.cs
 
 Instantiate a random prefab once, with position and rotation offsets, along with a percentage of spawn.
+
+## Input
+> Location: General/Utils/Input
+
+#### PointerInteractable
+
+Triggers an event when the user keeps on clicking and when he releases. It works with an interactable UI (UI Image for example).
+
+#### InputController
+
+Fills a registerable variable when the player touches the screen and moves the finger. It also works in the editor with the mouse and click.
+It can be useful to subscribe to input changes, react to drags etc. It must be binded to a PointerInteractable component.
+
+
+## Interaction
+> Location: General/Utils/Interaction
+
+#### OnCollisionController
+
+Serialized events in the inspector when the object detects tags-based collisions.
+
+#### OnTriggerController
+
+Serialized events in the inspector when the object detects tags-based triggers.
