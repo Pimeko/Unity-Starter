@@ -147,3 +147,21 @@ Serialized events in the inspector when the object detects tags-based collisions
 #### OnTriggerController
 
 Serialized events in the inspector when the object detects tags-based triggers.
+
+
+## Native callbacks
+> Location: General/Utils/NativeCallbacks
+
+A native callback is a unity event called on basic Monobehaviour's methods, such as Start, OnEnable and so on. It can be very useful when prototyping, to have fast access to method calls and such, or to set behaviours on object disabling etc.
+
+#### OnStartCallback
+
+Invoke the actions in the unityEvent when the gameobject starts.
+
+#### OnEnableCallback
+
+Invoke the actions in the unityEvent when the gameobject is enabled.
+
+#### OnDisableCallback
+
+Invoke the actions in the unityEvent when the gameobject is disabled.
