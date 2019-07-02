@@ -51,7 +51,6 @@ Prints a string. Useful to quick test stuff in the inspector.
 It allows easy percentage distribution across different values, based on weights. Its generic implementation allows **any type** for the returned value.
 
 ### How to use
-To begin, simply download the package and add it to your Unity Project.
 
 To create a new Distribution type, you must declare two empty classes :
 - the `distribution item`: must be serializable and inherit from DistributionItem\<**T**>
