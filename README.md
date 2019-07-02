@@ -149,6 +149,8 @@ Serialized events in the inspector when the object detects tags-based collisions
 
 Serialized events in the inspector when the object detects tags-based triggers.
 
+Example : This will activate an animation when the collider triggers a gameobject with a "Player" tag.
+![OnTrigger](https://i.imgur.com/IREhGQf.png)
 
 ## Native callbacks
 > Location: General/Utils/NativeCallbacks
