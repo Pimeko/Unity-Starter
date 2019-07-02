@@ -7,12 +7,12 @@
 - [Tools](#tools)
 	- [Animation](#animation)
 	- [Debug](#debug)
-	- [Weighted Distribution](#weighted)
+	- [Weighted Distribution](#weighted-distribution)
 	- [Encoder](#encoder)
 	- [Generator](#generator)
 	- [Input](#input)
 	- [Interaction](#interaction)
-	- [Native callbacks](#native)
+	- [Native callbacks](#native-callbacks)
 
 # Events
 
