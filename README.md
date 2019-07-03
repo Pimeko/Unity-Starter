@@ -15,6 +15,7 @@
 	- [Input](#input)
 	- [Interaction](#interaction)
 	- [Native callbacks](#native-callbacks)
+	- [Save Load system](#save-load-system)
 
 # Events
 
@@ -170,7 +171,7 @@ Invoke the actions in the unityEvent when the gameobject is enabled.
 
 Invoke the actions in the unityEvent when the gameobject is disabled.
 
-## Player data
+## Save Load system
 > Location: General/Utils/PlayerData
 
 Custom and secure **save/load** file system. It creates a link between the data from an external file and their associated [Registerable Variables](#variables).
@@ -235,6 +236,26 @@ You can then add the [game events](#events) that will raise the Save or Load. Yo
 
 This will save the data to the external file when the event finish is raised or when the variable NbCoins changes.
 
-*Note :*
+*Notes :*
 - The "JSON_ONLY" parameter must be used for debug purpose only. This will ensure the data is not encrypted, in order to be **human-readable**.
 - The data is saved in the **folder** "PersistentDataPath/data" in an extension-less file.
+
+### Editor tools
+Under the Custom/PlayerData tab, there are tools to have an easier data management. 
+
+#### Reset
+Simply removes the file containing all the datas.
+
+#### Generate variable
+
+Allows you to generate a player data variable easily, without any code.
+
+![](https://i.imgur.com/LKcOdBQ.png)
+
+All the following fields are mandatory:
+ - Name : the name of the variable in the file
+ - Serialized type : the type of the data. It can be a custom class, but it must be serializable (think of using the *[System.Serializable]* attribute on the class)
+ - Scriptable Object Type : the type of the registerable variable that will contain the data
+ - Default value : the litteral string will be copied in the generated class, so ensure it is correctly typed
+ 
+ This class is then generated in  `Assets/Scripts/General/Utils/PlayerData/Variables/PlayerData`. You can then move the safe anywhere safely.
