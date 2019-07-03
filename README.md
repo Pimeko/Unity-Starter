@@ -230,7 +230,9 @@ Once all your datas are created, you must use an instance of a controller to det
 You can then add the [game events](#events) that will raise the Save or Load. You can also specify to call the Save method when specific registerable variables change.
 
 *Example :* 
+
 ![](https://i.imgur.com/C1wfxWC.png)
+
 This will save the data to the external file when the event finish is raised or when the variable NbCoins changes.
 
 *Note :*
