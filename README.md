@@ -1,4 +1,6 @@
 
+
+
 # Unity-Starter
 > Basic folders and utilities for Unity projects
 
@@ -48,7 +50,7 @@ Prints a string. Useful to quick test stuff in the inspector.
 ## Weighted Distribution
 > Location: General/Utils/Distribution
 
-It allows easy percentage distribution across different values, based on weights. Its generic implementation allows **any type** for the returned value.
+It allows easy **percentage distribution** across different values, based on **weights**. Its generic implementation allows **any type** for the returned value.
 
 ### How to use
 
@@ -115,7 +117,7 @@ Removes an item from the list at the specified index.
 
 #### Base64Encoder
 
-Allows to encode and decode a file in base 64, without any class instance with static methods. Useful to encrypt data in an external file.
+Allows to **encode** and **decode** a file in base 64, without any class instance with static methods. Useful to encrypt data in an external file.
 
 ## Generator
 > Location: General/Utils/Generator
@@ -154,7 +156,7 @@ Example : This will activate an animation when the collider triggers a gameobjec
 ## Native callbacks
 > Location: General/Utils/NativeCallbacks
 
-A native callback is a unity event called on basic Monobehaviour's methods, such as Start, OnEnable and so on. It can be very useful when prototyping, to have fast access to method calls and such, or to set behaviours on object disabling etc.
+A native callback is a **unity event** called on basic Monobehaviour's methods, such as **Start**, **OnEnable** and so on. It can be very useful when prototyping, to have fast access to method calls and such, or to set behaviours on object disabling etc.
 
 #### OnStartCallback
 
@@ -167,3 +169,70 @@ Invoke the actions in the unityEvent when the gameobject is enabled.
 #### OnDisableCallback
 
 Invoke the actions in the unityEvent when the gameobject is disabled.
+
+## Player data
+> Location: General/Utils/PlayerData
+
+Custom and secure **save/load** file system. It creates a link between the data from an external file and their associated [Registerable Variables](#variables).
+
+### Datas
+Let's say you want to save the number of coins earned by the player. 
+- On load, the data is taken from an external file and is put in an IntVariable, i.e. a scriptable object that only contains an int value. 
+- On save, the data is taken from the IntVariable and is written to the file.
+
+To create such a data, you must create a class that inherits from PlayerDataVariable\<T>, where T is the type of the Registerable variable. You must also add the variable that will be written to the external file to the partial class PlayerData. Then, you only need to override the Init, Save and Load methods to handle the behavior on these events.
+
+Once this is done, you only need to add this script to any gameobject and drag the associated registerable variable.
+
+The data is a **JSON** formatted file, which is then encoded in **base 64**.
+
+*Example :*
+The following code will allow the save/load of the player's best score.
+
+```c#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+// "Override" the PlayerData class to add the property 
+public partial class PlayerData
+{
+    public int bestScore;
+}
+
+public class PlayerDataBestScore : PlayerDataVariable<IntVariable>
+{
+    // Set the initial value to 0
+    public override void Init(ref PlayerData playerData)
+    {
+        playerData.bestScore= 0;
+    }
+
+    // Gets the data from the scriptable object 
+    public override void Save(ref PlayerData playerData)
+    {
+        playerData.bestScore= variable.Value;
+    }
+
+    // Saves the data to the scriptable object
+    public override void Load(PlayerData playerData)
+    {
+        variable.Value = playerData.bestScore;
+    }
+}
+```
+
+In the inspector, simply drag the scriptable objects that will contain the data :
+![](https://i.imgur.com/e4ArXrT.png)
+
+### Save/Load triggers
+Once all your datas are created, you must use an instance of a controller to detect when to Save and Load. For that, you simply need to add the PlayerDataController script to any gameobject. 
+You can then add the [game events](#events) that will raise the Save or Load. You can also specify to call the Save method when specific registerable variables change.
+
+*Example :* 
+![](https://i.imgur.com/C1wfxWC.png)
+This will save the data to the external file when the event finish is raised or when the variable NbCoins changes.
+
+*Note :*
+- The "JSON_ONLY" parameter must be used for debug purpose only. This will ensure the data is not encrypted, in order to be **human-readable**.
+- The data is saved in the **folder** "PersistentDataPath/data" in an extension-less file.
