@@ -9,14 +9,14 @@ public static class TransformExtensions
         return EqualityComparer<T>.Default.Equals(obj,default(T));
     }
 
-    public static T FindFirstComponentInParent<T>(this Transform t)
+    public static T GetComponentOrInParent<T>(this Transform t)
     {
         if (IsNull(t))
             return default(T);
         T component = t.GetComponent<T>();
         if (!IsNull(component))
             return component;
-        return FindFirstComponentInParent<T>(t.parent);
+        return GetComponentOrInParent<T>(t.parent);
     }
     
     public static Transform GetTopLevelParent(this Transform t)
@@ -44,5 +44,18 @@ public static class TransformExtensions
                 return result;
         }
         return null;
+    }
+
+    public static IEnumerator MoveTo(this Transform t, Vector3 to, float duration)
+    {
+        return TransformUtils.MoveTo(t.position, to, duration, (newPosition) => t.position = newPosition);
+    }
+
+    public static T CachedComponent<T>(this Transform t, ref T backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponent<T>();
+        return backingField;
     }
 }

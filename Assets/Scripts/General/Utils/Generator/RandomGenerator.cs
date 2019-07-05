@@ -12,13 +12,15 @@ public class RandomGenerator : MonoBehaviour
     Vector3 ranges;
     [SerializeField]
     Vector3 rotationBounds;
+    [SerializeField]
+    Vector3 scaleOffsets = Vector3.zero;
 
     void Start()
     {
         if (Random.Range(0f, 1f) > percentage)
             return;
 
-        GameObject o = Instantiate(prefabs[Random.Range(0, prefabs.Count)]);
+        GameObject o = Instantiate(prefabs.GetRandomItem());
         o.transform.SetParent(transform);
         o.transform.localPosition = Vector3.zero;
         o.transform.localPosition += new Vector3(
@@ -31,11 +33,22 @@ public class RandomGenerator : MonoBehaviour
             GetRandom(rotationBounds.y),
             GetRandom(rotationBounds.z)
         ));
+        o.transform.localScale = new Vector3(
+            GetRandomOffset(scaleOffsets.x),
+            GetRandomOffset(scaleOffsets.y),
+            GetRandomOffset(scaleOffsets.z)
+        );
     }
 
     float GetRandom(float x)
     {
         float absX = Mathf.Abs(x);
         return Random.Range(-absX, absX);
+    }
+
+    float GetRandomOffset(float offset)
+    {
+        float absOffset = Mathf.Abs(offset);
+        return Random.Range(1 - absOffset, 1 + absOffset);
     }
 }
