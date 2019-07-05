@@ -48,13 +48,13 @@ public class BasicGameEventListener: GameEventListener<BasicGameEvent>, IBasicGa
 
     IEnumerator InvokeAfterDelay(UnityEvent actions)
 	{
-        yield return new WaitForSecondsRealtime(delayBeforeAction);
+        yield return waitForDelay;
         actions.Invoke();
 	}
 
     IEnumerator InvokeAfterDelay(List<UnityEvent> actions)
 	{
-		yield return new WaitForSecondsRealtime(delayBeforeAction);
+		yield return waitForDelay;
         foreach (UnityEvent action in actions)
             action?.Invoke();
 	}

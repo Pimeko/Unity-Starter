@@ -9,6 +9,12 @@ public class NativeCallback : MonoBehaviour
     UnityEvent actions;
     [SerializeField, Range(0, 50)]
     float delayBeforeActions;
+    WaitForSeconds waitForDelay;
+
+    private void Awake()
+    {
+        waitForDelay = new WaitForSeconds(delayBeforeActions);
+    }
 
     protected void DoActions()
     {
@@ -17,7 +23,7 @@ public class NativeCallback : MonoBehaviour
     
     IEnumerator DoActionsAfterDuration()
     {
-        yield return new WaitForSeconds(delayBeforeActions);
+        yield return waitForDelay;
         actions?.Invoke();
     }
 }

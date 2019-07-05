@@ -43,13 +43,13 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
 
     IEnumerator InvokeAfterDelay(T_UNITY_EVENT actions, object value)
 	{
-        yield return new WaitForSecondsRealtime(delayBeforeAction);
+        yield return waitForDelay;
         actions.Invoke((T)value);
 	}
 
     IEnumerator InvokeAfterDelay(List<T_UNITY_EVENT> actions, object value)
 	{
-		yield return new WaitForSecondsRealtime(delayBeforeAction);
+		yield return waitForDelay;
         foreach (T_UNITY_EVENT action in actions)
             action?.Invoke((T)value);
 	}

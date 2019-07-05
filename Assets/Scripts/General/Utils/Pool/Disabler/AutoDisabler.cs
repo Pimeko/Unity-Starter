@@ -8,9 +8,11 @@ public class AutoDisabler : MonoBehaviour
     float duration;
 
     Coroutine currentCoroutine;
+    WaitForSecondsRealtime waitForDelay;
 
     void OnEnable()
     {
+        waitForDelay = new WaitForSecondsRealtime(duration);
         currentCoroutine = StartCoroutine(DoActionAfterDuration());
     }
 
@@ -22,7 +24,7 @@ public class AutoDisabler : MonoBehaviour
 
     IEnumerator DoActionAfterDuration()
     {
-        yield return new WaitForSecondsRealtime(duration);
+        yield return waitForDelay;
         gameObject.SetActive(false);
 
         currentCoroutine = null;

@@ -12,10 +12,13 @@ public abstract class GameEventListener<T_GAME_EVENT> : MonoBehaviour, IGameEven
     [SerializeField]
     protected float delayBeforeAction;
 
+    protected WaitForSecondsRealtime waitForDelay;
+
     void OnEnable()
     {
         if (gameEvents == null)
             gameEvents = new List<T_GAME_EVENT>();
+        waitForDelay = new WaitForSecondsRealtime(delayBeforeAction);
         Subscribe();
     }
     
