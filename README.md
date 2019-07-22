@@ -73,9 +73,11 @@ public class PlayerController : MonoBehaviour
 ```
 
 Then in the inspector:
+
 ![](https://i.imgur.com/x9O4PA6.png)
 
 ![](https://i.imgur.com/Gmbqhwv.png)
+
 
 When the player jumps, the player controller script raises the event. Each concerned object then reacts accordingly through the inspector. The Sound Manager plays its sound, the concerned text updates its value, and all the behaviours are completely independant.
 
@@ -91,7 +93,9 @@ Working exactly as the basic game events, you have the possibility to create pay
 Let's say the player can change his nickname. When he validates his new name, you may want to raise an event with the new pseudo. Each payload type must have its own Event and Listener classes. But no worries: a custom inspector has been made to make your life easy!
 
 Open Custom > Event > Payloaded > Generate and write the payload's type, as follow:
+
 ![](https://i.imgur.com/HL52xas.png)
+
 This will generate two scripts : GameEventString and GameEventStringListener. You can then create the game event "ChangedPseudo" and add the listener to the concerned objects.
 
 *Example:*
@@ -108,7 +112,9 @@ public class PlayerController : MonoBehaviour
 	}
 ```
 Then, in the inspector, using the dynamic parameters, you can pass in the new pseudo to a class method that accepts a string as a parameter.
+
 ![](https://i.imgur.com/Vhddqcp.png)
+
 When the player changes his pseudo, it will print the new string.
 
 ##### Notes
