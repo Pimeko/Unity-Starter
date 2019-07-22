@@ -18,4 +18,10 @@ public class PlayerDataTools : Editor
         else
             Debug.Log("No data found.");
     }
+    
+    [MenuItem("Custom/PlayerData/Show in explorer")]
+    static void ShowInExplorer()
+    {
+         Application.OpenURL("file://" + Path.Combine(Application.persistentDataPath));
+    }
 }
