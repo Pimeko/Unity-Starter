@@ -164,14 +164,14 @@ Draws a point in 3D space in the scene view.
 ```c#
 DebugUtils.DrawPoint(Vector3.Zero);
 ```
-![DrawPoint](https://i.imgur.com/SBvzlma.png =500x400)
+![DrawPoint](https://i.imgur.com/SBvzlma.png)
 
 ## Float
 > Location: General/Utils/Float
 
 ### Float radius
 Allows to adjust a float value through the scene view's gizmos.
-![enter image description here](https://i.imgur.com/l2W9hzW.png =500x400)
+![enter image description here](https://i.imgur.com/l2W9hzW.png)
 ## Distribution
 > Location: General/Utils/Distribution
 
