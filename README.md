@@ -37,7 +37,7 @@ void Jump()
 {
 	// Make the player jump
 	SoundSingleton.Instance.PlaySound();
-	UISingleton.Instance.PlaySound();
+	UISingleton.Instance.DisplayNiceJump();
 }
 ```
 This way of doing implies a deep link between the object that did an action and the ones that react to it. Based on the **Single Responsibility Pattern**, all the components should only do one single thing, and should have only one reason to fail. 
