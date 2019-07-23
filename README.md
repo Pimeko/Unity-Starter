@@ -2,6 +2,7 @@
 
 
 
+
 # Unity-Starter
 > Basic folders and utilities for Unity projects
 
@@ -84,13 +85,15 @@ When the player jumps, the player controller script raises the event. Each conce
 ##### Notes
 - You have the possibility to add multiple game events to subscribe to at once
 - You can delay the execution of the actions thanks to the "delay before action" field
-- Ordered allows to have a real order of execution for the actions. Indeed, the UnityEvent serialized order is not reliable, and it may be useful in some cases
+- The "Ordered" property allows to have a real order of execution for the actions. Indeed, the UnityEvent serialized order is not reliable, and it may be useful in some cases
 
 
-#### Payloaded game events
-Working exactly as the basic game events, you have the possibility to create payloaded game events, i.e. adding an object to an event.
+#### Game events with parameters
+Working exactly as the basic game events, you have the possibility to create payloaded game events, i.e. sending an object of any type, along with the event.
 
-Let's say the player can change his nickname. When he validates his new name, you may want to raise an event with the new pseudo. Each payload type must have its own Event and Listener classes. But no worries: a custom inspector has been made to make your life easy!
+Let's say the player can change his nickname. When he validates his new name, you may want to raise an event with the new pseudo. Each listener might then react differently based on the pseudo chosen, display it and so on.
+
+Each payload type must have its own Event and Listener classes. But no worries: a custom inspector has been made to make your life easy!
 
 Open Custom > Event > Payloaded > Generate and write the payload's type, as follow:
 
@@ -122,8 +125,85 @@ When the player changes his pseudo, it will print the new string.
 
 # Variables
 
-TODO
+Let's say the player has an HP value stored in a variable that you want to display on the User Interface.  This value often changes as the player often takes damages.
 
+One way to do so is to have a Singleton that references the UI. Then in the player script, you might do something like :
+
+```c#
+int hp;
+
+void Start()
+{
+	hp = 100;
+}
+
+void OnTakeDamage()
+{
+	hp -= 10;
+	
+	UISingleton.Instance.UpdateHpText(hp);
+}
+```
+
+This implies a deep connection between the player and the UI, along with the necessity of having a singleton (or at least static references).
+
+One elegant way to solve this problem is using registerable variables. Each variable is a scriptable object. Anyone can subscribe to the variable changes and react accordingly, with no correlation whatsoever other than the scriptable object.
+
+In the previous example, simply create an IntVariable named "PlayerHP" in the project hierarchy. In the player script, reference this variable and modify it like so :
+
+```c#
+[SerializeField]
+IntVariable playerHP;
+
+void Start()
+{
+	playerHP.Value = 100;
+}
+
+void OnTakeDamage()
+{
+	playerHP.Value -= 10;
+}
+```
+
+Then on the script that will update the text on screen, you just need to subscribe to the variable changes.
+
+ ```c#
+[SerializeField]
+IntVariable playerHP;
+
+Text uiText;
+
+void Start()
+{
+	playerHP.AddOnChangeCallback(OnTakeDamage);
+}
+
+void OnTakeDamage()
+{
+	uiText.text = playerHp.Value.ToString();
+}
+
+void OnDestroy()
+{
+	playerHP.RemoveOnChangeCallback(OnTakeDamage);
+}
+```
+
+The data is completely agnostic of any logic, there is no deep link between controllers : only modifiers and listeners are used. Like so, each data that must be shared with other unlinked scripts can be stored in a registerable variable. Scriptable objects being assets, you can drag them in the inspector directly before any build, and ensure your data is initialized and ready to be used at runtime.
+
+Each type of variable must be created. To create one, simply use the menu tool in Custom > Variable > Generate. You have the option to specify if the variable is a list. This option allows to have *Add* and *Remove* methods that trigger changes.
+
+##### Notes
+- By default, the data will not trigger any change if the new value is the same as the one before. To force this behaviour, you must enable the "Check if same value" property on the scriptable object
+- Don't forget to unsubscribe to changes on the gameobject destroy callback, to avoid any error
+- It may be interesting to use Game Events with parameters instead of registerable variables in some cases. Simply study your best option, but both options are usually valid.
+
+
+#### On Variable Change
+> Location: General/ScriptableObjects/Variables/_Definitions/Utils
+
+A basic inspector script to call serialized actions when a variable changes.
 # Tools
 
 A compilation of amazing tools of all kinds.
