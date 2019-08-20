@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public interface IGameEventListener { }
@@ -9,7 +10,13 @@ public abstract class GameEventListener<T_GAME_EVENT> : MonoBehaviour, IGameEven
 {
     [SerializeField]
     protected List<T_GAME_EVENT> gameEvents;
+    
     [SerializeField]
+    bool useFloatVariable;
+
+    [ShowIf("useFloatVariable"), SerializeField]
+    protected FloatVariable delayVariable;
+    [HideIf("useFloatVariable"), SerializeField]
     protected float delayBeforeAction;
 
     protected WaitForSecondsRealtime waitForDelay;
@@ -18,7 +25,7 @@ public abstract class GameEventListener<T_GAME_EVENT> : MonoBehaviour, IGameEven
     {
         if (gameEvents == null)
             gameEvents = new List<T_GAME_EVENT>();
-        waitForDelay = new WaitForSecondsRealtime(delayBeforeAction);
+        waitForDelay = new WaitForSecondsRealtime(useFloatVariable ? delayVariable.Value : delayBeforeAction);
         Subscribe();
     }
     

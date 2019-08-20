@@ -46,11 +46,12 @@ public static class TransformExtensions
         return null;
     }
 
-    public static IEnumerator MoveTo(this Transform t, Vector3 to, float duration)
-    {
-        return TransformUtils.MoveTo(t.position, to, duration, (newPosition) => t.position = newPosition);
-    }
-
+    /*
+        Usage example:
+        
+        Rigidbody rb;
+        Rigidbody Rb => transform.CachedComponent(ref rb);
+     */
     public static T CachedComponent<T>(this Transform t, ref T backingField)
         where T : Component
     {

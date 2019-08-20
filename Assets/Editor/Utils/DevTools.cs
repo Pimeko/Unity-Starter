@@ -42,4 +42,52 @@ public class DevTools : Editor
     {
         EditorApplication.ExecuteMenuItem("Assets/Create/Folder");
     }
+
+    [MenuItem("Custom/Shortcuts/Create container child &q")]
+    private static void CreateContainerChild()
+    {
+        GameObject container = new GameObject("Container");
+        container.transform.SetParent(Selection.activeGameObject.transform);
+        container.transform.localPosition = Vector3.zero;
+    }
+
+    [MenuItem("Custom/Shortcuts/Create container and put all as children %q")]
+    private static void CreateContainerAndPutAllAsChildren()
+    {
+        List<Transform> children = new List<Transform>();
+        foreach (Transform child in Selection.activeGameObject.transform)
+            children.Add(child);
+
+        GameObject container = new GameObject("Container");
+        container.transform.SetParent(Selection.activeGameObject.transform);
+        container.transform.localPosition = Vector3.zero;
+
+        foreach (Transform child in children)
+            child.SetParent(container.transform);
+    }
+
+    [MenuItem("Custom/Shortcuts/Reload current scene &r")]
+    private static void ReloadCurrentScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private static double startTime;
+    [MenuItem("Custom/Shortcuts/Restart &t")]
+    private static void Restart()
+    {
+        startTime = EditorApplication.timeSinceStartup;
+        EditorApplication.isPlaying = false;
+
+        EditorApplication.update += RestartUpdate;
+    }
+
+    private static void RestartUpdate()
+    {
+        if (EditorApplication.timeSinceStartup - startTime > 1)
+        {
+            EditorApplication.isPlaying = true;
+            EditorApplication.update -= RestartUpdate;
+        }
+    }
 }

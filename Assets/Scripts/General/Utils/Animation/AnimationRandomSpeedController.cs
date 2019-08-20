@@ -11,14 +11,19 @@ public class AnimationRandomSpeedController : MonoBehaviour
 
     Animator animator;
 
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
+    }
+
+    void OnEnable()
+    {
         SetRandomSpeed();
     }
 
     void SetRandomSpeed()
     {
-        animator.SetFloat("speed", Random.Range(range.x, range.y));
+        if (animator.enabled)
+            animator.SetFloat("speed", Random.Range(range.x, range.y));
     }
 }

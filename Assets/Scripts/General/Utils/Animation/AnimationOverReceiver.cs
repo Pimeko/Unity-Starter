@@ -6,10 +6,14 @@ using UnityEngine.Events;
 
 public class AnimationOverReceiver : MonoBehaviour
 {
+    [SerializeField]
+    UnityEvent action;
+
     public Action OnOver;
     
     public void InvokeOver()
     {
-        OnOver();
+        action?.Invoke();
+        OnOver?.Invoke();
     }
 }
