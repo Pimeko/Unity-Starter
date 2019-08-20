@@ -26,18 +26,6 @@ public class StateCallback<T>
     public float DelayBeforeLeave { get { return delayBeforeLeave; } }
 }
 
-class DelayedUnityEvent
-{
-    public UnityEvent callback;
-    public float delay;
-
-    public DelayedUnityEvent(UnityEvent callback, float delay)
-    {
-        this.callback = callback;
-        this.delay = delay;
-    }
-}
-
 class EnterLeaveCallbacks
 {
     public List<DelayedUnityEvent> onEnterCallbacks, onLeaveCallbacks;
