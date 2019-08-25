@@ -38,9 +38,9 @@ public class VariableGenerator : EditorWindow
 
             string pascalNameWithListVariable = pascalType + (isList ? "List" : "") + "Variable";
 
-            string path = Application.dataPath + "/Scripts/General/ScriptableObjects/Variables/" +
+            string path = Application.dataPath + "/Scripts/ScriptableObjects/Variables/" +
                 pascalType + "/" + pascalNameWithListVariable + ".cs";
-            string templatePath = Application.dataPath + "/Editor/Variable/" + (isList ? "List" : "") + "VariableTemplate.txt";
+            string templatePath = Application.dataPath + "/Plugins/Unity-Starter/Assets/Editor/Variable/" + (isList ? "List" : "") + "VariableTemplate.txt";
             
             GenerateFile(path, templatePath);
             GenerateIcon(pascalNameWithListVariable);

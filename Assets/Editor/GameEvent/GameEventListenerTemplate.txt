@@ -1,1 +1,3 @@
+using UnityEngine;
+
 public class GameEvent[PASCAL]Listener : PayloadedGameEventListener<[TYPE], GameEvent[PASCAL], UnityEvent[PASCAL]> {}

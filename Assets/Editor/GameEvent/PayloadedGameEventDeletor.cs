@@ -33,7 +33,7 @@ public class PayloadedGameEventDeletor : EditorWindow
             if (type == "")
                 return;
             
-            string basicPath = Application.dataPath + "/Scripts/General/ScriptableObjects/GameEvent/Payloaded/" + pascalType + "/";
+            string basicPath = Application.dataPath + "/Scripts/ScriptableObjects/GameEvent/Payloaded/" + pascalType + "/";
             string gameEventPath = basicPath + "GameEvent" + pascalType + ".cs";
             string gameEventListenerPath = basicPath + "GameEvent" + pascalType + "Listener.cs";
             string unityEventPath = Application.dataPath + "/Scripts/General/UnityEvents/UnityEvent" + pascalType + ".cs";
