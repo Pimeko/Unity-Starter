@@ -47,4 +47,9 @@ public class InputController : MonoBehaviour
         if (playerInput.IsTouching && Vector3.Distance(GetCurrentTouchPosition(), playerInput.TouchPosition) > 0)
             playerInput.TouchPosition = GetCurrentTouchPosition();
     }
+
+    void OnDisable()
+    {
+        playerInput.IsTouching = false;
+    }
 }
