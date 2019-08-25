@@ -39,6 +39,7 @@ public class SimpleRegisterableScriptableObject<T> : RegisterableScriptableObjec
     }
     public T PreviousValue { get { return previousValue; } }
     
+    [Button]
     public void UpdateValue(T newValue)
     {
         Value = newValue;       
