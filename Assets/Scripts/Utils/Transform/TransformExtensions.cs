@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class TransformExtensions
@@ -59,4 +60,15 @@ public static class TransformExtensions
             backingField = t.GetComponent<T>();
         return backingField;
     }
+    
+
+    public static T[] GetComponentsInChildrenOnly<T>(this Transform t, bool includeInactive = false)
+    {
+        List<T> result = t.GetComponentsInChildren<T>(includeInactive).ToList();
+        T parentComponent = t.GetComponent<T>();
+        if (!IsNull(parentComponent))
+            result.Remove(parentComponent);
+        return result.ToArray();
+    }
+    
 }
