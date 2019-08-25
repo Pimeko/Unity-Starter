@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class AnimationOverReceiver : MonoBehaviour
 {
     [SerializeField]
-    UnityEvent action;
+    DelayedUnityEvent action;
 
     public Action OnOver;
     

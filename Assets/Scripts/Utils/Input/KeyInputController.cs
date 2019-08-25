@@ -21,8 +21,8 @@ public class KeyEvent
     KeyInputType type;
     public KeyInputType Type { get { return type; } }
     [SerializeField]
-    UnityEvent actions;
-    public UnityEvent Actions { get { return actions; } }
+    DelayedUnityEvent actions;
+    public DelayedUnityEvent Actions { get { return actions; } }
 }
 
 public class KeyInputController : MonoBehaviour

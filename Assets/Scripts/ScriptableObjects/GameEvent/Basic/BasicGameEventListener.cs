@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -26,7 +26,7 @@ public class BasicGameEventListener: GameEventListener<BasicGameEvent>, IBasicGa
         }
     }
     
-    [ShowIf("ordered"), SerializeField, ReorderableList]
+    [ShowIf("ordered"), SerializeField, NaughtyAttributes.ReorderableList]
     List<UnityEvent> orderedActions;
     List<UnityEvent> OrderedActions
     {

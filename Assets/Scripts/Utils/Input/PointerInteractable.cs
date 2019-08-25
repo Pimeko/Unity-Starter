@@ -6,18 +6,18 @@ using UnityEngine.EventSystems;
 
 public class PointerInteractable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-	[SerializeField]
-	UnityEvent onPointerDown;
-	[SerializeField]
-	UnityEvent onPointerUp;
+    [SerializeField]
+    UnityEvent onPointerDown;
+    [SerializeField]
+    UnityEvent onPointerUp;
 
     public void OnPointerDown(PointerEventData eventData)
     {
-		onPointerDown?.Invoke();
+        onPointerDown?.Invoke();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-		onPointerUp?.Invoke();
+        onPointerUp?.Invoke();
     }
 }

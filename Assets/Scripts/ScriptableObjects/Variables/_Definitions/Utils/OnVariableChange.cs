@@ -8,7 +8,7 @@ public class OnVariableChange : MonoBehaviour
     [SerializeField]
     RegisterableScriptableObject variable;
     [SerializeField]
-    UnityEvent callback;
+    DelayedUnityEvent callback;
 
     void Start()
     {

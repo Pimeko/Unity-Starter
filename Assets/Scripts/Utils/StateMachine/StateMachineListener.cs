@@ -77,14 +77,14 @@ public class StateMachineListener<T, T_STATE_MACHINE, T_STATE_CALLBACK> : MonoBe
         if (innerStateCallbacks.ContainsKey(stateMachine.CurrentState))
         {
             foreach (var delayedEvent in innerStateCallbacks[stateMachine.CurrentState].onLeaveCallbacks)
-                StartCoroutine(CoroutineUtils.DoAfterDelay(delayedEvent.callback.Invoke, delayedEvent.delay));
+                StartCoroutine(CoroutineUtils.DoAfterDelay(delayedEvent.callback.Invoke, delayedEvent.GetDelay()));
         }
 
         // Call onEnter
         if (innerStateCallbacks.ContainsKey(newState))
         {
             foreach (var delayedEvent in innerStateCallbacks[newState].onEnterCallbacks)
-                StartCoroutine(CoroutineUtils.DoAfterDelay(delayedEvent.callback.Invoke, delayedEvent.delay));
+                StartCoroutine(CoroutineUtils.DoAfterDelay(delayedEvent.callback.Invoke, delayedEvent.GetDelay()));
         }
     }
 

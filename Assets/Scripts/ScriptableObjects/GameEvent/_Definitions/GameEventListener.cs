@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
+// using NaughtyAttributes;
 using UnityEngine;
 
 public interface IGameEventListener { }

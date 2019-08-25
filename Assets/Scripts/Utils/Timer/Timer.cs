@@ -17,7 +17,7 @@ public class Timer : MonoBehaviour
     float deltaMax;
 
     [SerializeField]
-    UnityEvent action;
+    DelayedUnityEvent action;
 
     void OnEnable()
     {
