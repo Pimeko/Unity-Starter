@@ -43,7 +43,7 @@ public class PlayerDataVariableGenerator : EditorWindow
                 return;
 
             string filePath = Application.dataPath + "/Scripts/General/Utils/PlayerData/Variables/PlayerData" + variableNamePascal + ".cs";
-            string templatePath = Application.dataPath + "/Editor/PlayerData/PlayerDataVariableTemplate.txt";
+            string templatePath = Application.dataPath + "/Unity-Starter/Assets/Editor/PlayerData/PlayerDataVariableTemplate.txt";
             GenerateFile(filePath, templatePath);
 
             ScriptableObject so = ScriptableObject.CreateInstance(soType);
