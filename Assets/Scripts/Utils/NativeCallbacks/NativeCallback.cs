@@ -6,24 +6,10 @@ using UnityEngine.Events;
 public class NativeCallback : MonoBehaviour
 {
     [SerializeField]
-    UnityEvent actions;
-    [SerializeField, Range(0, 50)]
-    float delayBeforeActions;
-    WaitForSeconds waitForDelay;
-
-    private void Awake()
-    {
-        waitForDelay = new WaitForSeconds(delayBeforeActions);
-    }
+    DelayedUnityEvent actions;
 
     protected void DoActions()
     {
-        StartCoroutine(DoActionsAfterDuration());
-    }
-    
-    IEnumerator DoActionsAfterDuration()
-    {
-        yield return waitForDelay;
         actions?.Invoke();
     }
 }

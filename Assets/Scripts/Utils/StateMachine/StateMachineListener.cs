@@ -13,14 +13,14 @@ public class StateCallback<T>
     List<T> states;
     public List<T> States { get { return states; } }
     [SerializeField]
-    UnityEvent onEnterCallback;
-    public UnityEvent OnEnterCallback { get { return onEnterCallback; } }
+    BetterEvent onEnterCallback;
+    public BetterEvent OnEnterCallback { get { return onEnterCallback; } }
     [SerializeField]
     float delayBeforeEnter;
     public float DelayBeforeEnter { get { return delayBeforeEnter; } }
     [SerializeField]
-    UnityEvent onLeaveCallback;
-    public UnityEvent OnLeaveCallback { get { return onLeaveCallback; } }
+    BetterEvent onLeaveCallback;
+    public BetterEvent OnLeaveCallback { get { return onLeaveCallback; } }
     [SerializeField]
     float delayBeforeLeave;
     public float DelayBeforeLeave { get { return delayBeforeLeave; } }
@@ -77,14 +77,14 @@ public class StateMachineListener<T, T_STATE_MACHINE, T_STATE_CALLBACK> : MonoBe
         if (innerStateCallbacks.ContainsKey(stateMachine.CurrentState))
         {
             foreach (var delayedEvent in innerStateCallbacks[stateMachine.CurrentState].onLeaveCallbacks)
-                StartCoroutine(CoroutineUtils.DoAfterDelay(() => { delayedEvent.callback?.Invoke(); }, delayedEvent.delay));
+                StartCoroutine(CoroutineUtils.DoAfterDelay(delayedEvent.callback.Invoke, delayedEvent.delay));
         }
 
         // Call onEnter
         if (innerStateCallbacks.ContainsKey(newState))
         {
             foreach (var delayedEvent in innerStateCallbacks[newState].onEnterCallbacks)
-                StartCoroutine(CoroutineUtils.DoAfterDelay(() => { delayedEvent.callback?.Invoke(); }, delayedEvent.delay));
+                StartCoroutine(CoroutineUtils.DoAfterDelay(delayedEvent.callback.Invoke, delayedEvent.delay));
         }
     }
 

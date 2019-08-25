@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
 public class StateCallbacks<T_STATE_TYPE>
 {
-    [SerializeField]
-    T_STATE_TYPE type;
-    public T_STATE_TYPE Type { get { return type; } }
     [SerializeField]
     DelayedUnityEvent onEnterCallbackDelayed;
     public DelayedUnityEvent OnEnterCallbackDelayed { get { return onEnterCallbackDelayed; } }
@@ -17,14 +15,14 @@ public class StateCallbacks<T_STATE_TYPE>
     public DelayedUnityEvent OnLeaveCallbackDelayed { get { return onLeaveCallbackDelayed; } }
 }
 
-public class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS> : MonoBehaviour
+public class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS> : SerializedMonoBehaviour
     where T_STATE : SimpleRegisterableScriptableObject<T_STATE_TYPE>
     where T_STATE_CALLBACKS : StateCallbacks<T_STATE_TYPE>
 {
     [SerializeField]
     T_STATE state;
     [SerializeField]
-    List<T_STATE_CALLBACKS> stateCallbacks;
+    Dictionary<T_STATE_TYPE, T_STATE_CALLBACKS> stateCallbacks;
 
     void Start()
     {
@@ -33,8 +31,10 @@ public class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS> : MonoB
 
     void OnChange()
     {
-        stateCallbacks.Find(stateCallback => stateCallback.Type.Equals(state.PreviousValue))?.OnLeaveCallbackDelayed?.Invoke();
-        stateCallbacks.Find(stateCallback => stateCallback.Type.Equals(state.Value))?.OnEnterCallbackDelayed?.Invoke();
+        if (stateCallbacks.ContainsKey(state.PreviousValue))
+            stateCallbacks[state.PreviousValue].OnLeaveCallbackDelayed?.Invoke();
+        if (stateCallbacks.ContainsKey(state.Value))
+            stateCallbacks[state.Value].OnEnterCallbackDelayed?.Invoke();
     }
 
     void OnDestroy()
