@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,10 +20,14 @@ public class Timer : MonoBehaviour
     [SerializeField]
     DelayedUnityEvent action;
 
-    void OnEnable()
+    public void DoActionAfterDelay()
     {
         float deltaMaxAbs = Mathf.Abs(deltaMax);
+        
         float currentDelay = (useFloatVariable ? delayVariable.Value : delay) + Random.Range(-deltaMaxAbs, deltaMaxAbs);
-        StartCoroutine(CoroutineUtils.DoAfterDelay(() => { action?.Invoke(); }, currentDelay));
+        if (currentDelay < 0)
+            currentDelay = 0;
+
+        DOVirtual.DelayedCall(currentDelay, action.Invoke);
     }
 }

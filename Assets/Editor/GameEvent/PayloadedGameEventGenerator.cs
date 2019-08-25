@@ -38,9 +38,9 @@ public class PayloadedGameEventGenerator : EditorWindow
             string gameEventListenerPath = basicPath + "GameEvent" + pascalType + "Listener.cs";
             string unityEventPath = Application.dataPath + "/Scripts/General/UnityEvents/UnityEvent" + pascalType + ".cs";
 
-            GenerateFile(gameEventPath, Application.dataPath + "/Plugins/Unity-Starter/Assets/Editor/GameEvent/GameEventTemplate.txt");
-            GenerateFile(gameEventListenerPath, Application.dataPath + "/Plugins/Unity-Starter/Assets/Editor/GameEvent/GameEventListenerTemplate.txt");
-            GenerateFile(unityEventPath, Application.dataPath + "/Plugins/Unity-Starter/Assets/Editor/GameEvent/UnityEventTemplate.txt");
+            GenerateFile(gameEventPath, Application.dataPath + "/Unity-Starter/Assets/Editor/GameEvent/GameEventTemplate.txt");
+            GenerateFile(gameEventListenerPath, Application.dataPath + "/Unity-Starter/Assets/Editor/GameEvent/GameEventListenerTemplate.txt");
+            GenerateFile(unityEventPath, Application.dataPath + "/Unity-Starter/Assets/Editor/GameEvent/UnityEventTemplate.txt");
             GenerateIcon();
             
             AssetDatabase.Refresh();
@@ -60,7 +60,7 @@ public class PayloadedGameEventGenerator : EditorWindow
     void GenerateIcon()
     {
         File.Copy(
-            Application.dataPath + "/Plugins/Unity-Starter/Assets/Gizmos/BasicGameEvent Icon.png",
+            Application.dataPath + "/Unity-Starter/Assets/Gizmos/BasicGameEvent Icon.png",
             Application.dataPath + "/Gizmos/GameEvent" + pascalType + " Icon.png");
     }
 }
