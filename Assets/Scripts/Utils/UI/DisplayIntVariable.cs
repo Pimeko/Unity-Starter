@@ -32,7 +32,7 @@ public class DisplayIntVariable : MonoBehaviour
         UpdateText();
     }
 
-    void UpdateText()
+    public void UpdateText()
     {
         textMesh.text = prefix + (variable.Value + toAdd) + suffix;
     }
