@@ -14,6 +14,15 @@ public class RegisterableListVariable<T> : RegisterableScriptableObject
     protected List<T> previousValue;
     public List<T> Value { get { return value; } set { previousValue = this.value; this.value = value; TriggerChange(); } }
 	public List<T> PreviousValue { get { return previousValue; } }
+    [SerializeField]
+    IntVariable index;
+
+    public T GetCurrent()
+    {
+        if (index == null)
+            throw new UnityException("Must precise an int variable index");
+        return value[index.Value];
+    }
     
     public void Add(T item)
     {
