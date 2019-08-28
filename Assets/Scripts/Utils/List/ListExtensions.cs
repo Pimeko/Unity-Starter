@@ -20,4 +20,10 @@ public static class ListExtensions
         foreach (T element in other)
             list.Add(element);
     }
+
+    public static void ForEach<T>(this List<T> elements, System.Action<T, int> action)
+    {
+        for (int i = 0; i < elements.Count; i++)
+            action?.Invoke(elements[i], i);
+    }
 }
