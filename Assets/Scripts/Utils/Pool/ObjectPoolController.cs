@@ -23,6 +23,8 @@ public class ObjectPoolController : MonoBehaviour
     
     [SerializeField]
     List<ObjectPoolItem> objectPoolItems;
+    [SerializeField]
+    ObjectPoolControllerContainerVariable currentPool;
 
     Dictionary<ObjectPoolTypeVariable, List<GameObject>> pooledObjects;
     bool isUI;
@@ -34,6 +36,8 @@ public class ObjectPoolController : MonoBehaviour
 
     void Start()
     {
+        currentPool.Value = this;
+        
         pooledObjects = new Dictionary<ObjectPoolTypeVariable, List<GameObject>>();
 
         foreach (ObjectPoolItem objectPoolItem in objectPoolItems)
