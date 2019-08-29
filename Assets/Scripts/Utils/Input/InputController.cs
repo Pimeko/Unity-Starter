@@ -24,22 +24,22 @@ public class InputController : MonoBehaviour
         playerInput.IsTouching = false;
     }
 
-    Vector3 GetCurrentTouchPosition()
+    Vector2 GetCurrentTouchPosition()
     {
-        Vector3 inputPosition;
+        Vector2 inputPosition;
 
         #if !UNITY_EDITOR && !UNITY_ANDROID && (UNITY_ANDROID || UNITY_IOS)
-        inputPosition = ToXZVector3(Input.GetTouch(0).position);
+        inputPosition = ToVector2(Input.GetTouch(0).position);
         #else
-        inputPosition = ToXZVector3(Input.mousePosition);
+        inputPosition = ToVector2(Input.mousePosition);
         #endif
 
         return inputPosition;
     }
 
-    Vector3 ToXZVector3(Vector3 v)
+    Vector3 ToVector2(Vector3 v)
     {
-        return new Vector3(v.x, 0, v.y);
+        return new Vector2(v.x, v.y);
     }
 
     void Update()
