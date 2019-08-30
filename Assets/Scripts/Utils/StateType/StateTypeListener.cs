@@ -15,7 +15,7 @@ public class StateCallbacks<T_STATE_TYPE>
     public DelayedUnityEvent OnLeaveCallbackDelayed { get { return onLeaveCallbackDelayed; } }
 }
 
-public class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS> : SerializedMonoBehaviour
+public abstract class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS> : SerializedMonoBehaviour
     where T_STATE : SimpleRegisterableScriptableObject<T_STATE_TYPE>
     where T_STATE_CALLBACKS : StateCallbacks<T_STATE_TYPE>
 {

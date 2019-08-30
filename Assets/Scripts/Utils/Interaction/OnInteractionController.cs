@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
 using UnityEngine;
 
 [System.Serializable]
 public abstract class InteractionAction<T_UNITY_EVENT>
 {
-    [SerializeField, ReorderableList]
+    [SerializeField, Tag]
     List<string> tags;
     public List<string> Tags { get { return tags; } }
 
@@ -20,7 +19,7 @@ public abstract class OnInteractionController<T_INTERACTION, T_UNITY_EVENT> : Mo
 {
     [SerializeField]
     protected bool printDebug = false;
-    [SerializeField, ReorderableList]
+    [SerializeField]
     List<T_INTERACTION> interactions;
 
     protected Dictionary<string, T_INTERACTION> actions;

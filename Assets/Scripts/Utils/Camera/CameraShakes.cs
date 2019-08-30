@@ -47,6 +47,22 @@ public class CameraShakes : MonoBehaviour
     }
 
     [Button]
+    public void ShakeHorizontal()
+    {
+        ShakeHorizontal(null);
+    }
+
+    public void ShakeHorizontal(Action callback)
+    {
+        Vector3 initialPosition = transform.position;
+        DOTween.Sequence()
+           .Append(transform.DOMove(transform.position + transform.right * 0.2f, .1f))
+           .Append(transform.DOMove(transform.position - transform.right * 0.2f, .1f))
+           .Append(transform.DOMove(transform.position, .1f))
+           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+    }
+
+    [Button]
     public void ZoomOutZoomIn()
     {
         ZoomOutZoomIn(null);

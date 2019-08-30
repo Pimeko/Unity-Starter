@@ -1,3 +1,3 @@
 using UnityEngine;
 
-public class StateType : ScriptableObject {}
+public abstract class StateType : ScriptableObject {}
