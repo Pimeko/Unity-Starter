@@ -28,6 +28,9 @@
 	- [UI](#ui)
 	- [Vibration](#vibration)
 
+
+WARNING: This plugin requires Odin and DOTween to work!
+
 # Events
 
 According to the [amazing talk of Ryan Hipple on Scriptable Objects](https://youtu.be/raQ3iHhE_Kk).
