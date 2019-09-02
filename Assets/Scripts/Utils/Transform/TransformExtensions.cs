@@ -7,7 +7,7 @@ public static class TransformExtensions
 {
     private static bool IsNull<T>(T obj)
     {
-        return EqualityComparer<T>.Default.Equals(obj,default(T));
+        return EqualityComparer<T>.Default.Equals(obj, default(T));
     }
 
     public static T GetComponentOrInParent<T>(this Transform t)
@@ -19,7 +19,7 @@ public static class TransformExtensions
             return component;
         return GetComponentOrInParent<T>(t.parent);
     }
-    
+
     public static Transform GetTopLevelParent(this Transform t)
     {
         return t.root != t ? t.root : null;
@@ -32,7 +32,7 @@ public static class TransformExtensions
             return component;
         return t.GetComponentInChildren<T>();
     }
-    
+
     public static Transform FindDeepChild(this Transform aParent, string aName)
     {
         var result = aParent.Find(aName);
@@ -60,7 +60,15 @@ public static class TransformExtensions
             backingField = t.GetComponent<T>();
         return backingField;
     }
-    
+
+    public static T[] CachedComponentsInChildren<T>(this Transform t, ref T[] backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponentsInChildren<T>();
+        return backingField;
+    }
+
 
     public static T[] GetComponentsInChildrenOnly<T>(this Transform t, bool includeInactive = false)
     {
@@ -70,5 +78,4 @@ public static class TransformExtensions
             result.Remove(parentComponent);
         return result.ToArray();
     }
-    
 }
