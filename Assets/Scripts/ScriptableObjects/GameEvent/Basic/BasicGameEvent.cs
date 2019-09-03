@@ -10,7 +10,10 @@ public class BasicGameEvent : GameEvent
     public void Raise()
     {
         Log();
-        foreach (IBasicGameEventListener listener in listeners)
+        for (int i = 0; i < listeners.Count; i++)
+        {
+            IBasicGameEventListener listener = listeners[i] as IBasicGameEventListener;
             listener.Invoke();
+        }
     }
 }

@@ -9,7 +9,6 @@ public class TransformUtils
     {
         return Mathf.Abs(a - b);
     }
-    
 
     public static Vector3 IntersectionVectorPlane(Vector3 origin, Vector3 direction, Vector3 planeNormal, Vector3 planePoint)
     {

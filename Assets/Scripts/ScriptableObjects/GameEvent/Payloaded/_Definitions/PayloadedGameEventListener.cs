@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
-using NaughtyAttributes;
+// using NaughtyAttributes;
 
 public interface IPayloadedGameEventListener
 {
@@ -14,6 +15,16 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
     where T_GAME_EVENT : IGameEvent, IPayloadedGameEvent
     where T_UNITY_EVENT : UnityEvent<T>, new()
 {
+    [SerializeField]
+    bool useFloatVariable;
+
+    [ShowIf("useFloatVariable"), SerializeField]
+    FloatVariable delayVariable;
+    [HideIf("useFloatVariable"), SerializeField]
+    float delayBeforeAction;
+
+    WaitForSecondsRealtime waitForDelay;
+
     [SerializeField]
     bool ordered;
 
@@ -29,7 +40,7 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
         }
     }
     
-    [ShowIf("ordered"), SerializeField, ReorderableList]
+    [ShowIf("ordered"), SerializeField]
     List<T_UNITY_EVENT> orderedActions;
     List<T_UNITY_EVENT> OrderedActions
     {
@@ -39,6 +50,11 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
                 orderedActions = new List<T_UNITY_EVENT>();
             return orderedActions;
         }
+    }
+
+    protected override void OnEnableChild()
+    {
+        waitForDelay = new WaitForSecondsRealtime(useFloatVariable ? delayVariable.Value : delayBeforeAction);
     }
 
     IEnumerator InvokeAfterDelay(T_UNITY_EVENT actions, object value)
