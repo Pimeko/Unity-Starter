@@ -17,11 +17,11 @@ public class RegisterableListVariable<T> : RegisterableScriptableObject
     [SerializeField]
     IntVariable index;
 
-    public T GetCurrent()
+    public T GetCurrent(bool moduloCount = false)
     {
         if (index == null)
             throw new UnityException("Must precise an int variable index");
-        return value[index.Value];
+        return moduloCount ? value[index.Value % value.Count] : value[index.Value];
     }
     
     public void Add(T item)
