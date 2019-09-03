@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IGameEventListener { }
 
-public abstract class GameEventListener<T_GAME_EVENT> : MonoBehaviour, IGameEventListener
+public abstract class GameEventListener<T_GAME_EVENT> : SerializedMonoBehaviour, IGameEventListener
     where T_GAME_EVENT : IGameEvent
 {
     [SerializeField]

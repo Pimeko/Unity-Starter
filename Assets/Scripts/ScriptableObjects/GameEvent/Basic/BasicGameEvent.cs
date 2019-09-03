@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using NaughtyAttributes;
 
 [CreateAssetMenu(menuName = "Event/Basic")]
 public class BasicGameEvent : GameEvent
@@ -10,10 +11,11 @@ public class BasicGameEvent : GameEvent
     public void Raise()
     {
         Log();
-        for (int i = 0; i < listeners.Count; i++)
+        
+        foreach (IGameEventListener listener in listeners.ToList())
         {
-            IBasicGameEventListener listener = listeners[i] as IBasicGameEventListener;
-            listener.Invoke();
+            IBasicGameEventListener listenerCasted = listener as IBasicGameEventListener;
+            listenerCasted.Invoke();
         }
     }
 }

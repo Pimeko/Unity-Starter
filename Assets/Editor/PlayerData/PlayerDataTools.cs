@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerDataTools : Editor
 {
-    [MenuItem("Custom/PlayerData/Reset")]
+    [MenuItem("Custom/PlayerData/Reset &a")]
     static void Reset()
     {
         var path = Path.Combine(Application.persistentDataPath, "data");
