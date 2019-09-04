@@ -58,22 +58,36 @@ public class InteractionDetector : SerializedMonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (triggersCallbacks != null && triggersCallbacks.ContainsKey(other.tag) && triggersCallbacks[other.tag].ContainsKey(InteractionType.ENTER))
-            triggersCallbacks[other.tag][InteractionType.ENTER]?.Invoke(other);
+        if (triggersCallbacks != null)
+        {
+            if (triggersCallbacks.ContainsKey(other.tag) && triggersCallbacks[other.tag].ContainsKey(InteractionType.ENTER))
+                triggersCallbacks[other.tag][InteractionType.ENTER]?.Invoke(other);
+            if (triggersCallbacks.ContainsKey("_") && triggersCallbacks["_"].ContainsKey(InteractionType.ENTER))
+                triggersCallbacks["_"][InteractionType.ENTER]?.Invoke(other);
+        }
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (triggersCallbacks != null && triggersCallbacks.ContainsKey(other.tag) && triggersCallbacks[other.tag].ContainsKey(InteractionType.STAY))
-            triggersCallbacks[other.tag][InteractionType.STAY]?.Invoke(other);
+        if (triggersCallbacks != null)
+        {
+            if (triggersCallbacks.ContainsKey(other.tag) && triggersCallbacks[other.tag].ContainsKey(InteractionType.STAY))
+                triggersCallbacks[other.tag][InteractionType.STAY]?.Invoke(other);
+            if (triggersCallbacks.ContainsKey("_") && triggersCallbacks["_"].ContainsKey(InteractionType.STAY))
+                triggersCallbacks["_"][InteractionType.STAY]?.Invoke(other);
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (triggersCallbacks != null && triggersCallbacks.ContainsKey(other.tag) && triggersCallbacks[other.tag].ContainsKey(InteractionType.EXIT))
-            triggersCallbacks[other.tag][InteractionType.EXIT]?.Invoke(other);
+        if (triggersCallbacks != null)
+        {
+            if (triggersCallbacks.ContainsKey(other.tag) && triggersCallbacks[other.tag].ContainsKey(InteractionType.EXIT))
+                triggersCallbacks[other.tag][InteractionType.EXIT]?.Invoke(other);
+            if (triggersCallbacks.ContainsKey("_") && triggersCallbacks["_"].ContainsKey(InteractionType.EXIT))
+                triggersCallbacks["_"][InteractionType.EXIT]?.Invoke(other);
+        }
     }
-
 
     public void AddCollisionCallback(string tag, InteractionType type, List<UnityAction<Collision>> callbacks)
     {
@@ -109,21 +123,36 @@ public class InteractionDetector : SerializedMonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         var tag = other.collider.tag;
-        if (collisionsCallbacks != null && collisionsCallbacks.ContainsKey(tag) && collisionsCallbacks[tag].ContainsKey(InteractionType.ENTER))
-            collisionsCallbacks[tag][InteractionType.ENTER]?.Invoke(other);
+        if (collisionsCallbacks != null)
+        {
+            if (collisionsCallbacks.ContainsKey(tag) && collisionsCallbacks[tag].ContainsKey(InteractionType.ENTER))
+                collisionsCallbacks[tag][InteractionType.ENTER]?.Invoke(other);
+            if (collisionsCallbacks.ContainsKey("_") && collisionsCallbacks["_"].ContainsKey(InteractionType.ENTER))
+                collisionsCallbacks["_"][InteractionType.ENTER]?.Invoke(other);
+        }
     }
 
     void OnCollisionStay(Collision other)
     {
         var tag = other.collider.tag;
-        if (collisionsCallbacks != null && collisionsCallbacks.ContainsKey(tag) && collisionsCallbacks[tag].ContainsKey(InteractionType.STAY))
-            collisionsCallbacks[tag][InteractionType.STAY]?.Invoke(other);
+        if (collisionsCallbacks != null)
+        {
+            if (collisionsCallbacks.ContainsKey(tag) && collisionsCallbacks[tag].ContainsKey(InteractionType.STAY))
+                collisionsCallbacks[tag][InteractionType.STAY]?.Invoke(other);
+            if (collisionsCallbacks.ContainsKey("_") && collisionsCallbacks["_"].ContainsKey(InteractionType.STAY))
+                collisionsCallbacks["_"][InteractionType.STAY]?.Invoke(other);
+        }
     }
 
     void OnCollisionExit(Collision other)
     {
         var tag = other.collider.tag;
-        if (collisionsCallbacks != null && collisionsCallbacks.ContainsKey(tag) && collisionsCallbacks[tag].ContainsKey(InteractionType.EXIT))
-            collisionsCallbacks[tag][InteractionType.EXIT]?.Invoke(other);
+        if (collisionsCallbacks != null)
+        {
+            if (collisionsCallbacks.ContainsKey(tag) && collisionsCallbacks[tag].ContainsKey(InteractionType.EXIT))
+                collisionsCallbacks[tag][InteractionType.EXIT]?.Invoke(other);
+            if (collisionsCallbacks.ContainsKey("_") && collisionsCallbacks["_"].ContainsKey(InteractionType.EXIT))
+                collisionsCallbacks["_"][InteractionType.EXIT]?.Invoke(other);
+        }
     }
 }
