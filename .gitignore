@@ -40,7 +40,6 @@ sysinfo.txt
 
 .DS_Store
 .gitignore
-*.meta
 
 Assets/TO_IGNORE/
 Logs/
