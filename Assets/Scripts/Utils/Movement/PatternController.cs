@@ -11,7 +11,7 @@ public class PatternController : MonoBehaviour
     [SerializeField]
     float durationBetweenNodes, idleTime, rotationDuration;
     [SerializeField]
-    Ease easeType;
+    Ease easeTypeMovement = Ease.Linear, easeTypeRotation = Ease.Linear;
 
     public Action startMoving, startIdle, stopMoving;
 
@@ -37,15 +37,23 @@ public class PatternController : MonoBehaviour
         startMoving?.Invoke();
         Vector3 direction = Vector3.Normalize(nodes[currentIndex].position - transform.position);
         currentTween = transform.DOMove(nodes[currentIndex].position, durationBetweenNodes)
-            .SetEase(easeType)
+            .SetEase(easeTypeMovement)
             .OnComplete(() => { transform.position = nodes[currentIndex].position; Idle(); });
-        transform.DOLookAt(nodes[currentIndex].position, rotationDuration);
+        transform.DOLookAt(nodes[currentIndex].position, rotationDuration).SetEase(easeTypeRotation);
     }
 
     public void Idle()
     {
-        startIdle?.Invoke();
-        currentTween = DOVirtual.DelayedCall(idleTime, () => { IncrementIndex(); Move(); });
+        if (idleTime > 0)
+        {
+            startIdle?.Invoke();
+            currentTween = DOVirtual.DelayedCall(idleTime, () => { IncrementIndex(); Move(); });
+        }
+        else
+        {
+            IncrementIndex();
+            Move();
+        }
     }
 
     public void Stop()
