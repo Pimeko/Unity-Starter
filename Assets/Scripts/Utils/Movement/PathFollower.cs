@@ -18,7 +18,7 @@ public class PathFollower : MonoBehaviour
 {
     [SerializeField]
     BGCurve curve;
-    
+
     [SerializeField]
     float movementSpeed = 3;
     [SerializeField]
@@ -50,10 +50,12 @@ public class PathFollower : MonoBehaviour
     int currentPointIndex;
     bool isFollowingPath, isStopped, pointIndexGoingUp;
     Tween currentIdleTween;
+    Rigidbody rb;
 
     void Start()
     {
         curveMath = curve.GetComponent<BGCcMath>();
+        rb = GetComponent<Rigidbody>();
 
         distanceDone = 0;
         distanceTotal = curveMath.GetDistance();
@@ -99,8 +101,8 @@ public class PathFollower : MonoBehaviour
             if (!isStopped)
             {
                 Vector3 tangent;
-                transform.position = curveMath.CalcPositionAndTangentByDistance(distanceDone, out tangent);
-                transform.rotation = Quaternion.Lerp(transform.rotation, TransformUtils.LookRotation(tangent), Time.deltaTime * rotationSpeed);
+                MovePosition(curveMath.CalcPositionAndTangentByDistance(distanceDone, out tangent));
+                LerpRotation(TransformUtils.LookRotation(tangent));
 
                 float currentDistanceDone = Time.deltaTime * movementSpeed;
                 distanceDone += currentDistanceDone;
@@ -123,11 +125,27 @@ public class PathFollower : MonoBehaviour
         else
         {
             Vector3 tangent;
-            transform.position = curveMath.CalcPositionAndTangentByDistance(distanceDone, out tangent);
-            transform.rotation = Quaternion.Lerp(transform.rotation, TransformUtils.LookRotation(tangent), Time.deltaTime * rotationSpeed);
+            MovePosition(curveMath.CalcPositionAndTangentByDistance(distanceDone, out tangent));
+            LerpRotation(TransformUtils.LookRotation(tangent));
             distanceDone += Time.deltaTime * movementSpeed;
             distanceDone %= distanceTotal;
         }
+    }
+
+    void MovePosition(Vector3 position)
+    {
+        if (rb != null)
+            rb.position = position;
+        else
+            transform.position = position;
+    }
+
+    void LerpRotation(Quaternion to)
+    {
+        if (rb != null)
+            rb.rotation = Quaternion.Lerp(rb.rotation, to, Time.deltaTime * rotationSpeed);
+        else
+            transform.rotation = Quaternion.Lerp(transform.rotation, to, Time.deltaTime * rotationSpeed);
     }
 
     void UpdatePointIndexAndDistanceToDo()
