@@ -16,6 +16,8 @@ public class Timer : MonoBehaviour
     float delay;
     [SerializeField]
     float deltaMax;
+    [SerializeField]
+    bool ignoreTimeScale = false;
 
     [SerializeField]
     DelayedUnityEvent action;
@@ -28,6 +30,6 @@ public class Timer : MonoBehaviour
         if (currentDelay < 0)
             currentDelay = 0;
 
-        DOVirtual.DelayedCall(currentDelay, action.Invoke);
+        DOVirtual.DelayedCall(currentDelay, action.Invoke, ignoreTimeScale);
     }
 }

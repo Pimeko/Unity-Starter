@@ -12,10 +12,11 @@ public class DelayedUnityEvent
     public FloatVariable delayVariable;
     [HideIf("useFloatVariable")]
     public float delay;
+    public bool ignoreTimeScale;
 
     public float GetDelay()
     {
-        if (delay > 0)
+        if (!useFloatVariable)
             return delay;
         return delayVariable.Value;
     }
@@ -28,8 +29,8 @@ public class DelayedUnityEvent
 
     public void Invoke()
     {
-        if (delay > 0)
-            DOVirtual.DelayedCall(delay, callback.Invoke);
+        if (delay > 0 || useFloatVariable)
+            DOVirtual.DelayedCall(GetDelay(), callback.Invoke, ignoreTimeScale);
         else
             callback.Invoke();
     }

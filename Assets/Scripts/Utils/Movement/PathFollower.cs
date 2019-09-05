@@ -65,6 +65,8 @@ public class PathFollower : MonoBehaviour
         distanceToDo = curveMath.GetDistance(currentPointIndex);
         pointIndexGoingUp = true;
         currentIdleTween = null;
+
+        MovePosition(curveMath.CalcPositionByDistance(0));
     }
 
     [Button]
