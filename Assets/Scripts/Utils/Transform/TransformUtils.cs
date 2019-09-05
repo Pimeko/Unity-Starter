@@ -19,4 +19,9 @@ public class TransformUtils
             / (planeNormal.x * direction.x + planeNormal.y * direction.y + planeNormal.z * direction.z);
         return new Vector3(origin.x + direction.x * t, origin.y + direction.y * t, origin.z + direction.z * t);
     }
+
+    public static Quaternion LookRotation(Vector3 to)
+    {
+        return to != Vector3.zero ? Quaternion.LookRotation(to) : Quaternion.identity;
+    }
 }
