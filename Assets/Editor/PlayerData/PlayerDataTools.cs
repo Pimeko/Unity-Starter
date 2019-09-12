@@ -13,15 +13,15 @@ public class PlayerDataTools : Editor
         if (File.Exists(path))
         {
             File.Delete(path);
-            Debug.Log("Deleted data files at " + path);
+            Debug.Log("Deleted data file at " + path);
         }
         else
-            Debug.Log("No data found.");
+            Debug.Log("Could not delete data file: no file found.");
     }
-    
-    [MenuItem("Custom/PlayerData/Show in explorer")]
-    static void ShowInExplorer()
+
+    [MenuItem("Custom/PlayerData/Open in IDE %&a")]
+    static void OpenInIDE()
     {
-         Application.OpenURL("file://" + Path.Combine(Application.persistentDataPath));
+        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(Application.persistentDataPath + "/data", 0);
     }
 }

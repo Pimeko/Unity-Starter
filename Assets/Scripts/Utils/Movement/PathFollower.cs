@@ -67,6 +67,7 @@ public class PathFollower : MonoBehaviour
         currentIdleTween = null;
 
         MovePosition(curveMath.CalcPositionByDistance(0));
+        transform.forward = curve.Points[1].PositionWorld - curve.Points[0].PositionWorld;
     }
 
     [Button]
