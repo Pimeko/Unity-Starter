@@ -12,7 +12,7 @@ public class InputVariable : RegisterableScriptableObject
     public bool IsTouching
     {
         get { return isTouching; }
-        set { PreviousIsTouching = isTouching; isTouching = value; TriggerChange(); }
+        set { if (value == isTouching) return; PreviousIsTouching = isTouching; isTouching = value; TriggerChange(); }
     }
 
     Vector2 touchPositionDefault;
@@ -22,7 +22,7 @@ public class InputVariable : RegisterableScriptableObject
     public Vector2 TouchPosition
     {
         get { return touchPosition; }
-        set { PreviousTouchPosition = touchPosition; touchPosition = value; TriggerChange(); }
+        set { if (value == touchPosition) return; PreviousTouchPosition = touchPosition; touchPosition = value; TriggerChange(); }
     }
 
     protected override void OnInit()
