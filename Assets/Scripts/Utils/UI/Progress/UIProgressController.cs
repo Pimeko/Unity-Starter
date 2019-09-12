@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class ProgressController : MonoBehaviour
+public class UIProgressController : MonoBehaviour
 {
     [SerializeField]
     FloatVariable progress;

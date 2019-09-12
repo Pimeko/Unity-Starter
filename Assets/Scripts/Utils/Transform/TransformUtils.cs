@@ -3,9 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TransformUtils
+public static class TransformUtils
 {
-    public static float Distance(float a, float b)
+    public static float Distance(this Vector3 a, Vector3 b)
+    {
+        return Vector3.Distance(a, b);
+    }
+
+    public static float Distance(this float a, float b)
     {
         return Mathf.Abs(a - b);
     }
