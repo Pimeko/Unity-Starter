@@ -27,19 +27,30 @@ public static class ListExtensions
             action?.Invoke(elements[i], i);
     }
 
-    public static void Shuffle<T>(this List<T> _list, int _seed)
+    public static void Shuffle<T>(this List<T> list)
+    {
+        for (int t = 0; t < list.Count; t++)
+        {
+            T tmp = list[t];
+            int r = Random.Range(t, list.Count);
+            list[t] = list[r];
+            list[r] = tmp;
+        }
+    }
+
+    public static void ShuffleWithSeed<T>(this List<T> list, int seed = 0)
     {
         //UnityEngine.Random.InitState(_seed);
-        System.Random rng = new System.Random(_seed);
-        int n = _list.Count;
+        System.Random rng = new System.Random(seed);
+        int n = list.Count;
         while (n > 1)
         {
             n--;
             int k = rng.Next(n + 1);
             //int k = UnityEngine.Random.Range(0, n + 1);
-            T value = _list[k];
-            _list[k] = _list[n];
-            _list[n] = value;
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
         }
     }
 }

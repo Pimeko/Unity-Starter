@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using NaughtyAttributes;
 
 public class RegisterableListVariable<T> : RegisterableScriptableObject
 {
-    [SerializeField, ReorderableList]
-    protected List<T> initialValue;
+    [SerializeField]
+    public List<T> initialValue;
+    public List<T> InitialValue { get { return initialValue; } set { initialValue = value; OnInit(); } }
 
-    [SerializeField, ReorderableList]
+    [SerializeField]
     protected List<T> value;
     [SerializeField]
     protected List<T> previousValue;
@@ -34,6 +35,13 @@ public class RegisterableListVariable<T> : RegisterableScriptableObject
     {
         Value.Remove(item);
         TriggerChange();
+    }
+
+    [Button]
+    public void Shuffle()
+    {
+        initialValue.Shuffle();
+        Value = initialValue;
     }
 	
     protected override void OnInit()

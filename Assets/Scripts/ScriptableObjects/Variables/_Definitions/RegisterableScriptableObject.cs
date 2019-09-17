@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public abstract class RegisterableScriptableObject : ScriptableObject, IRegisterableScriptableObject
+public abstract class RegisterableScriptableObject : SerializedScriptableObject, IRegisterableScriptableObject
 {
     Action OnChange;
 
