@@ -47,7 +47,7 @@ public class PlayerDataVariableGenerator : EditorWindow
             GenerateFile(filePath, templatePath);
 
             ScriptableObject so = ScriptableObject.CreateInstance(soType);
-            string soPath = "Assets/ScriptableObjects/PlayerData/Variables/";
+            string soPath = "Assets/ScriptableObjects/General/PlayerData/Variables/";
             
             if (!Directory.Exists(soPath))
                 Directory.CreateDirectory(soPath);
