@@ -10,20 +10,33 @@
 - [Variables](#variables)
 - [Tools](#tools)
 	- [Animation](#animation)
-	- [Coroutine](#coroutine)
+	- [Attributes](#attributes)
+	- [Camera](#camera)
 	- [Debug](#debug)
-	- [Float](#float)
+	- [DelayedUnityEvent](#delayedunityevent)
+	- [Dictionary](#dictionary)
 	- [Distribution](#distribution)
 	- [Encoder](#encoder)
+	- [Float](#float)
+	- [Framerate](#framerate)
 	- [Generator](#generator)
 	- [Input](#input)
 	- [Interaction](#interaction)
+	- [List](#list)
+	- [Material](#material)
+	- [Movement](#movement)
 	- [Native callbacks](#native-callbacks)
+	- [Offset](#offset)
+	- [Particles](#particles)
 	- [Save Load system](#save-load-system)
 	- [Pool](#pool)
+	- [Ragdoll](#ragdoll)
 	- [Scaler Data](#scaler-data)
 	- [Scene](#scene)
 	- [State Machine](#state-machine)
+	- [State Type](#state-type)
+	- [Text](#text)
+	- [Timer](#timer)
 	- [Transform](#transform)
 	- [UI](#ui)
 	- [Vibration](#vibration)
@@ -222,16 +235,33 @@ Changes the speed parameter of an animator to a random value between the specifi
 
 Contains an action to trigger when an animation is over. To place on the same level as an Animator Controller to easily subscribe to animation ending events.
 
-## Coroutine
-> Location: General/Utils/Coroutine
+## Attributes
+> Location: General/Utils/Attributes
 
-#### Do After Delay
-Easy way to delay an action through this static method.
-To call an action after one second, simply do :
+#### Tags
 
-```C#
-StartCoroutine(CoroutineUtils.DoAfterDelay(() => { // Do Action }, 1f);
-```
+Use the attribute [Tag] to display all the availables tags in the inspector.
+
+#### Layers
+
+Use the attribute [Layer] to display all the availables layers in the inspector.
+
+## Camera
+> Location: General/Utils/Camera
+
+#### Shakes
+
+A set of useful camera shakes. Place this script on a camera component and simply the methods you need to shake it! The methods take a nullable callback when the animation is over.
+
+Available shakes:
+- Small shake vertical
+- Shake vertical
+- Long shake vertical
+- Small shake horizontal
+- Shake horizontal
+- Long shake horizontal
+- Small zoom out zoom in
+- Zoom out zoom in elastic
 
 ## Debug
 > Location: General/Utils/Debug
@@ -249,12 +279,20 @@ DebugUtils.DrawPoint(Vector3.Zero);
 ```
 ![DrawPoint](https://i.imgur.com/SBvzlma.png)
 
-## Float
-> Location: General/Utils/Float
+## DelayedUnityEvent
+> Location: General/Utils/DelayedUnityEvent
 
-### Float radius
-Allows to adjust a float value through the scene view's gizmos.
-![enter image description here](https://i.imgur.com/l2W9hzW.png)
+DelayedUnityEvent is an action serialized in the inspector with the option of adding a delay before it gets called. Instead of using the built-in UnityEvent class, it uses the amazing plugin BetterEvent, which allows to call methods with more than one parameter in the inspector, along with calling non-object related methods, such as Instantiate, Destroy, etc.
+
+To use it, simply declare a field DelayedUnityEvent instead of a UnityEvent in your Monobehaviours.
+
+## Dictionary
+> Location: General/Utils/Dictionary
+
+### Dictionary Extensions
+#### AddOrUpdate(key, value)
+Adds the key to the dictionary, or updates it if it's already there. Call yourDictionary.AddOrUpdate(...).
+
 ## Distribution
 > Location: General/Utils/Distribution
 
@@ -327,12 +365,27 @@ Removes an item from the list at the specified index.
 
 Allows to **encode** and **decode** a file in base 64, without any class instance with static methods. Useful to encrypt data in an external file.
 
+## Float
+> Location: General/Utils/Float
+
+### Float radius
+Allows to adjust a float value through the scene view's gizmos.
+![](https://i.imgur.com/l2W9hzW.png)
+
+## Framerate
+> Location: General/Utils/Framerate
+
+### Framerate Controller
+Put this script on any gameobject in your scene to make sure the targeted framerate will be the one specified in the inspector. By default, it is set to 120.
+
 ## Generator
 > Location: General/Utils/Generator
 
 #### RandomGenerator
 
-Instantiate a random prefab once, with position and rotation offsets, along with a percentage of spawn.
+Instantiate a random prefab once as a child of the script, with position, rotation and scale offsets, along with a percentage of spawn.
+
+The scale vector represents an offset relative to 1. For example, if you want the scale.X value to be between .8 and 1.2, simply put .2 for the x value. 
 
 ## Input
 > Location: General/Utils/Input
@@ -344,22 +397,98 @@ Triggers an event when the user keeps on clicking and when he releases. It works
 #### InputController
 
 Fills a registerable variable when the player touches the screen and moves the finger. It also works in the editor with the mouse and click.
-It can be useful to subscribe to input changes, react to drags etc. It must be binded to a PointerInteractable component.
 
+It can be useful to subscribe to input changes, react to drags etc. It must be binded to a PointerInteractable component on a UI Image on your canvas. On the latter, bind the OnPointerDown and OnPointerUp to the InputController.Touch and InputController.StopTouch in the inspector.
+
+If you want to register to input changes, here is an example:
+
+```c#
+[SerializeField]
+InputVariable playerInput;
+
+void Start()
+{
+	playerInput.AddOnChangeCallback(OnInputChange);
+}
+
+void OnInputChange()
+{
+	if (playerInput.IsTouching)
+	{
+		if (playerInput.TouchPosition == Vector2.zero)
+			// Do stuff
+	}
+}
+
+void OnDestroy()
+{
+	playerInput.RemoveOnChangeCallback(OnInputChange);
+}
+```
+
+#### Input Interactions Controller and Input Interaction Controller
+
+Allows to detect input interactions with gameobjects in the scene. 
+
+[Documentation to do]
+
+#### InputTouchController
+Basic script to register when the player clicks on the screen. Add this component to a UI Image on your canvas.
+
+#### KeyInputController
+Add inspector callbacks to key inputs, such as pressing space, escape, etc.
 
 ## Interaction
 > Location: General/Utils/Interaction
 
-#### OnCollisionController
+#### InteractionDetector
+Using this component, you can register callbacks to collision and trigger events directly in the inspector. The key used is the tag you want to compare to. If you want any tag, simply write the underscore character: *_*
 
-Serialized events in the inspector when the object detects tags-based collisions.
+You can precise what kind of interaction you want, whether it is OnEnter, OnStay or OnLeave. The callbacks can take a dynamic parameter, which is the Collision or a Collider (depending on the collision/trigger event type).
 
-#### OnTriggerController
+## List
+> Location: General/Utils/List
 
-Serialized events in the inspector when the object detects tags-based triggers.
+#### ListExtensions
+##### GetRandomItem()
+Returns a random item in the list.
 
-Example : This will activate an animation when the collider triggers a gameobject with a "Player" tag.
-![OnTrigger](https://i.imgur.com/IREhGQf.png)
+##### AllTheSameValue()
+Checks if all the elements of the list have the same value.
+
+Example:
+```c#
+List<int> list = new List<int>() { 1, 1, 1 };
+Debug.Log(list.AllTheSameValue(x => x == 2)); // false;
+Debug.Log(list.AllTheSameValue(x => x == 1)); // true;
+```
+
+##### Add(list)
+Adds all the elements of a list to the list.
+
+##### ForEach()
+Applies a foreach to the list.
+
+## Material
+> Location: General/Utils/Material
+
+#### MaterialRandomProperties
+Applies the material properties directly from the inspector. 
+
+Example:
+
+You want to apply a random color between 3 specific colors to the second material of your mesh. Add this component, write 1 for the materialIndex. Then, in the color property, add the field's name (for example "_Color") and pick your range colors.
+
+The same goes for int and float properties. If you want to have a completely random color without a range, you can toggle the "full random" checkbox.
+
+#### RandomMaterial
+Applies a random material from a list to the MeshRenderer.
+
+## Movement
+> Location: General/Utils/Movement
+
+#### Path Follower
+
 
 ## Native callbacks
 > Location: General/Utils/NativeCallbacks
