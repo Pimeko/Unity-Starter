@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class PlayerDataController : MonoBehaviour
+public class PlayerDataController : SerializedMonoBehaviour
 {
     [SerializeField]
     List<BasicGameEvent> saveOn;
@@ -11,6 +12,8 @@ public class PlayerDataController : MonoBehaviour
     List<RegisterableScriptableObject> variablesToSaveOnChange;
     [SerializeField]
     List<BasicGameEvent> loadOn;
+    [SerializeField]
+    BetterEvent onLoad;
     [SerializeField]
     bool loadOnAwake;
     [SerializeField]
@@ -94,5 +97,6 @@ public class PlayerDataController : MonoBehaviour
 		
         foreach (IPlayerData playerDataController in playerDataVariables)
 			playerDataController.Load(playerData);
+        onLoad.Invoke();
     }
 }

@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class CoinsClaimController : MonoBehaviour
 {
+    [SerializeField, MinMaxSlider(0, 2, true)]
+    Vector2 durationRangeFirstStep = new Vector2(.8f, 1f);
+    [SerializeField]
+    float durationSecondStep = 1.2f;
     [SerializeField]
     RectTransform to;
 
@@ -26,21 +31,25 @@ public class CoinsClaimController : MonoBehaviour
     {
         if (!isInitialized)
             Init();
-        
+
         DoAnimation();
     }
 
     void DoAnimation()
     {
-        coins.ForEach((coin, i) => {
+        coins.ForEach((coin, i) =>
+        {
             coin.position = initialPositions[i];
             coin.gameObject.SetActive(true);
         });
         foreach (RectTransform coin in coins)
         {
             sequences.Add(DOTween.Sequence()
-            .Append(coin.DOMove(coin.position + new Vector3(Random.Range(-80, 80), Random.Range(-80, 80), 0), Random.Range(.8f, 1f)).SetEase(Ease.OutQuart))
-            .Append(coin.DOMove(to.position, 1.2f).SetEase(Ease.OutExpo))
+            .Append(coin.DOMove(
+                coin.position + new Vector3(Random.Range(-80, 80), Random.Range(-80, 80), 0),
+                Random.Range(durationRangeFirstStep.x, durationRangeFirstStep.y))
+                .SetEase(Ease.OutQuart))
+            .Append(coin.DOMove(to.position, durationSecondStep).SetEase(Ease.OutExpo))
             .OnComplete(() => coin.gameObject.SetActive(false)));
         }
     }
