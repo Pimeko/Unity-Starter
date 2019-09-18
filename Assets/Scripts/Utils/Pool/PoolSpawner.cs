@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using NaughtyAttributes;
+
 
 [RequireComponent(typeof(DistributionPool))]
 public class PoolSpawner : MonoBehaviour

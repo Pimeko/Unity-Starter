@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class CameraScalerAdapter : MonoBehaviour

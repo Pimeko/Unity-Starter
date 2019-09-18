@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 using System.Linq;
 
 [System.Serializable]
@@ -29,7 +28,6 @@ public class DistributionItem<T>
 public abstract class Distribution<T, T_ITEM> : MonoBehaviour
     where T_ITEM : DistributionItem<T>, new()
 {
-    [ReorderableList]
     [SerializeField]
     List<T_ITEM> items;
     public List<T_ITEM> Items { get { return items; } }

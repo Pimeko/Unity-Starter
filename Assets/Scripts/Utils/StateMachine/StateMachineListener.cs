@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using NaughtyAttributes;
 
 [System.Serializable]
 public class StateCallback<T>
@@ -24,7 +23,7 @@ public class StateCallback<T>
     [SerializeField]
     float delayBeforeLeave;
     public float DelayBeforeLeave { get { return delayBeforeLeave; } }
-}
+    }
 
 class EnterLeaveCallbacks
 {
