@@ -1,54 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum KeyInputType
-{
-    KEY_DOWN,
-    KEY_UP,
-    KEY_BEING_PRESSED
-}
-
 [System.Serializable]
-public class KeyEvent
+public class KeyEvents
 {
     [SerializeField]
-    KeyCode key;
-    public KeyCode Key { get { return key; } }
+    BetterEvent onKeyDown;
+    public BetterEvent OnKeyDown { get { return onKeyDown; } }
     [SerializeField]
-    KeyInputType type;
-    public KeyInputType Type { get { return type; } }
+    BetterEvent onKeyUp;
+    public BetterEvent OnKeyUp { get { return onKeyUp; } }
     [SerializeField]
-    DelayedUnityEvent actions;
-    public DelayedUnityEvent Actions { get { return actions; } }
+    BetterEvent onKeyPressed;
+    public BetterEvent OnKeyPressed { get { return onKeyPressed; } }
 }
 
-public class KeyInputController : MonoBehaviour
+public class KeyInputController : SerializedMonoBehaviour
 {
     [SerializeField]
-    List<KeyEvent> keyEvents;
+    Dictionary<KeyCode, KeyEvents> actions;
 
     private void Update()
     {
-        foreach (KeyEvent keyEvent in keyEvents)
+        foreach (KeyCode keyCode in actions.Keys)
         {
-            switch (keyEvent.Type)
-            {
-                case KeyInputType.KEY_DOWN:
-                    if (Input.GetKeyDown(keyEvent.Key))
-                        keyEvent.Actions?.Invoke();
-                    break;
-                case KeyInputType.KEY_UP:
-                    if (Input.GetKeyUp(keyEvent.Key))
-                        keyEvent.Actions?.Invoke();
-                    break;
-                case KeyInputType.KEY_BEING_PRESSED:
-                    if (Input.GetKey(keyEvent.Key))
-                        keyEvent.Actions?.Invoke();
-                    break;
-            }
+            if (Input.GetKeyDown(keyCode))
+                actions[keyCode].OnKeyDown.Invoke();
+            if (Input.GetKeyUp(keyCode))
+                actions[keyCode].OnKeyUp.Invoke();
+            if (Input.GetKey(keyCode))
+                actions[keyCode].OnKeyPressed.Invoke();
         }
     }
 }

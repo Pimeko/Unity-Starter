@@ -46,6 +46,6 @@ public class DisplayIntVariable : MonoBehaviour
     void OnDisable()
     {
         if (!onlyOnStart)
-            variable.AddOnChangeCallback(UpdateText);
+            variable.RemoveOnChangeCallback(UpdateText);
     }
 }
