@@ -44,7 +44,7 @@ public class StateMachineListener<T, T_STATE_MACHINE, T_STATE_CALLBACK> : MonoBe
 {
     [SerializeField]
     T_STATE_MACHINE stateMachine;
-    [SerializeField, ReorderableList]
+    [SerializeField]
     List<T_STATE_CALLBACK> stateCallbacks;
 
     Dictionary<T, EnterLeaveCallbacks> innerStateCallbacks;

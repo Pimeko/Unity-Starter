@@ -27,7 +27,7 @@ public class KeyEvent
 
 public class KeyInputController : MonoBehaviour
 {
-    [SerializeField, ReorderableList]
+    [SerializeField]
     List<KeyEvent> keyEvents;
 
     private void Update()

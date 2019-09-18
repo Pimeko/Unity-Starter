@@ -25,11 +25,11 @@ public class MaterialRandomProperties : MonoBehaviour
 {
     [SerializeField]
     int materialIndex;
-    [SerializeField, ReorderableList]
+    [SerializeField]
     List<MaterialColor> colorProperties;
-    [SerializeField, ReorderableList]
+    [SerializeField]
     List<MaterialInt> intProperties;
-    [SerializeField, ReorderableList]
+    [SerializeField]
     List<MaterialFloat> floatProperties;
 
     Material currentMaterial;
