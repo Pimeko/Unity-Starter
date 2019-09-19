@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public interface IBasicGameEventListener
 {
     void Invoke();
+    void Invoke(GameObject from, GameEvent e);
 }
 
 public class BasicGameEventListener: GameEventListener<BasicGameEvent>, IBasicGameEventListener
@@ -24,5 +25,9 @@ public class BasicGameEventListener: GameEventListener<BasicGameEvent>, IBasicGa
         if (callbacks == null)
             callbacks = new DelayedUnityEvent(new BetterEvent(), delay);
         callbacks.callback.AddCallback(callback);
+    }
+
+    public void Invoke(GameObject from, GameEvent e)
+    {
     }
 }

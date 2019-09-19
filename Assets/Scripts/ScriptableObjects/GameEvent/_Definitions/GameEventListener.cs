@@ -5,6 +5,11 @@ using UnityEngine;
 
 public interface IGameEventListener { }
 
+public interface IGameEventListenerWithInfo
+{
+    void Invoke(GameObject from, GameEvent e);
+}
+
 public abstract class GameEventListener<T_GAME_EVENT> : SerializedMonoBehaviour, IGameEventListener
     where T_GAME_EVENT : IGameEvent
 {
@@ -18,23 +23,23 @@ public abstract class GameEventListener<T_GAME_EVENT> : SerializedMonoBehaviour,
             gameEvents = new List<T_GAME_EVENT>();
         Subscribe();
     }
-    
+
     void OnDisable()
     {
         Unsubscribe();
     }
 
-    protected virtual void OnEnableChild() {}
+    protected virtual void OnEnableChild() { }
 
     protected void Subscribe()
     {
-		foreach (T_GAME_EVENT gameEvent in gameEvents)
+        foreach (T_GAME_EVENT gameEvent in gameEvents)
             gameEvent.AddListener(this);
     }
 
     protected void Unsubscribe()
     {
-		foreach (T_GAME_EVENT gameEvent in gameEvents)
+        foreach (T_GAME_EVENT gameEvent in gameEvents)
             gameEvent.RemoveListener(this);
     }
 

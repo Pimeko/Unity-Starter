@@ -18,4 +18,15 @@ public class BasicGameEvent : GameEvent
             listenerCasted.Invoke();
         }
     }
+
+    [Button]
+    public void RaiseWithInfo(GameObject from)
+    {
+        Log();
+        
+        foreach (IGameEventListenerWithInfo listener in listenersWithInfo.ToList())
+        {
+            listener.Invoke(from, this);
+        }
+    }
 }

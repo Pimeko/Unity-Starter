@@ -28,20 +28,38 @@ public abstract class GameEvent : ScriptableObject, IGameEvent
     }
 
     protected List<IGameEventListener> listeners = new List<IGameEventListener>();
+    protected List<IGameEventListenerWithInfo> listenersWithInfo = new List<IGameEventListenerWithInfo>();
 
     public void AddListener(object listener)
     {
-        IGameEventListener castedListener = (IGameEventListener)listener;
+        {
+            IGameEventListener castedListener = listener as IGameEventListener;
 
-        if (!listeners.Contains(castedListener))
-            listeners.Add(castedListener);
+            if (castedListener != null && !listeners.Contains(castedListener))
+                listeners.Add(castedListener);
+        }
+
+        {
+            IGameEventListenerWithInfo castedListener = listener as IGameEventListenerWithInfo;
+
+            if (castedListener != null && !listenersWithInfo.Contains(castedListener))
+                listenersWithInfo.Add(castedListener);
+        }
     }
 
     public void RemoveListener(object listener)
     {
-        IGameEventListener castedListener = (IGameEventListener)listener;
-        
-        if (listeners.Contains(castedListener))
-            listeners.Remove(castedListener);
+        {
+            IGameEventListener castedListener = listener as IGameEventListener;
+
+            if (castedListener != null && listeners.Contains(castedListener))
+                listeners.Remove(castedListener);
+        }
+        {
+            IGameEventListenerWithInfo castedListener = listener as IGameEventListenerWithInfo;
+
+            if (castedListener != null && listenersWithInfo.Contains(castedListener))
+                listenersWithInfo.Remove(castedListener);
+        }
     }
 }
