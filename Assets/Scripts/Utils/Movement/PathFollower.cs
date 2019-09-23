@@ -108,8 +108,17 @@ public class PathFollower : MonoBehaviour
                 LerpRotation(TransformUtils.LookRotation(tangent));
 
                 float currentDistanceDone = Time.deltaTime * movementSpeed;
-                distanceDone += currentDistanceDone;
-                pointToPointDistanceDone += currentDistanceDone;
+                if (pointToPointDistanceDone + currentDistanceDone >= distanceToDo)
+                {
+                    float pointToPointDistanceDoneBefore = pointToPointDistanceDone;
+                    pointToPointDistanceDone = distanceToDo;
+                    distanceDone += pointToPointDistanceDone - pointToPointDistanceDoneBefore;
+                }
+                else
+                {
+                    distanceDone += currentDistanceDone;
+                    pointToPointDistanceDone += currentDistanceDone;
+                }
                 if (pointToPointDistanceDone >= distanceToDo)
                 {
                     isStopped = true;
