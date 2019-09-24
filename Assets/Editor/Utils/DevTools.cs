@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class DevTools : Editor
 {
@@ -14,17 +15,17 @@ public class DevTools : Editor
             o.name = o.name.Substring(0, o.name.Length - 4);
     }
 
-	[MenuItem("Custom/Shortcuts/Clear console &x")]
+    [MenuItem("Custom/Shortcuts/Clear console &x")]
     private static void ClearConsole()
     {
         var logEntries = System.Type.GetType("UnityEditor.LogEntries, UnityEditor.dll");
- 
+
         var clearMethod = logEntries.GetMethod("Clear", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
- 
+
         clearMethod.Invoke(null, null);
     }
 
-	[MenuItem("Custom/Shortcuts/Pause Game %e")]
+    [MenuItem("Custom/Shortcuts/Pause Game %e")]
     private static void PauseTheGame()
     {
         EditorApplication.isPaused = !EditorApplication.isPaused;
@@ -88,6 +89,31 @@ public class DevTools : Editor
         {
             EditorApplication.isPlaying = true;
             EditorApplication.update -= RestartUpdate;
+        }
+    }
+
+    [InitializeOnLoad]
+    public class CleanDuplicateName
+    {
+        static bool eventDuplicateAppend;
+
+        static CleanDuplicateName()
+        {
+            EditorApplication.hierarchyWindowItemOnGUI += (int instanceID, Rect selectionRect) =>
+            {
+                if(Event.current != null && Event.current.type == EventType.ExecuteCommand && (Event.current.commandName == "Duplicate" || Event.current.commandName == "Paste"))
+                    eventDuplicateAppend = true;
+            };
+
+            EditorApplication.hierarchyChanged += () =>
+            {
+                if(eventDuplicateAppend)
+                {
+                    foreach (GameObject iGamebject in Selection.gameObjects)
+                        iGamebject.name = Regex.Replace(iGamebject.name, @"(.*)\s\([0-9]*\)", @"$1");
+                }
+                eventDuplicateAppend = false;
+            };
         }
     }
 }

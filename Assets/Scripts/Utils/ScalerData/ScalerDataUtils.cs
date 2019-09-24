@@ -6,7 +6,7 @@ public enum CanvasScalerType
 {
     IPHONE_5x5,
     IPHONE_6x5,
-    IPAD
+    IPAD,
 }
 
 public class ScalerDataUtils

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -76,14 +77,14 @@ public class StateMachineListener<T, T_STATE_MACHINE, T_STATE_CALLBACK> : MonoBe
         if (innerStateCallbacks.ContainsKey(stateMachine.CurrentState))
         {
             foreach (var delayedEvent in innerStateCallbacks[stateMachine.CurrentState].onLeaveCallbacks)
-                StartCoroutine(CoroutineUtils.DoAfterDelay(delayedEvent.callback.Invoke, delayedEvent.GetDelay()));
+                DOVirtual.DelayedCall(delayedEvent.GetDelay(), delayedEvent.callback.Invoke);
         }
 
         // Call onEnter
         if (innerStateCallbacks.ContainsKey(newState))
         {
             foreach (var delayedEvent in innerStateCallbacks[newState].onEnterCallbacks)
-                StartCoroutine(CoroutineUtils.DoAfterDelay(delayedEvent.callback.Invoke, delayedEvent.GetDelay()));
+                DOVirtual.DelayedCall(delayedEvent.GetDelay(), delayedEvent.callback.Invoke);
         }
     }
 
