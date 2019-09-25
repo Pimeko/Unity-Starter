@@ -11,4 +11,9 @@ public class DebugUtils
         Debug.DrawLine(position - new Vector3(0, 0, 1), position + new Vector3(0, 0, 1), Color.white);
         Debug.DrawLine(position - new Vector3(0, 1, 0), position + new Vector3(0, 1, 0), Color.white);
     }
+
+    public static void PrintNull(object o)
+    {
+        Debug.Log(o == null ? "null" : "not null");
+    }
 }
