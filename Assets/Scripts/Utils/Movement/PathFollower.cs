@@ -21,13 +21,17 @@ public class PathFollower : MonoBehaviour
 
     [SerializeField]
     float movementSpeed = 3;
+    public float MovementSpeed { get { return movementSpeed; } }
     [SerializeField]
     float rotationSpeed = 4;
+    public float RotationSpeed { get { return rotationSpeed; } }
 
     [SerializeField]
     bool idleAtEachPoint = false;
+    public bool IdleAtEachPoint { get { return idleAtEachPoint; } }
     [SerializeField, ShowIf("idleAtEachPoint")]
     float idleTime = 1;
+    public float IdleTime { get { return idleTime; } }
 
     public Action<PathFollowerState> onStateChange;
     [SerializeField, ReadOnly]
