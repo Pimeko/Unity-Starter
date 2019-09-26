@@ -53,4 +53,10 @@ public static class ListExtensions
             list[n] = value;
         }
     }
+    
+
+    public static int FindIndex<T>(this List<T> list, T element)
+    {
+        return list.FindIndex(el => el.Equals(element));
+    }
 }

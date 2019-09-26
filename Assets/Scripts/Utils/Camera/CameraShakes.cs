@@ -51,6 +51,17 @@ public class CameraShakes : MonoBehaviour
     }
 
     [Button, TabGroup("Horizontal")]
+    public void VerySmallShakeHorizontal(Action callback)
+    {
+        Vector3 initialPosition = transform.position;
+        DOTween.Sequence()
+           .Append(transform.DOMove(transform.position + transform.right * .02f, .1f))
+           .Append(transform.DOMove(transform.position - transform.right * .02f, .1f))
+           .Append(transform.DOMove(transform.position, .1f))
+           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+    }
+
+    [Button, TabGroup("Horizontal")]
     public void SmallShakeHorizontal(Action callback)
     {
         Vector3 initialPosition = transform.position;
