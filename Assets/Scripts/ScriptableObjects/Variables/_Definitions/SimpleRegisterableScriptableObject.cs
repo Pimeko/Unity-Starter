@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class SimpleRegisterableScriptableObject<T> : RegisterableScriptableObject
 {
-    [SerializeField]
+    [SerializeField, TabGroup("Basic")]
     protected T initialValue;
 
-    [SerializeField]
+    [SerializeField, TabGroup("Basic")]
     protected T value;
-    [SerializeField, ReadOnly]
+    [SerializeField, TabGroup("Basic"), ReadOnly]
     protected T previousValue;
-    [SerializeField]
+    [SerializeField, TabGroup("Basic")]
     bool triggerIfSameValue = false;
-    [SerializeField]
+    [SerializeField, TabGroup("Basic")]
     bool logOnChange;
 
     public T Value

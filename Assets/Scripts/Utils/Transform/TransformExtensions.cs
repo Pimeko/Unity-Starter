@@ -84,6 +84,14 @@ public static class TransformExtensions
             backingField = t.GetComponentsInChildren<T>();
         return backingField;
     }
+    
+    public static T CachedComponentInParent<T>(this Transform t, ref T backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponentInParent<T>();
+        return backingField;
+    }
 
 
     public static T[] GetComponentsInChildrenOnly<T>(this Transform t, bool includeInactive = false)

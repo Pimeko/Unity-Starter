@@ -5,18 +5,19 @@ using UnityEngine;
 
 public class RegisterableListVariable<T> : RegisterableScriptableObject
 {
-    [SerializeField]
+    [SerializeField, TabGroup("Basic")]
     public List<T> initialValue;
     public List<T> InitialValue { get { return initialValue; } set { initialValue = value; OnInit(); } }
 
-    [SerializeField]
+    [SerializeField, TabGroup("Basic")]
     protected List<T> value;
-    [SerializeField]
+    [SerializeField, TabGroup("Basic")]
     protected List<T> previousValue;
     public List<T> Value { get { return value; } set { previousValue = this.value; this.value = value; TriggerChange(); } }
 	public List<T> PreviousValue { get { return previousValue; } }
-    [SerializeField]
+    [SerializeField, TabGroup("Basic")]
     IntVariable index;
+	public IntVariable Index { get { return index; } }
 
     public T GetCurrent(bool moduloCount = false)
     {
