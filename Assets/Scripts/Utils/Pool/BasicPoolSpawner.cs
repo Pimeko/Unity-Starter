@@ -20,7 +20,12 @@ public class BasicPoolSpawner : MonoBehaviour
         SpawnAt(transform);
     }
 
-    public void SpawnAt(Transform t)
+    public void SpawnButNotParent()
+    {
+        SpawnAt(transform, false);
+    }
+
+    public void SpawnAt(Transform t, bool keepParent = true)
     {
         GameObject o = currentPool.Value.GetPooledObject(distributionPool.Draw());
         RectTransform rectTransform = o.GetComponent<RectTransform>();
@@ -36,6 +41,8 @@ public class BasicPoolSpawner : MonoBehaviour
             o.transform.localPosition = Vector3.zero;
             o.transform.localScale = scale;
         }
+        if (!keepParent)
+            o.transform.parent = null;
         o.SetActive(true);
     }
 }

@@ -29,9 +29,8 @@ public class InputInteractionsController : MonoBehaviour
         {
             if (!isInteracting)
             {
-                RaycastHit hit;
                 Ray ray = cam.ScreenPointToRay(new Vector3(playerInput.TouchPosition.x, playerInput.TouchPosition.y, 0));
-                bool hitSomething = Physics.Raycast(ray, out hit, Mathf.Infinity, layerHitbox);
+                bool hitSomething = Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerHitbox);
                 
                 if (hitSomething)
                     currentInputInteractionController = hit.collider.transform.GetComponentOrInParent<InputInteractionController>();

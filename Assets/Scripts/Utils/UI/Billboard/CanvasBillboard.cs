@@ -6,12 +6,15 @@ using UnityEngine;
 public class CanvasBillboard : MonoBehaviour
 {
     [SerializeField]
-    Camera cam;
+    GameObjectVariable currentCameraGO;
     [SerializeField]
     bool billboardOnUpdate;
 
+    Camera cam;
+
     void Start()
     {
+        cam = currentCameraGO.Value.GetComponent<Camera>();
         DoBillboard();
     }
 
