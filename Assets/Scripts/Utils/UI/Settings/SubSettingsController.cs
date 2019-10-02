@@ -7,7 +7,7 @@ using UnityEngine;
 public class SubSettingsController : MonoBehaviour
 {
     [SerializeField]
-    float distanceBetweenEach = 127;
+    CanvasScalerDataVariable distanceBetweenEach;
     [SerializeField]
     List<RectTransform> children;
     bool isOpen;
@@ -25,7 +25,7 @@ public class SubSettingsController : MonoBehaviour
             var child = children[i];
             child.gameObject.SetActive(true);
             child.DOMove(
-                new Vector3(child.position.x, child.position.y - (i + 1) * distanceBetweenEach, child.position.z),
+                new Vector3(child.position.x, child.position.y - (i + 1) * distanceBetweenEach.GetCurrentValue(), child.position.z),
                 0.3f)
                 .SetEase(Ease.OutCirc);
         }
@@ -39,7 +39,7 @@ public class SubSettingsController : MonoBehaviour
         {
             var child = children[i];
             child.DOMove(
-                new Vector3(child.position.x, child.position.y + (i + 1) * distanceBetweenEach, child.position.z),
+                new Vector3(child.position.x, child.position.y + (i + 1) * distanceBetweenEach.GetCurrentValue(), child.position.z),
                 0.3f)
                 .SetEase(Ease.OutCirc)
                 .OnComplete(() => child.gameObject.SetActive(false));

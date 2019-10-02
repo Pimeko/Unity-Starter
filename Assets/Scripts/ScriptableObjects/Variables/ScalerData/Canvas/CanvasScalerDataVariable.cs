@@ -9,4 +9,9 @@ public class CanvasScalerDataVariable : SerializedScriptableObject
     [SerializeField]
     Dictionary<CanvasScalerType, float> value;
     public Dictionary<CanvasScalerType, float> Value { get { return value; } }
+
+    public float GetCurrentValue()
+    {
+        return Value[ScalerDataUtils.GetCurrentScalerType()];
+    }
 }
