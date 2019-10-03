@@ -10,14 +10,29 @@ public class OffsetFollower : MonoBehaviour
     bool freezeX, freezeY, freezeZ;
 
     Vector3 offset;
+    bool isFollowing;
 
     void Start()
     {
         offset = transform.position - toFollow.position;
+        isFollowing = true;
+    }
+
+    public void Continue()
+    {
+        isFollowing = true;
+    }
+
+    public void Stop()
+    {
+        isFollowing = false;
     }
     
     void Update()
     {
+        if (!isFollowing)
+            return;
+            
         Vector3 targetPosition = toFollow.position + offset;
         if (freezeX)
             targetPosition.x = transform.position.x;
