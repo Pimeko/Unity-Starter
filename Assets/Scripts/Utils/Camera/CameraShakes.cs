@@ -115,4 +115,34 @@ public class CameraShakes : MonoBehaviour
            .Append(transform.DOMove(transform.position, .5f).SetEase(Ease.OutElastic))
            .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
     }
+
+    [Button, TabGroup("Zoom")]
+    public void SmallZoomOutZoomInFov(Action callback)
+    {
+        float initialFov = cam.fieldOfView;
+        DOTween.Sequence()
+           .Append(DOVirtual.Float(initialFov, initialFov + 2, .15f, newFov => cam.fieldOfView = newFov))
+           .Append(DOVirtual.Float(initialFov + 2, initialFov, .15f, newFov => cam.fieldOfView = newFov))
+           .OnComplete(() => { cam.fieldOfView = initialFov; callback?.Invoke(); });
+    }
+
+    [Button, TabGroup("Zoom")]
+    public void ZoomInZoomOutFov(Action callback)
+    {
+        float initialFov = cam.fieldOfView;
+        DOTween.Sequence()
+           .Append(DOVirtual.Float(initialFov, initialFov - 5, 1, newFov => cam.fieldOfView = newFov))
+           .Append(DOVirtual.Float(initialFov - 5, initialFov, .5f, newFov => cam.fieldOfView = newFov))
+           .OnComplete(() => { cam.fieldOfView = initialFov; callback?.Invoke(); });
+    }
+
+    [Button, TabGroup("Zoom")]
+    public void ZoomOutZoomInElasticFov(Action callback)
+    {
+        float initialFov = cam.fieldOfView;
+        DOTween.Sequence()
+           .Append(DOVirtual.Float(initialFov, initialFov + 5, .5f, newFov => cam.fieldOfView = newFov))
+           .Append(DOVirtual.Float(initialFov + 5, initialFov, .5f, newFov => cam.fieldOfView = newFov).SetEase(Ease.OutElastic))
+           .OnComplete(() => { cam.fieldOfView = initialFov; callback?.Invoke(); });
+    }
 }
