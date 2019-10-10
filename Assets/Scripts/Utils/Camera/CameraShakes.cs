@@ -16,104 +16,125 @@ public class CameraShakes : MonoBehaviour
     }
 
     [Button, TabGroup("Vertical")]
+    public void ShakeHorizontalTweak(Action callback, float intensity = 1, float duration = 0.3f)
+    {
+        float factor = Mathf.Clamp(intensity, 0, 1) * 0.25f;
+        Vector3 initialPosition = transform.localPosition;
+        DOTween.Sequence()
+            .AppendCallback(() =>
+            {
+                float elapsedTime = 0;
+                while (elapsedTime < duration)
+                {
+                    DOTween.Sequence()
+                    .Append(transform.DOLocalMove(transform.localPosition + transform.right * factor, .1f))
+                    .Append(transform.DOLocalMove(transform.localPosition + transform.right * factor, .1f))
+                    .AppendCallback(() => { elapsedTime += .2f; });
+                }
+            })
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
+    }
+
+    [Button, TabGroup("Vertical")]
     public void SmallShakeVertical(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position + transform.up * 0.05f, .1f))
-           .Append(transform.DOMove(transform.position - transform.up * 0.05f, .1f))
-           .Append(transform.DOMove(transform.position, .1f))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition + transform.up * 0.05f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.up * 0.05f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Vertical")]
     public void ShakeVertical(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position + transform.up * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position - transform.up * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position, .1f))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition + transform.up * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.up * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Vertical")]
     public void LongShakeVertical(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position + transform.up * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position - transform.up * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position + transform.up * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position - transform.up * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position, .1f))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition + transform.up * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.up * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition + transform.up * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.up * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Horizontal")]
     public void VerySmallShakeHorizontal(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position + transform.right * .02f, .1f))
-           .Append(transform.DOMove(transform.position - transform.right * .02f, .1f))
-           .Append(transform.DOMove(transform.position, .1f))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition + transform.right * .02f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.right * .02f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Horizontal")]
     public void SmallShakeHorizontal(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position + transform.right * 0.05f, .1f))
-           .Append(transform.DOMove(transform.position - transform.right * 0.05f, .1f))
-           .Append(transform.DOMove(transform.position, .1f))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.05f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.05f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Horizontal")]
     public void ShakeHorizontal(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position + transform.right * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position - transform.right * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position, .1f))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Horizontal")]
     public void LongShakeHorizontal(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position + transform.right * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position - transform.right * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position + transform.right * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position - transform.right * 0.2f, .1f))
-           .Append(transform.DOMove(transform.position, .1f))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.2f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Zoom")]
     public void SmallZoomOutZoomIn(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position - transform.forward / 2, .15f))
-           .Append(transform.DOMove(transform.position, .15f))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition - transform.forward / 2, .15f))
+           .Append(transform.DOLocalMove(transform.localPosition, .15f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Zoom")]
     public void ZoomOutZoomInElastic(Action callback)
     {
-        Vector3 initialPosition = transform.position;
+        Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOMove(transform.position - transform.forward, .5f))
-           .Append(transform.DOMove(transform.position, .5f).SetEase(Ease.OutElastic))
-           .OnComplete(() => { transform.position = initialPosition; callback?.Invoke(); });
+           .Append(transform.DOLocalMove(transform.localPosition - transform.forward, .5f))
+           .Append(transform.DOLocalMove(transform.localPosition, .5f).SetEase(Ease.OutElastic))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
 
     [Button, TabGroup("Zoom")]
