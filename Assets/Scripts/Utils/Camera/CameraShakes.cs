@@ -16,27 +16,6 @@ public class CameraShakes : MonoBehaviour
     }
 
     [Button, TabGroup("Vertical")]
-    public void ShakeHorizontalTweak(Action callback, float intensity = 1, float duration = 0.3f)
-    {
-        float factor = Mathf.Clamp(intensity, 0, 1) * 0.25f;
-        Vector3 initialPosition = transform.localPosition;
-        DOTween.Sequence()
-            .AppendCallback(() =>
-            {
-                float elapsedTime = 0;
-                while (elapsedTime < duration)
-                {
-                    DOTween.Sequence()
-                    .Append(transform.DOLocalMove(transform.localPosition + transform.right * factor, .1f))
-                    .Append(transform.DOLocalMove(transform.localPosition + transform.right * factor, .1f))
-                    .AppendCallback(() => { elapsedTime += .2f; });
-                }
-            })
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
-           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
-    }
-
-    [Button, TabGroup("Vertical")]
     public void SmallShakeVertical(Action callback)
     {
         Vector3 initialPosition = transform.localPosition;
@@ -89,6 +68,17 @@ public class CameraShakes : MonoBehaviour
         DOTween.Sequence()
            .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.05f, .1f))
            .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.05f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
+    }
+
+    [Button, TabGroup("Horizontal")]
+    public void MediumShakeHorizontal(Action callback)
+    {
+        Vector3 initialPosition = transform.localPosition;
+        DOTween.Sequence()
+           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.1f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.1f, .1f))
            .Append(transform.DOLocalMove(transform.localPosition, .1f))
            .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
     }
