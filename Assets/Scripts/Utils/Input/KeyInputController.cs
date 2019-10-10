@@ -23,6 +23,7 @@ public class KeyInputController : SerializedMonoBehaviour
     [SerializeField]
     Dictionary<KeyCode, KeyEvents> actions;
 
+    #if UNITY_EDITOR
     private void Update()
     {
         foreach (KeyCode keyCode in actions.Keys)
@@ -35,4 +36,5 @@ public class KeyInputController : SerializedMonoBehaviour
                 actions[keyCode].OnKeyPressed.Invoke();
         }
     }
+    #endif
 }
