@@ -77,10 +77,11 @@ public class CameraShakes : MonoBehaviour
     {
         Vector3 initialPosition = transform.localPosition;
         DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.1f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.1f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.15f, .1f))
+           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.15f, .1f))
            .Append(transform.DOLocalMove(transform.localPosition, .1f))
-           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); })
+            .SetUpdate(true);
     }
 
     [Button, TabGroup("Horizontal")]
@@ -91,7 +92,8 @@ public class CameraShakes : MonoBehaviour
            .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.2f, .1f))
            .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.2f, .1f))
            .Append(transform.DOLocalMove(transform.localPosition, .1f))
-           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); });
+           .OnComplete(() => { transform.localPosition = initialPosition; callback?.Invoke(); })
+            .SetUpdate(true);
     }
 
     [Button, TabGroup("Horizontal")]
