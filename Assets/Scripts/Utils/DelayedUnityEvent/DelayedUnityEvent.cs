@@ -7,6 +7,11 @@ using UnityEngine.Events;
 public class DelayedUnityEvent
 {
     public BetterEvent callback;
+    
+    public bool useUnityEvents;
+    [ShowIf("useUnityEvents")]
+    public UnityEvent callbackUnity;
+
     public bool useFloatVariable;
 
     [ShowIf("useFloatVariable")]
@@ -37,8 +42,11 @@ public class DelayedUnityEvent
     public void Invoke()
     {
         if ((delay.x > 0 && delay.y > 0) || useFloatVariable)
-            DOVirtual.DelayedCall(GetDelay(), callback.Invoke, ignoreTimeScale);
+            DOVirtual.DelayedCall(GetDelay(), () => { callback.Invoke(); callbackUnity?.Invoke(); }, ignoreTimeScale);
         else
+        {
             callback.Invoke();
+            callbackUnity?.Invoke();
+        }
     }
 }
