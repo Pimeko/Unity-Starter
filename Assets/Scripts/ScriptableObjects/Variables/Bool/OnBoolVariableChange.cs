@@ -9,10 +9,14 @@ public class OnBoolVariableChange : MonoBehaviour
     BoolVariable variable;
     [SerializeField]
     DelayedUnityEvent onTrue, onFalse;
+    [SerializeField]
+    bool evaluateOnStart = false;
 
     void Start()
     {
         variable.AddOnChangeCallback(Evaluate);
+        if (evaluateOnStart)
+            Evaluate();
     }
        
     public void Evaluate()
