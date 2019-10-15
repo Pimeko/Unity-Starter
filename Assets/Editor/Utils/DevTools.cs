@@ -116,4 +116,13 @@ public class DevTools : Editor
             };
         }
     }
+
+    [MenuItem("Custom/Shortcuts/Create Empty GameObject %n")]
+    private static void CreateEmptyGameObject()
+    {
+        var o = Selection.activeGameObject;
+        var instance = new GameObject("GameObject");
+        instance.transform.SetParent(o == null ? null : o.transform);
+        instance.transform.Reset();
+    }
 }

@@ -47,6 +47,20 @@ public static class TransformExtensions
         return null;
     }
 
+    public static void Reset(this Transform t, bool local = true)
+    {
+        if (local)
+        {
+            t.localPosition = Vector3.zero;
+            t.localRotation = Quaternion.identity;
+        }
+        else
+        {
+            t.position = Vector3.zero;
+            t.rotation = Quaternion.identity;
+        }
+    }
+
     /*
         Usage example:
         
@@ -68,7 +82,7 @@ public static class TransformExtensions
             backingField = t.GetComponentInChildren<T>();
         return backingField;
     }
-    
+
     public static T CachedComponentOrInChildren<T>(this Transform t, ref T backingField)
         where T : Component
     {
@@ -84,7 +98,7 @@ public static class TransformExtensions
             backingField = t.GetComponentsInChildren<T>();
         return backingField;
     }
-    
+
     public static T CachedComponentInParent<T>(this Transform t, ref T backingField)
         where T : Component
     {
