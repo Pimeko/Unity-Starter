@@ -59,6 +59,7 @@ public static class TransformExtensions
             t.position = Vector3.zero;
             t.rotation = Quaternion.identity;
         }
+        t.localScale = Vector3.one;
     }
 
     /*
