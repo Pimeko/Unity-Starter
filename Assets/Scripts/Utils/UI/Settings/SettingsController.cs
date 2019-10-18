@@ -16,7 +16,14 @@ public class SettingsController : MonoBehaviour
 
     public void OpenOrClose()
     {
-        animator.SetTrigger(isOpen ? "close" : "open");
-        isOpen = !isOpen;
+        var newValue = !animator.GetBool("isOpen");
+        animator.SetBool("isOpen", newValue);
+        isOpen = newValue;
+    }
+
+    public void Close()
+    {
+        animator.SetBool("isOpen", false);
+        isOpen = false;
     }
 }
