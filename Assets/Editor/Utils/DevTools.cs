@@ -34,7 +34,7 @@ public class DevTools : Editor
     [MenuItem("Custom/Shortcuts/Play &p")]
     private static void Play()
     {
-        EditorSceneManager.OpenScene("Assets/_Scenes/Menu.unity");
+        EditorSceneManager.OpenScene("Assets/_Scenes/PreGame.unity");
         EditorApplication.isPlaying = true;
     }
 
