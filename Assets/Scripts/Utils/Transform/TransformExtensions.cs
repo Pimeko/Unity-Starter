@@ -5,6 +5,71 @@ using UnityEngine;
 
 public static class TransformExtensions
 {
+    # region Cached
+    /*
+        Usage example:
+        
+        Rigidbody rb;
+        Rigidbody Rb => transform.CachedComponent(ref rb);
+     */
+    public static T CachedComponent<T>(this Transform t, ref T backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponent<T>();
+        return backingField;
+    }
+
+    public static T CachedComponentInChildren<T>(this Transform t, ref T backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponentInChildren<T>();
+        return backingField;
+    }
+
+    public static T CachedComponentOrInChildren<T>(this Transform t, ref T backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponentOrInChildren<T>();
+        return backingField;
+    }
+
+    public static T[] CachedComponentsInChildren<T>(this Transform t, ref T[] backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponentsInChildren<T>();
+        return backingField;
+    }
+
+    public static List<T> CachedComponentsInChildrenList<T>(this Transform t, ref List<T> backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponentsInChildren<T>().ToList();
+        return backingField;
+    }
+
+    public static T CachedComponentInParent<T>(this Transform t, ref T backingField)
+        where T : Component
+    {
+        if (backingField == null)
+            backingField = t.GetComponentInParent<T>();
+        return backingField;
+    }
+
+    public static T[] GetComponentsInChildrenOnly<T>(this Transform t, bool includeInactive = false)
+    {
+        List<T> result = t.GetComponentsInChildren<T>(includeInactive).ToList();
+        T parentComponent = t.GetComponent<T>();
+        if (!IsNull(parentComponent))
+            result.Remove(parentComponent);
+        return result.ToArray();
+    }
+    # endregion
+
     private static bool IsNull<T>(T obj)
     {
         return EqualityComparer<T>.Default.Equals(obj, default(T));
@@ -66,59 +131,16 @@ public static class TransformExtensions
     {
         return transform.GetComponentsInChildren<Transform>().Where(t => t.name == name).ToArray();
     }
-    
-    /*
-        Usage example:
-        
-        Rigidbody rb;
-        Rigidbody Rb => transform.CachedComponent(ref rb);
-     */
-    public static T CachedComponent<T>(this Transform t, ref T backingField)
-        where T : Component
-    {
-        if (backingField == null)
-            backingField = t.GetComponent<T>();
-        return backingField;
-    }
 
-    public static T CachedComponentInChildren<T>(this Transform t, ref T backingField)
-        where T : Component
+    public static void DestroyAllChildren(this Transform transform)
     {
-        if (backingField == null)
-            backingField = t.GetComponentInChildren<T>();
-        return backingField;
-    }
-
-    public static T CachedComponentOrInChildren<T>(this Transform t, ref T backingField)
-        where T : Component
-    {
-        if (backingField == null)
-            backingField = t.GetComponentOrInChildren<T>();
-        return backingField;
-    }
-
-    public static T[] CachedComponentsInChildren<T>(this Transform t, ref T[] backingField)
-        where T : Component
-    {
-        if (backingField == null)
-            backingField = t.GetComponentsInChildren<T>();
-        return backingField;
-    }
-
-    public static T CachedComponentInParent<T>(this Transform t, ref T backingField)
-        where T : Component
-    {
-        if (backingField == null)
-            backingField = t.GetComponentInParent<T>();
-        return backingField;
-    }
-
-    public static T[] GetComponentsInChildrenOnly<T>(this Transform t, bool includeInactive = false)
-    {
-        List<T> result = t.GetComponentsInChildren<T>(includeInactive).ToList();
-        T parentComponent = t.GetComponent<T>();
-        if (!IsNull(parentComponent))
-            result.Remove(parentComponent);
-        return result.ToArray();
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            # if UNITY_EDITOR
+            Object.DestroyImmediate(transform.GetChild(i).gameObject);
+            # else
+            Object.Destroy(transform.GetChild(i).gameObject);
+            # endif
+        }
     }
 }
