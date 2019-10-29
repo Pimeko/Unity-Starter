@@ -25,7 +25,8 @@ public class SmoothAudioSource : MonoBehaviour
         {
             DOTweenUtils.KillTween(ref currentTween);
             currentTween = DOVirtual.Float(0, volumeToReach, .2f, newVolume => CurrentAudioSource.volume = newVolume);
-            CurrentAudioSource.Play();
+            if (CurrentAudioSource.gameObject.activeInHierarchy)
+                CurrentAudioSource.Play();
             isPlaying = true;
         }
     }
@@ -35,7 +36,12 @@ public class SmoothAudioSource : MonoBehaviour
         if (isPlaying)
         {
             DOTweenUtils.KillTween(ref currentTween);
-            currentTween = DOVirtual.Float(volumeToReach, 0, .2f, newVolume => CurrentAudioSource.volume = newVolume).OnComplete(CurrentAudioSource.Play);
+            currentTween = DOVirtual.Float(volumeToReach, 0, .2f, newVolume => CurrentAudioSource.volume = newVolume)
+            .OnComplete(() =>
+            {
+                if (CurrentAudioSource.gameObject.activeInHierarchy)
+                    CurrentAudioSource.Stop();
+            });
             isPlaying = false;
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public static class TransformExtensions
@@ -136,11 +137,14 @@ public static class TransformExtensions
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
-            # if UNITY_EDITOR
-            Object.DestroyImmediate(transform.GetChild(i).gameObject);
-            # else
+#if UNITY_EDITOR
+            if (EditorApplication.isPlaying)
+                Object.Destroy(transform.GetChild(i).gameObject);
+            else
+                Object.DestroyImmediate(transform.GetChild(i).gameObject);
+#else
             Object.Destroy(transform.GetChild(i).gameObject);
-            # endif
+#endif
         }
     }
 }
