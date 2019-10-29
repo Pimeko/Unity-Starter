@@ -39,7 +39,7 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
             return actions;
         }
     }
-    
+
     [ShowIf("ordered"), SerializeField]
     List<T_UNITY_EVENT> orderedActions;
     List<T_UNITY_EVENT> OrderedActions
@@ -52,23 +52,30 @@ public abstract class PayloadedGameEventListener<T, T_GAME_EVENT, T_UNITY_EVENT>
         }
     }
 
+    [SerializeField]
+    DelayedUnityEvent callbacks;
+
     protected override void OnEnableChild()
     {
         waitForDelay = new WaitForSecondsRealtime(useFloatVariable ? delayVariable.Value : delayBeforeAction);
     }
 
     IEnumerator InvokeAfterDelay(T_UNITY_EVENT actions, object value)
-	{
+    {
         yield return waitForDelay;
         actions.Invoke((T)value);
-	}
+        callbacks?.Invoke();
+    }
 
     IEnumerator InvokeAfterDelay(List<T_UNITY_EVENT> actions, object value)
-	{
-		yield return waitForDelay;
+    {
+        yield return waitForDelay;
         foreach (T_UNITY_EVENT action in actions)
+        {
             action?.Invoke((T)value);
-	}
+            callbacks?.Invoke();
+        }
+    }
 
     public void AddCallback(UnityAction<T> callback)
     {
