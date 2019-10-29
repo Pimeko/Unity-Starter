@@ -18,12 +18,17 @@ public class PlayerDataController : SerializedMonoBehaviour
     bool loadOnAwake;
     [SerializeField]
     bool JSON_ONLY = false;
+    [SerializeField]
+    bool keepAlive = true;
 
     string dataPath;
 	IPlayerData[] playerDataVariables;
 
     void Awake()
     {
+        if (keepAlive)
+            GameObject.DontDestroyOnLoad(gameObject);
+
         dataPath = Path.Combine(Application.persistentDataPath, "data");
 		playerDataVariables = GetComponents<IPlayerData>();
 
@@ -73,6 +78,7 @@ public class PlayerDataController : SerializedMonoBehaviour
     }
 
     // Save the content of each related-scriptable objects in the save file
+    [Button]
     public void Save()
     {
         PlayerData playerData = new PlayerData();
@@ -86,6 +92,7 @@ public class PlayerDataController : SerializedMonoBehaviour
     }
 
     // Load each data in the related-scriptable objects
+    [Button]
     public void Load()
     {
         if (!File.Exists(dataPath))
