@@ -56,7 +56,7 @@ public class PathFollower : MonoBehaviour
     Tween currentIdleTween;
     Rigidbody rb;
 
-    void Start()
+    void Awake()
     {
         curveMath = curve.GetComponent<BGCcMath>();
         rb = GetComponent<Rigidbody>();
