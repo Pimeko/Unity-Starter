@@ -33,6 +33,11 @@ public class PathFollower : MonoBehaviour
     float idleTime = 1;
     public float IdleTime { get { return idleTime; } }
 
+    [SerializeField]
+    bool displayPathOnEditorView = false;
+    [SerializeField, ShowIf("displayPathOnEditorView")]
+    Color displayColor;
+
     public Action<PathFollowerState> onStateChange;
     [SerializeField, ReadOnly]
     PathFollowerState currentState;
@@ -98,8 +103,22 @@ public class PathFollower : MonoBehaviour
             currentIdleTween.Pause();
     }
 
+    void DisplayInView()
+    {
+#if UNITY_EDITOR
+        if (!displayPathOnEditorView)
+            return;
+
+        for (int i = 0; i < curve.PointsCount - 1; i++)
+            DebugExtension.DebugCylinder(curve.Points[i].PositionWorld, curve.Points[i + 1].PositionWorld, displayColor, .3f, 0, false);
+        DebugExtension.DebugCylinder(curve.Points[curve.PointsCount - 1].PositionWorld, curve.Points[0].PositionWorld, displayColor, .3f, 0, false);
+#endif
+    }
+
     void Update()
     {
+        DisplayInView();
+
         if (!isFollowingPath)
             return;
 
