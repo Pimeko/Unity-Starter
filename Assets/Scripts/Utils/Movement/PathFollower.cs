@@ -128,7 +128,7 @@ public class PathFollower : MonoBehaviour
             {
                 Vector3 tangent;
                 MovePosition(curveMath.CalcPositionAndTangentByDistance(distanceDone, out tangent));
-                LerpRotation(TransformUtils.LookRotation(tangent));
+                LerpRotation(QuaternionExtensions.LookRotation(tangent));
 
                 float currentDistanceDone = Time.deltaTime * movementSpeed;
                 if (pointToPointDistanceDone + currentDistanceDone >= distanceToDo)
@@ -161,7 +161,7 @@ public class PathFollower : MonoBehaviour
         {
             Vector3 tangent;
             MovePosition(curveMath.CalcPositionAndTangentByDistance(distanceDone, out tangent));
-            LerpRotation(TransformUtils.LookRotation(tangent));
+            LerpRotation(QuaternionExtensions.LookRotation(tangent));
             distanceDone += Time.deltaTime * movementSpeed;
             distanceDone %= distanceTotal;
         }
@@ -189,14 +189,14 @@ public class PathFollower : MonoBehaviour
         {
             if (currentPointIndex + 1 == curve.Points.Length)
             {
-                distanceToDo = TransformUtils.Distance(curveMath.GetDistance(currentPointIndex), curveMath.GetDistance(currentPointIndex - 1));
+                distanceToDo = (curveMath.GetDistance(currentPointIndex)).Distance(curveMath.GetDistance(currentPointIndex - 1));
                 currentPointIndex--;
 
                 pointIndexGoingUp = false;
             }
             else
             {
-                distanceToDo = TransformUtils.Distance(curveMath.GetDistance(currentPointIndex), curveMath.GetDistance(currentPointIndex + 1));
+                distanceToDo = (curveMath.GetDistance(currentPointIndex)).Distance(curveMath.GetDistance(currentPointIndex + 1));
                 currentPointIndex++;
             }
         }
@@ -204,14 +204,14 @@ public class PathFollower : MonoBehaviour
         {
             if (currentPointIndex == 0)
             {
-                distanceToDo = TransformUtils.Distance(curveMath.GetDistance(currentPointIndex), curveMath.GetDistance(currentPointIndex + 1));
+                distanceToDo = (curveMath.GetDistance(currentPointIndex)).Distance(curveMath.GetDistance(currentPointIndex + 1));
                 currentPointIndex++;
 
                 pointIndexGoingUp = true;
             }
             else
             {
-                distanceToDo = TransformUtils.Distance(curveMath.GetDistance(currentPointIndex), curveMath.GetDistance(currentPointIndex - 1));
+                distanceToDo = (curveMath.GetDistance(currentPointIndex)).Distance(curveMath.GetDistance(currentPointIndex - 1));
                 currentPointIndex--;
             }
         }

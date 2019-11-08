@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class VibrationController : MonoBehaviour
@@ -8,6 +9,8 @@ public class VibrationController : MonoBehaviour
 	[SerializeField]
 	BoolVariable vibrationActive;
 	[SerializeField]
+	bool useBatch;
+	[SerializeField, ShowIf("useBatch")]
 	float maxBatch = 10, delayBetweenBatchReset = 2;
 	[SerializeField]
 	bool logOnAnyVibration;
@@ -23,7 +26,7 @@ public class VibrationController : MonoBehaviour
 
 	void UpdateBatch()
 	{
-		if (isDelaying)
+		if (!useBatch || isDelaying)
 			return;
 		if (nbInBatch < maxBatch)
 		{

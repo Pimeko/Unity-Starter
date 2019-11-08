@@ -3,16 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TransformUtils
+public static class Vector3Utils
 {
     public static float Distance(this Vector3 a, Vector3 b)
     {
         return Vector3.Distance(a, b);
-    }
-
-    public static float Distance(this float a, float b)
-    {
-        return Mathf.Abs(a - b);
     }
 
     public static Vector3 IntersectionVectorPlane(Vector3 origin, Vector3 direction, Vector3 planeNormal, Vector3 planePoint)
@@ -25,8 +20,12 @@ public static class TransformUtils
         return new Vector3(origin.x + direction.x * t, origin.y + direction.y * t, origin.z + direction.z * t);
     }
 
-    public static Quaternion LookRotation(Vector3 to)
+    public static Vector3 ToAbs(this Vector3 v)
     {
-        return to != Vector3.zero ? Quaternion.LookRotation(to) : Quaternion.identity;
+        return new Vector3(
+            Mathf.Abs(v.x),
+            Mathf.Abs(v.y),
+            Mathf.Abs(v.z)
+        );
     }
 }
