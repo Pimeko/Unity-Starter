@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using MoreMountains.NiceVibrations;
 
 public class VibrationController : MonoBehaviour
 {
@@ -51,9 +52,7 @@ public class VibrationController : MonoBehaviour
 
 		UpdateBatch();
 
-		#if !UNITY_EDITOR && UNITY_IOS
-			iOSHapticFeedback.Instance.Trigger(iOSHapticFeedback.iOSFeedbackType.ImpactLight);
-		#endif
+		MMVibrationManager.Haptic(HapticTypes.LightImpact);
 	}
 
 	public void VibrateMedium()
@@ -63,9 +62,7 @@ public class VibrationController : MonoBehaviour
 
 		UpdateBatch();
 
-		#if !UNITY_EDITOR && UNITY_IOS
-			iOSHapticFeedback.Instance.Trigger(iOSHapticFeedback.iOSFeedbackType.ImpactMedium);
-		#endif
+		MMVibrationManager.Haptic(HapticTypes.MediumImpact);
 	}
 
 	public void VibrateHeavy()
@@ -75,11 +72,7 @@ public class VibrationController : MonoBehaviour
 
 		UpdateBatch();
 
-		#if !UNITY_EDITOR && UNITY_IOS
-			iOSHapticFeedback.Instance.Trigger(iOSHapticFeedback.iOSFeedbackType.ImpactHeavy);
-		#elif UNITY_ANDROID
-			Handheld.Vibrate();
-		#endif
+		MMVibrationManager.Haptic(HapticTypes.HeavyImpact);
 	}
 
 	public void VibrateSuccess()
@@ -89,11 +82,7 @@ public class VibrationController : MonoBehaviour
 
 		UpdateBatch();
 
-		#if !UNITY_EDITOR && UNITY_IOS
-			iOSHapticFeedback.Instance.Trigger(iOSHapticFeedback.iOSFeedbackType.Success);
-		#elif UNITY_ANDROID
-			Handheld.Vibrate();
-		#endif
+		MMVibrationManager.Haptic(HapticTypes.Success);
 	}
 
 	public void VibrateFailure()
@@ -103,11 +92,7 @@ public class VibrationController : MonoBehaviour
 
 		UpdateBatch();
 
-		#if !UNITY_EDITOR && UNITY_IOS
-			iOSHapticFeedback.Instance.Trigger(iOSHapticFeedback.iOSFeedbackType.Failure);
-		#elif UNITY_ANDROID
-			Handheld.Vibrate();
-		#endif
+		MMVibrationManager.Haptic(HapticTypes.Failure);
 	}
 
 	public void VibrateSelectionChange()
@@ -117,10 +102,6 @@ public class VibrationController : MonoBehaviour
 
 		UpdateBatch();
 
-		#if !UNITY_EDITOR && UNITY_IOS
-			iOSHapticFeedback.Instance.Trigger(iOSHapticFeedback.iOSFeedbackType.SelectionChange);
-		#elif UNITY_ANDROID
-			Handheld.Vibrate();
-		#endif
+		MMVibrationManager.Haptic(HapticTypes.Selection);
 	}
 }
