@@ -60,6 +60,7 @@ public static class TransformExtensions
             backingField = t.GetComponentInParent<T>();
         return backingField;
     }
+    # endregion
 
     public static T[] GetComponentsInChildrenOnly<T>(this Transform t, bool includeInactive = false)
     {
@@ -69,7 +70,18 @@ public static class TransformExtensions
             result.Remove(parentComponent);
         return result.ToArray();
     }
-    # endregion
+
+    public static T[] GetComponentsInFirstChildrenOnly<T>(this Transform t, bool includeInactive = false)
+    {
+        List<T> result = new List<T>();
+        foreach (Transform child in t)
+        {
+            T component;
+            if ((child.gameObject.activeInHierarchy || includeInactive) && (component = child.GetComponent<T>()) != null)
+                result.Add(component);
+        }
+        return result.ToArray();
+    }
 
     private static bool IsNull<T>(T obj)
     {
@@ -146,5 +158,25 @@ public static class TransformExtensions
             Object.Destroy(transform.GetChild(i).gameObject);
 #endif
         }
+    }
+
+    public static Transform[] GetChildren(this Transform transform, bool includeInactive = false)
+    {
+        return transform.GetComponentsInChildrenOnly<Transform>(includeInactive);
+    }
+
+    public static Transform[] GetFirstChildren(this Transform transform, bool includeInactive = false)
+    {
+        return transform.GetComponentsInFirstChildrenOnly<Transform>(includeInactive);
+    }
+
+    public static RectTransform[] GetChildren(this RectTransform transform, bool includeInactive = false)
+    {
+        return transform.GetComponentsInChildrenOnly<RectTransform>(includeInactive);
+    }
+
+    public static RectTransform[] GetFirstChildren(this RectTransform transform, bool includeInactive = false)
+    {
+        return transform.GetComponentsInFirstChildrenOnly<RectTransform>(includeInactive);
     }
 }

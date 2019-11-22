@@ -39,14 +39,25 @@ public class DelayedUnityEvent
         this.delay = delay;
     }
 
-    public void Invoke()
+    void InternalInvoke()
     {
-        if ((delay.x > 0 && delay.y > 0) || useFloatVariable)
-            DOVirtual.DelayedCall(GetDelay(), () => { callback.Invoke(); callbackUnity?.Invoke(); }, ignoreTimeScale);
-        else
+        try
         {
             callback.Invoke();
             callbackUnity?.Invoke();
         }
+        catch (System.Exception e)
+        {
+            // TODO: do something someday
+            throw e;
+        }
+    }
+
+    public void Invoke()
+    {
+        if ((delay.x > 0 && delay.y > 0) || useFloatVariable)
+            DOVirtual.DelayedCall(GetDelay(), InternalInvoke, ignoreTimeScale);
+        else
+            InternalInvoke();
     }
 }

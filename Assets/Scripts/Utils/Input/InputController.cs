@@ -7,10 +7,15 @@ public class InputController : MonoBehaviour
 {
     [SerializeField]
     InputVariable playerInput;
+    [SerializeField]
+    GameObjectVariable currentCameraGO;
+    
+    Camera cam;
 
     void Start()
     {
         playerInput.IsTouching = false;
+        cam = currentCameraGO.Value.GetComponent<Camera>();
     }
 
     public void Touch()
@@ -29,9 +34,9 @@ public class InputController : MonoBehaviour
         Vector2 inputPosition;
 
         #if !UNITY_EDITOR && !UNITY_ANDROID && (UNITY_ANDROID || UNITY_IOS)
-        inputPosition = ToVector2(Input.GetTouch(0).position);
+        inputPosition = ToVector2(cam.ScreenToViewportPoint(Input.GetTouch(0).position));
         #else
-        inputPosition = ToVector2(Input.mousePosition);
+        inputPosition = ToVector2(cam.ScreenToViewportPoint(Input.mousePosition));
         #endif
 
         return inputPosition;
