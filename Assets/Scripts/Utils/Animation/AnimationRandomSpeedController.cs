@@ -6,8 +6,16 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class AnimationRandomSpeedController : MonoBehaviour
 {
-    [SerializeField, MinMaxSlider(0f, 10, true)]
-    Vector2 range = new Vector2(.5f, 1.5f);
+    [System.Serializable]
+    public class AnimationSpeed
+    {
+        public string parameter;
+        [SerializeField, MinMaxSlider(0f, 10, true)]
+        public Vector2 range; 
+    }
+
+    [SerializeField]
+    List<AnimationSpeed> animationSpeeds;
 
     Animator animator;
 
@@ -24,6 +32,12 @@ public class AnimationRandomSpeedController : MonoBehaviour
     void SetRandomSpeed()
     {
         if (animator.enabled)
-            animator.SetFloat("speed", Random.Range(range.x, range.y));
+        {
+            animationSpeeds.ForEach(animationSpeed => {
+                animator.SetFloat(
+                    animationSpeed.parameter,
+                    Random.Range(animationSpeed.range.x, animationSpeed.range.y));
+            });
+        }
     }
 }
