@@ -33,7 +33,7 @@ public class InputController : MonoBehaviour
     {
         Vector2 inputPosition;
 
-        #if !UNITY_EDITOR && !UNITY_ANDROID && (UNITY_ANDROID || UNITY_IOS)
+        #if !UNITY_EDITOR
         inputPosition = ToVector2(cam.ScreenToViewportPoint(Input.GetTouch(0).position));
         #else
         inputPosition = ToVector2(cam.ScreenToViewportPoint(Input.mousePosition));
