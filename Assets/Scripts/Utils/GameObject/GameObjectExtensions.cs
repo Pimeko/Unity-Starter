@@ -19,4 +19,9 @@ public static class GameObjectExtensions
     {
         ApplyOnChildrenRecursively(gameObject, child => child.layer = layer);
     }
+    
+    public static void ChangeTagRecursively(this GameObject gameObject, string tag)
+    {
+        ApplyOnChildrenRecursively(gameObject, child => child.tag = tag);
+    }
 }

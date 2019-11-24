@@ -37,10 +37,16 @@ public class MaterialRandomProperties : MonoBehaviour
     void Start()
     {
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        if (meshRenderer == null || materialIndex < 0 || materialIndex > meshRenderer.materials.Length)
-            throw new UnityException("No mesh renderer found.");
+        SkinnedMeshRenderer skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        
+        if ((meshRenderer == null && skinnedMeshRenderer == null)
+            || materialIndex < 0
+            || (meshRenderer != null && materialIndex > meshRenderer.materials.Length)
+            || (skinnedMeshRenderer != null && materialIndex > skinnedMeshRenderer.materials.Length))
+            throw new UnityException("Error while initializing material properties.");
 
-        currentMaterial = meshRenderer.materials[materialIndex];
+        currentMaterial = meshRenderer != null ? meshRenderer.materials[materialIndex]
+            : skinnedMeshRenderer.materials[materialIndex];
 
         ApplyColorProperties();
     }
