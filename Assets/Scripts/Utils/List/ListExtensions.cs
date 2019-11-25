@@ -54,9 +54,13 @@ public static class ListExtensions
         }
     }
     
-
     public static int FindIndex<T>(this List<T> list, T element)
     {
         return list.FindIndex(el => el.Equals(element));
+    }
+
+    public static T Last<T>(this List<T> list)
+    {
+        return list[list.Count - 1];
     }
 }
