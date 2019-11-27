@@ -7,7 +7,7 @@ public class SimpleRegisterableScriptableObject<T> : RegisterableScriptableObjec
 {
     [SerializeField, TabGroup("Basic")]
     protected T initialValue;
-
+    public T InitialValue { get { return initialValue; } }
     [SerializeField, TabGroup("Basic")]
     protected T value;
     [SerializeField, TabGroup("Basic"), ReadOnly]
