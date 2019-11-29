@@ -5,6 +5,8 @@ using UnityEngine;
 public class MaterialOffsetter : MonoBehaviour
 {
     [SerializeField]
+    bool offsetOnStart = true;
+    [SerializeField]
     Vector2 speed;
 
     MeshRenderer meshRenderer;
@@ -28,6 +30,12 @@ public class MaterialOffsetter : MonoBehaviour
     }
 
     bool isOffsetting;
+
+    void Start()
+    {
+        if (offsetOnStart)
+            Begin();
+    }
 
     public void Begin()
     {
