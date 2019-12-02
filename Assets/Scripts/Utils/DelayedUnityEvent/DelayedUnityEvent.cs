@@ -1,23 +1,28 @@
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
 public class DelayedUnityEvent
 {
+    [OdinSerialize]
     public BetterEvent callback;
     
+    [OdinSerialize]
     public bool useUnityEvents;
-    [ShowIf("useUnityEvents")]
+    [OdinSerialize, ShowIf("useUnityEvents")]
     public UnityEvent callbackUnity;
 
+    [OdinSerialize]
     public bool useFloatVariable;
 
-    [ShowIf("useFloatVariable")]
+    [OdinSerialize, ShowIf("useFloatVariable")]
     public FloatVariable delayVariable;
-    [HideIf("useFloatVariable"), MinMaxSlider(0, 10, true)]
+    [OdinSerialize, HideIf("useFloatVariable"), MinMaxSlider(0, 10, true)]
     public Vector2 delay;
+    [OdinSerialize]
     public bool ignoreTimeScale;
 
     public float GetDelay()
