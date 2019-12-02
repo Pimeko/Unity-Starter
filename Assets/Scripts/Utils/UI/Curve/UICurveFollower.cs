@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BansheeGz.BGSpline.Components;
 using BansheeGz.BGSpline.Curve;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class UICurveFollower : MonoBehaviour
@@ -13,13 +14,17 @@ public class UICurveFollower : MonoBehaviour
     Ease ease = Ease.OutFlash;
     [SerializeField]
     float duration = 1.5f, delayBetweenLoops = 1f;
-    
+    [SerializeField, ShowIf("boomerang")]
+    float delayBetweenBoomerangs = .5f;
+    [SerializeField]
+    bool boomerang;
+
     [SerializeField]
     GameObjectVariable currentCameraGO;
 
     BGCcMath curveMath;
     float distanceDone, distanceTotal;
-    
+
     RectTransform rectTransform;
     RectTransform CurrentRectTransform => transform.CachedComponent(ref rectTransform);
 
@@ -37,10 +42,22 @@ public class UICurveFollower : MonoBehaviour
 
     void Compute()
     {
-        DOTween.Sequence()
-           .Append(DOVirtual.Float(0, distanceTotal, duration, newDistance => distanceDone = newDistance).SetEase(ease))
-           .AppendInterval(delayBetweenLoops)
-           .AppendCallback(Compute);
+        if (boomerang)
+        {
+            DOTween.Sequence()
+               .Append(DOVirtual.Float(0, distanceTotal, duration / 2, newDistance => distanceDone = newDistance).SetEase(ease))
+               .AppendInterval(delayBetweenBoomerangs)
+               .Append(DOVirtual.Float(distanceTotal, 0, duration / 2, newDistance => distanceDone = newDistance).SetEase(ease))
+               .AppendInterval(delayBetweenLoops)
+               .AppendCallback(Compute);
+        }
+        else
+        {
+            DOTween.Sequence()
+               .Append(DOVirtual.Float(0, distanceTotal, duration, newDistance => distanceDone = newDistance).SetEase(ease))
+               .AppendInterval(delayBetweenLoops)
+               .AppendCallback(Compute);
+        }
     }
 
     void Update()
