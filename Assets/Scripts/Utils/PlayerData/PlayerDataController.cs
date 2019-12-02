@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ public class PlayerDataController : SerializedMonoBehaviour
     bool keepAlive = true;
 
     string dataPath;
-	IPlayerData[] playerDataVariables;
+    IPlayerData[] playerDataVariables;
 
     void Awake()
     {
@@ -30,7 +31,7 @@ public class PlayerDataController : SerializedMonoBehaviour
             GameObject.DontDestroyOnLoad(gameObject);
 
         dataPath = Path.Combine(Application.persistentDataPath, "data");
-		playerDataVariables = GetComponents<IPlayerData>();
+        playerDataVariables = GetComponents<IPlayerData>();
 
         if (loadOnAwake)
             Load();
@@ -47,7 +48,7 @@ public class PlayerDataController : SerializedMonoBehaviour
                 saveOnListener.AddGameEvent(gameEvent);
             saveOnListener.AddCallback(Save);
         }
-        
+
         if (loadOn.Count > 0)
         {
             BasicGameEventListener loadOnListener = gameObject.AddComponent<BasicGameEventListener>();
@@ -71,8 +72,8 @@ public class PlayerDataController : SerializedMonoBehaviour
         FileInfo file = new FileInfo(dataPath);
         file.Directory.Create();
         PlayerData playerData = new PlayerData();
-		foreach (IPlayerData playerDataController in playerDataVariables)
-			playerDataController.Init(ref playerData);
+        foreach (IPlayerData playerDataController in playerDataVariables)
+            playerDataController.Init(ref playerData);
         string jsonEncoded = JsonUtility.ToJson(playerData);
         File.WriteAllText(dataPath, JSON_ONLY ? jsonEncoded : Base64Encoder.Encode(jsonEncoded));
     }
@@ -82,10 +83,10 @@ public class PlayerDataController : SerializedMonoBehaviour
     public void Save()
     {
         PlayerData playerData = new PlayerData();
-		foreach (IPlayerData playerDataController in playerDataVariables)
-			playerDataController.Save(ref playerData);
+        foreach (IPlayerData playerDataController in playerDataVariables)
+            playerDataController.Save(ref playerData);
         string jsonEncoded = JsonUtility.ToJson(playerData);
-        
+
         FileInfo file = new FileInfo(dataPath);
         file.Directory.Create();
         File.WriteAllText(dataPath, JSON_ONLY ? jsonEncoded : Base64Encoder.Encode(jsonEncoded));
@@ -98,12 +99,27 @@ public class PlayerDataController : SerializedMonoBehaviour
         if (!File.Exists(dataPath))
             FirstSave();
 
-        PlayerData playerData;
-        string asJSON = File.ReadAllText(dataPath);
-        playerData = JsonUtility.FromJson<PlayerData>(JSON_ONLY ? asJSON : Base64Encoder.Decode(asJSON));
-		
-        foreach (IPlayerData playerDataController in playerDataVariables)
-			playerDataController.Load(playerData);
-        onLoad.Invoke();
+        try
+        {
+            string asJSON = File.ReadAllText(dataPath);
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(JSON_ONLY ? asJSON : Base64Encoder.Decode(asJSON));
+        }
+        // In case of messed up file
+        catch (Exception)
+        {
+            FirstSave();
+        }
+        finally
+        {
+            string asJSON = File.ReadAllText(dataPath);
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(JSON_ONLY ? asJSON : Base64Encoder.Decode(asJSON));
+            foreach (IPlayerData playerDataController in playerDataVariables)
+                playerDataController.Load(playerData);
+            
+            // Adds back the eventual missing fields
+            Save();
+            
+            onLoad.Invoke();
+        }
     }
 }

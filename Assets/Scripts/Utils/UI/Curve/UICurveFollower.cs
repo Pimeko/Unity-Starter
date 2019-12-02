@@ -13,6 +13,7 @@ public class UICurveFollower : MonoBehaviour
     Ease ease = Ease.OutFlash;
     [SerializeField]
     float duration = 1.5f, delayBetweenLoops = 1f;
+    
     [SerializeField]
     GameObjectVariable currentCameraGO;
 
