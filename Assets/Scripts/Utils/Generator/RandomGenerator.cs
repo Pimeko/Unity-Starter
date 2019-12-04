@@ -17,7 +17,7 @@ public class RandomGenerator : MonoBehaviour
 
     void Start()
     {
-        if (Random.Range(0f, 1f) > percentage)
+        if (Random.value > percentage)
             return;
 
         GameObject o = Instantiate(prefabs[Random.Range(0, prefabs.Count)]);

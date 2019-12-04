@@ -55,7 +55,7 @@ public class MaterialRandomProperties : MonoBehaviour
     {
         foreach (var property in colorProperties)
         {
-            Color color = property.fullRandom ? new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f))
+            Color color = property.fullRandom ? new Color(Random.value, Random.value, Random.value)
                 : property.values.GetRandomItem();
             currentMaterial.SetColor(property.name, color);
         }
