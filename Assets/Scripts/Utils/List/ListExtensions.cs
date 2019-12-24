@@ -63,4 +63,12 @@ public static class ListExtensions
     {
         return list[list.Count - 1];
     }
+
+    public static void Clear<T>(ref List<T> list)
+    {
+        if (list == null)
+            list = new List<T>();
+        else
+            list.Clear();
+    }
 }
