@@ -6,19 +6,14 @@ public abstract class InputInteractionController : MonoBehaviour
 {
     protected Vector3 initialTouchPosition;
 
-    void Start()
-    {
-        OnStart();
-    }
-
-    protected virtual void OnStart() { }
-
     public virtual void Init(Vector3 initialTouchPosition)
     {
         this.initialTouchPosition = initialTouchPosition;
     }
 
-    public abstract void OnInputChange(Vector3 touchPositionPrevious, Vector3 touchPosition);
+    public virtual void OnTouch() { }
+    
+    public virtual void OnStopTouch() {}
 
-    public abstract void OnStopTouch();
+    public virtual void OnInputChange(Vector3 touchPositionPrevious, Vector3 touchPosition) { }
 }

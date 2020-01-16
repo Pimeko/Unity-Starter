@@ -7,9 +7,10 @@ public class InputInteractionsController : MonoBehaviour
 {
     [SerializeField]
     InputVariable playerInput;
+    [SerializeField]
+    LayerMask interactionLayer;
 
     Camera cam;
-	int layerHitbox;
     InputInteractionController currentInputInteractionController;
 
     bool isInteracting { get { return currentInputInteractionController != null; } }
@@ -18,7 +19,6 @@ public class InputInteractionsController : MonoBehaviour
     {
         cam = GetComponent<Camera>();
 
-		layerHitbox = LayerMask.GetMask("Interaction");
         playerInput.AddOnChangeCallback(OnPlayerInputChange);
         currentInputInteractionController = null;
     }
@@ -27,16 +27,23 @@ public class InputInteractionsController : MonoBehaviour
     {
         if (playerInput.IsTouching)
         {
+            // First interaction
             if (!isInteracting)
             {
-                Ray ray = cam.ScreenPointToRay(new Vector3(playerInput.TouchPosition.x, playerInput.TouchPosition.y, 0));
-                bool hitSomething = Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerHitbox);
+                Ray ray = cam.ViewportPointToRay(new Vector3(playerInput.TouchPosition.x, playerInput.TouchPosition.y, 0));
+                bool hitSomething = Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, interactionLayer);
+                // print(playerInput.TouchPosition);
+                print(hitSomething);
+                Debug.DrawRay(ray.origin, ray.direction * 10, Color.red);
                 
                 if (hitSomething)
                     currentInputInteractionController = hit.collider.transform.GetComponentOrInParent<InputInteractionController>();
                     
                 if (isInteracting)
+                {
                     currentInputInteractionController.Init(playerInput.TouchPosition);
+                    currentInputInteractionController.OnTouch();
+                }
             }
             if (isInteracting)
                 currentInputInteractionController.OnInputChange(playerInput.PreviousTouchPosition, playerInput.TouchPosition);

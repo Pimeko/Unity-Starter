@@ -8,14 +8,11 @@ public class InputController : MonoBehaviour
     [SerializeField]
     InputVariable playerInput;
     [SerializeField]
-    GameObjectVariable currentCameraGO;
-    
-    Camera cam;
+    CameraVariable currentCamera;
 
     void Start()
     {
         playerInput.IsTouching = false;
-        cam = currentCameraGO.Value.GetComponent<Camera>();
     }
 
     public void Touch()
@@ -34,9 +31,9 @@ public class InputController : MonoBehaviour
         Vector2 inputPosition;
 
         #if !UNITY_EDITOR
-        inputPosition = ToVector2(cam.ScreenToViewportPoint(Input.GetTouch(0).position));
+        inputPosition = ToVector2(currentCamera.Value.ScreenToViewportPoint(Input.GetTouch(0).position));
         #else
-        inputPosition = ToVector2(cam.ScreenToViewportPoint(Input.mousePosition));
+        inputPosition = ToVector2(currentCamera.Value.ScreenToViewportPoint(Input.mousePosition));
         #endif
 
         return inputPosition;
