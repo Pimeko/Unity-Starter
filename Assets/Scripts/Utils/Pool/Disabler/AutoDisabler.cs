@@ -1,32 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class AutoDisabler : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Min(0)]
     float duration;
-
-    Coroutine currentCoroutine;
-    WaitForSecondsRealtime waitForDelay;
 
     void OnEnable()
     {
-        waitForDelay = new WaitForSecondsRealtime(duration);
-        currentCoroutine = StartCoroutine(DoActionAfterDuration());
-    }
-
-    void OnDestroy()
-    {
-        if (currentCoroutine != null)
-            StopCoroutine(currentCoroutine);
-    }
-
-    IEnumerator DoActionAfterDuration()
-    {
-        yield return waitForDelay;
-        gameObject.SetActive(false);
-
-        currentCoroutine = null;
+        DOVirtual.DelayedCall(duration, () => gameObject.SetActive(false));
     }
 }
