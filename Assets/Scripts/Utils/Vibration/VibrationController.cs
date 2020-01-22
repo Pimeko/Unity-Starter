@@ -10,98 +10,100 @@ public class VibrationController : MonoBehaviour
 	[SerializeField]
 	BoolVariable vibrationActive;
 	[SerializeField]
-	bool useBatch;
-	[SerializeField, ShowIf("useBatch")]
-	float maxBatch = 10, delayBetweenBatchReset = 2;
-	[SerializeField]
 	bool logOnAnyVibration;
 
-	float nbInBatch;
-	bool isDelaying;
-
-	private void Start()
+	public enum PeriodicType
 	{
-		nbInBatch = 0;
-		isDelaying = false;
+		LIGHT,
+		MEDIUM,
+		HEAVY
 	}
+	Tween currentPeriodicTween;
 
-	void UpdateBatch()
+	void LogVibration(HapticTypes type)
 	{
-		if (!useBatch || isDelaying)
-			return;
-		if (nbInBatch < maxBatch)
-		{
-			nbInBatch++;
-			if (logOnAnyVibration)
-				print("[VIBRATION]");
-		}
-		else
-		{
-			isDelaying = true;
-			DOVirtual.DelayedCall(delayBetweenBatchReset, () => {
-				nbInBatch = 0;
-				isDelaying = false;
-			});
-		}
+		if (logOnAnyVibration)
+			print("[VIBRATION] " + type);
 	}
 
 	public void VibrateLight()
 	{
-		if (!isDelaying && vibrationActive != null && !vibrationActive.Value)
+		if (vibrationActive != null && !vibrationActive.Value)
 			return;
 
-		UpdateBatch();
-
 		MMVibrationManager.Haptic(HapticTypes.LightImpact);
+		LogVibration(HapticTypes.LightImpact);
 	}
 
 	public void VibrateMedium()
 	{
-		if (!isDelaying && vibrationActive != null && !vibrationActive.Value)
+		if (vibrationActive != null && !vibrationActive.Value)
 			return;
 
-		UpdateBatch();
-
 		MMVibrationManager.Haptic(HapticTypes.MediumImpact);
+		LogVibration(HapticTypes.MediumImpact);
 	}
 
 	public void VibrateHeavy()
 	{
-		if (!isDelaying && vibrationActive != null && !vibrationActive.Value)
+		if (vibrationActive != null && !vibrationActive.Value)
 			return;
 
-		UpdateBatch();
-
 		MMVibrationManager.Haptic(HapticTypes.HeavyImpact);
+		LogVibration(HapticTypes.HeavyImpact);
 	}
 
 	public void VibrateSuccess()
 	{
-		if (!isDelaying && vibrationActive != null && !vibrationActive.Value)
+		if (vibrationActive != null && !vibrationActive.Value)
 			return;
 
-		UpdateBatch();
-
 		MMVibrationManager.Haptic(HapticTypes.Success);
+		LogVibration(HapticTypes.Success);
 	}
 
 	public void VibrateFailure()
 	{
-		if (!isDelaying && vibrationActive != null && !vibrationActive.Value)
+		if (vibrationActive != null && !vibrationActive.Value)
 			return;
 
-		UpdateBatch();
-
 		MMVibrationManager.Haptic(HapticTypes.Failure);
+		LogVibration(HapticTypes.Failure);
 	}
 
 	public void VibrateSelectionChange()
 	{
-		if (!isDelaying && vibrationActive != null && !vibrationActive.Value)
+		if (vibrationActive != null && !vibrationActive.Value)
 			return;
 
-		UpdateBatch();
-
 		MMVibrationManager.Haptic(HapticTypes.Selection);
+		LogVibration(HapticTypes.Selection);
+	}
+
+	public void BeginPeriodic(PeriodicType type, float period = .25f)
+	{
+		switch (type)
+		{
+			case PeriodicType.MEDIUM:
+				VibrateMedium();
+				break;
+			case PeriodicType.HEAVY:
+				VibrateHeavy();
+				break;
+			case PeriodicType.LIGHT:
+			default:
+				VibrateLight();
+				break;
+		}
+        DOTweenUtils.KillTween(ref currentPeriodicTween);
+        currentPeriodicTween = DOVirtual.DelayedCall(period, () =>
+        {
+            BeginPeriodic(type, period);
+        });
+	}
+
+	public void StopPeriodic()
+	{
+		DOTweenUtils.KillTween(ref currentPeriodicTween);
 	}
 }
