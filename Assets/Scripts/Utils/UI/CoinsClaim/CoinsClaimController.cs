@@ -46,7 +46,7 @@ public class CoinsClaimController : MonoBehaviour
         {
             sequences.Add(DOTween.Sequence()
             .Append(coin.DOMove(
-                coin.position + new Vector3(Random.Range(-80, 80), Random.Range(-80, 80), 0),
+                coin.position + new Vector3(Random.Range(-130, 130), Random.Range(-130, 130), 0),
                 Random.Range(durationRangeFirstStep.x, durationRangeFirstStep.y))
                 .SetEase(Ease.OutQuart))
             .Append(coin.DOMove(to.position, durationSecondStep).SetEase(Ease.OutExpo))
