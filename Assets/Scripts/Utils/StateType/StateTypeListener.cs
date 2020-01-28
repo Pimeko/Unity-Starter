@@ -31,6 +31,9 @@ public abstract class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS
 
     void OnChange()
     {
+        if (stateCallbacks == null)
+            throw new UnityException("No state callback found.");
+
         if (stateCallbacks.ContainsKey(state.PreviousValue))
             stateCallbacks[state.PreviousValue].OnLeaveCallbackDelayed?.Invoke();
         if (stateCallbacks.ContainsKey(state.Value))
