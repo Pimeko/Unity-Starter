@@ -16,7 +16,7 @@ public class PlayerDataController : SerializedMonoBehaviour
     [SerializeField]
     BetterEvent onLoad;
     [SerializeField]
-    bool loadOnAwake;
+    bool loadOnAwake, loadOnStart;
     [SerializeField]
     bool JSON_ONLY = false;
     [SerializeField]
@@ -37,6 +37,12 @@ public class PlayerDataController : SerializedMonoBehaviour
             Load();
 
         AddListeners();
+    }
+
+    void Start()
+    {
+        if (loadOnStart)
+            Load();
     }
 
     void AddListeners()
