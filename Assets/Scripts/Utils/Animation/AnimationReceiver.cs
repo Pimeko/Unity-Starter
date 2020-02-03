@@ -12,4 +12,9 @@ public class AnimationReceiver : MonoBehaviour
     {
         OnAction?.Invoke(a);
     }
+
+    private void OnDestroy()
+    {
+        OnAction = null;
+    }
 }

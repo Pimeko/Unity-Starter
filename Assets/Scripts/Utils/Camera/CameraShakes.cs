@@ -5,9 +5,9 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
 public class CameraShakes : MonoBehaviour
 {
+    [SerializeField]
     Camera cam;
 
     Vector3 currentInitialPosition;
@@ -16,7 +16,8 @@ public class CameraShakes : MonoBehaviour
 
     private void Start()
     {
-        cam = GetComponent<Camera>();
+        if (cam == null)
+            cam = GetComponent<Camera>();
 
         currentSequencePosition = null;
         currentSequenceFov = null;
