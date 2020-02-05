@@ -10,17 +10,17 @@ public class ObjectPoolController : MonoBehaviour
     {
         [SerializeField]
         GameObject objectToPool;
-        public GameObject ObjectToPool { get { return objectToPool ; } }
-        
+        public GameObject ObjectToPool { get { return objectToPool; } }
+
         [SerializeField]
         int amountToPool;
-        public int AmountToPool { get { return amountToPool ; } }
-        
+        public int AmountToPool { get { return amountToPool; } }
+
         [SerializeField]
         ObjectPoolTypeVariable type;
-        public ObjectPoolTypeVariable Type { get { return type ; } }
+        public ObjectPoolTypeVariable Type { get { return type; } }
     }
-    
+
     [SerializeField]
     List<ObjectPoolItem> objectPoolItems;
     [SerializeField]
@@ -37,7 +37,7 @@ public class ObjectPoolController : MonoBehaviour
     void Start()
     {
         currentPool.Value = this;
-        
+
         pooledObjects = new Dictionary<ObjectPoolTypeVariable, List<GameObject>>();
 
         foreach (ObjectPoolItem objectPoolItem in objectPoolItems)
@@ -90,7 +90,7 @@ public class ObjectPoolController : MonoBehaviour
             if (!pooledObject.activeInHierarchy)
                 return pooledObject;
         }
-        
+
         // In case of expand
         ObjectPoolItem objectPoolItemToUse = null;
         foreach (ObjectPoolItem objectPoolItem in objectPoolItems)
@@ -105,6 +105,50 @@ public class ObjectPoolController : MonoBehaviour
         {
             if (type == null || child.name == type.ToString())
                 return InstantiatePooledObject(objectPoolItemToUse, child);
+        }
+        return null;
+    }
+
+    public List<GameObject> GetPooledObjects(int n, ObjectPoolTypeVariable type = null)
+    {
+        if (type == null)
+            type = pooledObjects.Keys.First();
+
+        List<GameObject> result = new List<GameObject>();
+        int length = 0;
+
+        foreach (GameObject pooledObject in pooledObjects[type])
+        {
+            if (!pooledObject.activeInHierarchy)
+            {
+                result.Add(pooledObject);
+                length++;
+
+                if (length == n)
+                    return result;
+            }
+        }
+
+        // In case of expand
+        ObjectPoolItem objectPoolItemToUse = null;
+        foreach (ObjectPoolItem objectPoolItem in objectPoolItems)
+        {
+            if (type == null || objectPoolItem.Type.ToString() == type.ToString())
+            {
+                objectPoolItemToUse = objectPoolItem;
+                break;
+            }
+        }
+        foreach (Transform child in transform)
+        {
+            if (type == null || child.name == type.ToString())
+            {
+                while (length < n)
+                {
+                    result.Add(InstantiatePooledObject(objectPoolItemToUse, child));
+                    length++;
+                }
+            }
         }
         return null;
     }
