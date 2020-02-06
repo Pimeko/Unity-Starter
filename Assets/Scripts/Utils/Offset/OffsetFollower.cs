@@ -25,7 +25,7 @@ public class OffsetFollower : MonoBehaviour
     bool freezeRotY;
     [SerializeField, ShowIfGroup("followRotation"), LabelText("Freeze Z")]
     bool freezeRotZ;
-    
+
 
     Vector3 offset;
     bool isFollowing;
@@ -45,30 +45,36 @@ public class OffsetFollower : MonoBehaviour
     {
         isFollowing = false;
     }
-    
+
     void Update()
     {
         if (!isFollowing)
             return;
-            
-        Vector3 targetPosition = toFollow.position + offset;
-        if (freezePosX)
-            targetPosition.x = transform.position.x;
-        if (freezePosY)
-            targetPosition.y = transform.position.y;
-        if (freezePosZ)
-            targetPosition.z = transform.position.z;
-        
-        transform.position = targetPosition;
 
-        Vector3 targetRotationEuler = toFollow.rotation.eulerAngles;
-        if (freezeRotX)
-            targetRotationEuler.x = transform.rotation.eulerAngles.x;
-        if (freezeRotY)
-            targetRotationEuler.y = transform.rotation.eulerAngles.y;
-        if (freezeRotZ)
-            targetRotationEuler.z = transform.rotation.eulerAngles.z;
+        if (followPosition)
+        {
+            Vector3 targetPosition = toFollow.position + offset;
+            if (freezePosX)
+                targetPosition.x = transform.position.x;
+            if (freezePosY)
+                targetPosition.y = transform.position.y;
+            if (freezePosZ)
+                targetPosition.z = transform.position.z;
 
-        transform.rotation = Quaternion.Euler(targetRotationEuler);
+            transform.position = targetPosition;
+        }
+
+        if (followRotation)
+        {
+            Vector3 targetRotationEuler = toFollow.rotation.eulerAngles;
+            if (freezeRotX)
+                targetRotationEuler.x = transform.rotation.eulerAngles.x;
+            if (freezeRotY)
+                targetRotationEuler.y = transform.rotation.eulerAngles.y;
+            if (freezeRotZ)
+                targetRotationEuler.z = transform.rotation.eulerAngles.z;
+
+            transform.rotation = Quaternion.Euler(targetRotationEuler);
+        }
     }
 }
