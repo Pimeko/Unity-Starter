@@ -45,11 +45,11 @@ public static class TransformExtensions
         return backingField;
     }
 
-    public static List<T> CachedComponentsInChildrenList<T>(this Transform t, ref List<T> backingField)
+    public static List<T> CachedComponentsInChildrenList<T>(this Transform t, ref List<T> backingField, bool includeInactive = false)
         where T : Component
     {
         if (backingField == null)
-            backingField = t.GetComponentsInChildren<T>().ToList();
+            backingField = t.GetComponentsInChildren<T>(includeInactive).ToList();
         return backingField;
     }
 
