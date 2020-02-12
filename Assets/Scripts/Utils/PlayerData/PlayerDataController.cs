@@ -16,6 +16,8 @@ public class PlayerDataController : SerializedMonoBehaviour
     [SerializeField]
     BetterEvent onLoad;
     [SerializeField]
+    List<BasicGameEvent> resetOn;
+    [SerializeField]
     bool loadOnAwake, loadOnStart;
     [SerializeField]
     bool JSON_ONLY = false;
@@ -61,6 +63,14 @@ public class PlayerDataController : SerializedMonoBehaviour
             foreach (BasicGameEvent gameEvent in loadOn)
                 loadOnListener.AddGameEvent(gameEvent);
             loadOnListener.AddCallback(Load);
+        }
+
+        if (resetOn.Count > 0)
+        {
+            BasicGameEventListener resetOnListener = gameObject.AddComponent<BasicGameEventListener>();
+            foreach (BasicGameEvent gameEvent in resetOn)
+                resetOnListener.AddGameEvent(gameEvent);
+            resetOnListener.AddCallback(Reset);
         }
 
         foreach (RegisterableScriptableObject variableToSaveOnChange in variablesToSaveOnChange)
@@ -121,11 +131,20 @@ public class PlayerDataController : SerializedMonoBehaviour
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(JSON_ONLY ? asJSON : Base64Encoder.Decode(asJSON));
             foreach (IPlayerData playerDataController in playerDataVariables)
                 playerDataController.Load(playerData);
-            
+
             // Adds back the eventual missing fields
             Save();
-            
+
             onLoad.Invoke();
         }
+    }
+
+    void Reset()
+    {
+        if (!File.Exists(dataPath))
+            return;
+
+        File.Delete(dataPath);
+        FirstSave();
     }
 }
