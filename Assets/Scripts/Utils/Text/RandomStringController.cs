@@ -7,16 +7,14 @@ public class RandomStringController : MonoBehaviour
 {
     [SerializeField]
     StringListVariable values;
-    
-    TextMeshProUGUI textMesh;
 
-    void Awake()
-    {
-        textMesh = GetComponent<TextMeshProUGUI>();
-    }
+    TMP_Text textMesh;
 
     void OnEnable()
     {
+        if (textMesh == null)
+            textMesh = GetComponent<TMP_Text>();
+
         textMesh.text = values.Value.GetRandomItem();
     }
 }
