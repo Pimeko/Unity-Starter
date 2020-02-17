@@ -49,6 +49,15 @@ public class MaterialRandomProperties : MonoBehaviour
             : skinnedMeshRenderer.materials[materialIndex];
 
         ApplyColorProperties();
+        ApplyIntProperties();
+        ApplyFloatProperties();
+    }
+
+    public void Reapply()
+    {
+        ApplyColorProperties();
+        ApplyIntProperties();
+        ApplyFloatProperties();
     }
 
     void ApplyColorProperties()
