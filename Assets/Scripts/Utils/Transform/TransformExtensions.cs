@@ -179,4 +179,43 @@ public static class TransformExtensions
     {
         return transform.GetComponentsInFirstChildrenOnly<RectTransform>(includeInactive);
     }
+
+    public static void SetPositionX(this Transform transform, float value, bool local = false)
+    {
+        Vector3 newPosition = new Vector3(
+                value,
+                transform.position.y,
+                transform.position.z
+            );
+        if (local)
+            transform.position = newPosition;
+        else
+            transform.localPosition = newPosition;
+    }
+
+    public static void SetPositionY(this Transform transform, float value, bool local = false)
+    {
+        Vector3 newPosition = new Vector3(
+                transform.position.x,
+                value,
+                transform.position.z
+            );
+        if (local)
+            transform.position = newPosition;
+        else
+            transform.localPosition = newPosition;
+    }
+
+    public static void SetPositionZ(this Transform transform, float value, bool local = false)
+    {
+        Vector3 newPosition = new Vector3(
+                transform.position.x,
+                transform.position.y,
+                value
+            );
+        if (local)
+            transform.position = newPosition;
+        else
+            transform.localPosition = newPosition;
+    }
 }

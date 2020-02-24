@@ -12,12 +12,13 @@ public class CameraShakes : MonoBehaviour
     Camera cam;
 
     CinemachineBrain cinemachineBrain;
+    CinemachineVirtualCamera currentVCam { get { return (CinemachineVirtualCamera)cinemachineBrain.ActiveVirtualCamera; } }
 
     Vector3 currentInitialPosition;
     float currentFov;
     Sequence currentSequencePosition, currentSequenceFov;
 
-    private void Start()
+    void Start()
     {
         if (cam == null)
             cam = GetComponent<Camera>();
@@ -28,43 +29,39 @@ public class CameraShakes : MonoBehaviour
         currentSequenceFov = null;
     }
 
+    #region Position
+
     void InitPosition()
     {
         if (currentSequencePosition == null)
-            currentInitialPosition = transform.localPosition;
+            currentInitialPosition = currentVCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
     }
 
-    void InitFov()
+    Tween CameraLocalMove(Vector3 offset, float time, Ease? ease = null)
     {
-        if (currentSequenceFov == null)
-            currentFov = cam.fieldOfView;
+        CinemachineTransposer t = currentVCam.GetCinemachineComponent<CinemachineTransposer>();
+
+        return DOTween.To(
+            () => t.m_FollowOffset,
+            value => t.m_FollowOffset = value,
+            currentInitialPosition + offset,
+            time
+        ).SetEase((Ease)(ease == null ? Ease.Linear : ease));
     }
 
-    void BeginShake()
-    {
-        cinemachineBrain.enabled = false;
-    }
-
-    void EndShake()
-    {
-        cinemachineBrain.enabled = true;
-    }
+    #region vertical
 
     [Button, TabGroup("Vertical")]
     public void SmallShakeVertical(Action callback)
     {
         InitPosition();
 
-        BeginShake();
-        
         currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.up * 0.05f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.up * 0.05f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.up * .1f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.up * .1f, .1f))
+           .Append(CameraLocalMove(Vector3.zero, .1f))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
                currentSequencePosition = null;
                callback?.Invoke();
            });
@@ -75,16 +72,12 @@ public class CameraShakes : MonoBehaviour
     {
         InitPosition();
 
-        BeginShake();
-        
         currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.up * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.up * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.up * .3f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.up * .3f, .1f))
+           .Append(CameraLocalMove(Vector3.zero, .1f))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
                currentSequencePosition = null;
                callback?.Invoke();
            });
@@ -95,58 +88,33 @@ public class CameraShakes : MonoBehaviour
     {
         InitPosition();
 
-        BeginShake();
-        
         currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.up * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.up * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition + transform.up * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.up * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.up * .2f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.up * .2f, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.up * .2f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.up * .2f, .1f))
+           .Append(CameraLocalMove(Vector3.zero, .1f))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
                currentSequencePosition = null;
                callback?.Invoke();
            });
     }
+    #endregion
 
-    [Button, TabGroup("Horizontal")]
-    public void VerySmallShakeHorizontal(Action callback)
-    {
-        InitPosition();
-
-        BeginShake();
-        
-        currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.right * .02f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.right * .02f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
-           .OnComplete(() =>
-           {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
-               currentSequencePosition = null;
-               callback?.Invoke();
-           });
-    }
+    #region horizontal
 
     [Button, TabGroup("Horizontal")]
     public void SmallShakeHorizontal(Action callback)
     {
         InitPosition();
 
-        BeginShake();
-        
         currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.05f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.05f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.right * .05f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.right * .05f, .1f))
+           .Append(CameraLocalMove(Vector3.zero, .1f))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
                currentSequencePosition = null;
                callback?.Invoke();
            });
@@ -157,20 +125,15 @@ public class CameraShakes : MonoBehaviour
     {
         InitPosition();
 
-        BeginShake();
-        
         currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.15f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.15f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.right * .15f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.right * .15f, .1f))
+           .Append(CameraLocalMove(Vector3.zero, .1f))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
                currentSequencePosition = null;
                callback?.Invoke();
-           })
-            .SetUpdate(true);
+           });
     }
 
     [Button, TabGroup("Horizontal")]
@@ -178,20 +141,15 @@ public class CameraShakes : MonoBehaviour
     {
         InitPosition();
 
-        BeginShake();
-        
         currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.right * .2f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.right * .2f, .1f))
+           .Append(CameraLocalMove(Vector3.zero, .1f))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
                currentSequencePosition = null;
                callback?.Invoke();
-           })
-            .SetUpdate(true);
+           });
     }
 
     [Button, TabGroup("Horizontal")]
@@ -199,37 +157,67 @@ public class CameraShakes : MonoBehaviour
     {
         InitPosition();
 
-        BeginShake();
-        
         currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition + transform.right * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition - transform.right * 0.2f, .1f))
-           .Append(transform.DOLocalMove(transform.localPosition, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.right * .2f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.right * .2f, .1f))
+           .Append(CameraLocalMove(currentVCam.transform.right * .2f, .1f))
+           .Append(CameraLocalMove(-currentVCam.transform.right * .2f, .1f))
+           .Append(CameraLocalMove(Vector3.zero, .1f))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
+               currentSequencePosition = null;
+               callback?.Invoke();
+           });
+    }
+    #endregion
+
+    #endregion
+
+    # region FOV
+
+    void InitFov()
+    {
+        if (currentSequenceFov == null)
+            currentFov = currentVCam.m_Lens.FieldOfView;
+    }
+
+    Tween CameraFov(float offset, float time, Ease? ease = null)
+    {
+        return DOTween.To(
+            () => currentVCam.m_Lens.FieldOfView,
+            value => currentVCam.m_Lens.FieldOfView = value,
+            currentVCam.m_Lens.FieldOfView + offset,
+            time
+        ).SetEase((Ease)(ease == null ? Ease.Linear : ease));
+    }
+
+    #region Zoom Out - Zoom In
+
+    [Button, TabGroup("Zoom")]
+    public void SmallZoomOutZoomIn(Action callback)
+    {
+        InitFov();
+
+        currentSequencePosition = DOTween.Sequence()
+           .Append(CameraFov(2, .15f))
+           .Append(CameraFov(0, .15f))
+           .OnComplete(() =>
+           {
                currentSequencePosition = null;
                callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Zoom")]
-    public void SmallZoomOutZoomIn(Action callback)
+    public void ZoomOutZoomIn(Action callback)
     {
-        InitPosition();
+        InitFov();
 
-        BeginShake();
-        
         currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition - transform.forward / 2, .15f))
-           .Append(transform.DOLocalMove(transform.localPosition, .15f))
+           .Append(CameraFov(5, .3f))
+           .Append(CameraFov(0, .3f))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
                currentSequencePosition = null;
                callback?.Invoke();
            });
@@ -238,95 +226,51 @@ public class CameraShakes : MonoBehaviour
     [Button, TabGroup("Zoom")]
     public void ZoomOutZoomInElastic(Action callback)
     {
-        InitPosition();
+        InitFov();
 
-        BeginShake();
-        
-        currentSequencePosition = DOTween.Sequence()
-           .Append(transform.DOLocalMove(transform.localPosition - transform.forward, .5f))
-           .Append(transform.DOLocalMove(transform.localPosition, .5f).SetEase(Ease.OutElastic))
+        currentSequenceFov = DOTween.Sequence()
+           .Append(CameraFov(2, .5f))
+           .Append(CameraFov(0, .5f, Ease.OutElastic))
            .OnComplete(() =>
            {
-               EndShake();
-               transform.localPosition = currentInitialPosition;
-               currentSequencePosition = null;
+               currentSequenceFov = null;
                callback?.Invoke();
            });
     }
+    #endregion
+
+    #region Zoom In - Zoom Out
 
     [Button, TabGroup("Zoom")]
-    public void SmallZoomOutZoomInFov(Action callback)
+    public void SmallZoomInZoomOut(Action callback)
     {
         InitFov();
 
-        BeginShake();
-        
         currentSequenceFov = DOTween.Sequence()
-           .Append(DOVirtual.Float(currentFov, currentFov + 2, .15f, newFov => cam.fieldOfView = newFov))
-           .Append(DOVirtual.Float(currentFov + 2, currentFov, .15f, newFov => cam.fieldOfView = newFov))
+           .Append(CameraFov(-2, .15f))
+           .Append(CameraFov(0, .15f))
            .OnComplete(() =>
            {
-               EndShake();
-               cam.fieldOfView = currentFov;
                currentSequenceFov = null;
                callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Zoom")]
-    public void ZoomInZoomOutFov(Action callback)
+    public void ZoomInZoomOut(Action callback)
     {
         InitFov();
 
-        BeginShake();
-        
         currentSequenceFov = DOTween.Sequence()
-           .Append(DOVirtual.Float(currentFov, currentFov - 5, 1, newFov => cam.fieldOfView = newFov))
-           .Append(DOVirtual.Float(currentFov - 5, currentFov, .5f, newFov => cam.fieldOfView = newFov))
+           .Append(CameraFov(-5, .3f))
+           .Append(CameraFov(0, .3f))
            .OnComplete(() =>
            {
-               EndShake();
-               cam.fieldOfView = currentFov;
                currentSequenceFov = null;
                callback?.Invoke();
            });
     }
+    #endregion
 
-    [Button, TabGroup("Zoom")]
-    public void SmallZoomInZoomOutFov(Action callback)
-    {
-        InitFov();
-
-        BeginShake();
-        
-        currentSequenceFov = DOTween.Sequence()
-           .Append(DOVirtual.Float(currentFov, currentFov - 2, .3f, newFov => cam.fieldOfView = newFov))
-           .Append(DOVirtual.Float(currentFov - 2, currentFov, .3f, newFov => cam.fieldOfView = newFov))
-           .OnComplete(() =>
-           {
-               EndShake();
-               cam.fieldOfView = currentFov;
-               currentSequenceFov = null;
-               callback?.Invoke();
-           });
-    }
-
-    [Button, TabGroup("Zoom")]
-    public void ZoomOutZoomInElasticFov(Action callback)
-    {
-        InitFov();
-
-        BeginShake();
-        
-        currentSequenceFov = DOTween.Sequence()
-           .Append(DOVirtual.Float(currentFov, currentFov + 5, .5f, newFov => cam.fieldOfView = newFov))
-           .Append(DOVirtual.Float(currentFov + 5, currentFov, .5f, newFov => cam.fieldOfView = newFov).SetEase(Ease.OutElastic))
-           .OnComplete(() =>
-           {
-               EndShake();
-               cam.fieldOfView = currentFov;
-               currentSequenceFov = null;
-               callback?.Invoke();
-           });
-    }
+    #endregion
 }
