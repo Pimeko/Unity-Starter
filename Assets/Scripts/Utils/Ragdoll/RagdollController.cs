@@ -11,11 +11,6 @@ public class RagdollController : MonoBehaviour
     Animator animator;
     Animator CurrentAnimator => transform.CachedComponent(ref animator);
 
-    void Start()
-    {
-        DisableRagdoll();
-    }
-
     [Button("Enable")]
     public void EnableRagdoll()
     {

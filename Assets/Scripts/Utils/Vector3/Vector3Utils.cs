@@ -28,4 +28,13 @@ public static class Vector3Utils
             Mathf.Abs(v.z)
         );
     }
+
+    public static Vector3 RandomVector(float min, float max)
+    {
+        return new Vector3(
+            UnityEngine.Random.Range(min, max),
+            UnityEngine.Random.Range(min, max),
+            UnityEngine.Random.Range(min, max)
+        );
+    }
 }

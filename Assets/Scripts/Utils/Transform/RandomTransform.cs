@@ -14,6 +14,12 @@ public class RandomTransform : MonoBehaviour
 
     void Start()
     {
+        Apply();
+    }
+
+    [Button]
+    public void Apply()
+    {
         transform.localPosition += new Vector3(
             GetRandom(positionOffsets.x),
             GetRandom(positionOffsets.y),
