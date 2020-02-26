@@ -10,7 +10,7 @@ public class RandomTransform : MonoBehaviour
     [SerializeField, BoxGroup("Offsets")]
     Vector3 rotationOffsets;
     [SerializeField, BoxGroup("Offsets")]
-    float scaleOffset;
+    float minScale, maxScale;
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class RandomTransform : MonoBehaviour
             GetRandom(rotationOffsets.z)
         ));
 
-        float randomScale = 1 + GetRandom(scaleOffset);
+        float randomScale = Random.Range(minScale, maxScale);
         transform.localScale = new Vector3(
             randomScale,
             randomScale,
