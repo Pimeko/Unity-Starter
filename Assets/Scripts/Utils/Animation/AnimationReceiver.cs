@@ -8,7 +8,7 @@ public class AnimationReceiver : MonoBehaviour
 {
     public Action<string> OnAction;
 
-    public void Invoke(string a)
+    public void InvokeAnimationAction(string a)
     {
         OnAction?.Invoke(a);
     }

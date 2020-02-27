@@ -20,11 +20,11 @@ public class DisplayIntVariable : MonoBehaviour
     [SerializeField]
     IntVariable variable;
 
-    TextMeshProUGUI textMesh;
+    TMP_Text textMesh;
 
     void Awake()
     {
-        textMesh = GetComponent<TextMeshProUGUI>();
+        textMesh = GetComponent<TMP_Text>();
     }
 
     void Start()
