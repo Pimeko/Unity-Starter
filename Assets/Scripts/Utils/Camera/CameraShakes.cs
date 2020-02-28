@@ -198,12 +198,13 @@ public class CameraShakes : MonoBehaviour
     {
         InitFov();
 
-        currentSequencePosition = DOTween.Sequence()
+        currentSequenceFov = DOTween.Sequence()
            .Append(CameraFov(2, .15f))
            .Append(CameraFov(0, .15f))
            .OnComplete(() =>
            {
-               currentSequencePosition = null;
+               currentVCam.m_Lens.FieldOfView = currentFov;
+               currentSequenceFov = null;
                callback?.Invoke();
            });
     }
@@ -213,12 +214,13 @@ public class CameraShakes : MonoBehaviour
     {
         InitFov();
 
-        currentSequencePosition = DOTween.Sequence()
+        currentSequenceFov = DOTween.Sequence()
            .Append(CameraFov(5, .3f))
            .Append(CameraFov(0, .3f))
            .OnComplete(() =>
            {
-               currentSequencePosition = null;
+               currentVCam.m_Lens.FieldOfView = currentFov;
+               currentSequenceFov = null;
                callback?.Invoke();
            });
     }
@@ -233,6 +235,7 @@ public class CameraShakes : MonoBehaviour
            .Append(CameraFov(0, .5f, Ease.OutElastic))
            .OnComplete(() =>
            {
+               currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
                callback?.Invoke();
            });
@@ -251,6 +254,7 @@ public class CameraShakes : MonoBehaviour
            .Append(CameraFov(0, .15f))
            .OnComplete(() =>
            {
+               currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
                callback?.Invoke();
            });
@@ -266,6 +270,7 @@ public class CameraShakes : MonoBehaviour
            .Append(CameraFov(0, .3f))
            .OnComplete(() =>
            {
+               currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
                callback?.Invoke();
            });
