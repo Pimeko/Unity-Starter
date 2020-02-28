@@ -36,6 +36,12 @@ public class OffsetFollower : MonoBehaviour
         isFollowing = true;
     }
 
+    public void SetFollow(Transform toFollow)
+    {
+        this.toFollow = toFollow;
+        offset = transform.position - toFollow.position;
+    }
+
     public void Continue()
     {
         isFollowing = true;
