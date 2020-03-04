@@ -29,6 +29,9 @@ public class DisplayIntVariable : MonoBehaviour
 
     void Start()
     {
+        if (!onlyOnStart)
+            variable.AddOnChangeCallback(UpdateText);
+            
         UpdateText();
     }
 
@@ -39,11 +42,10 @@ public class DisplayIntVariable : MonoBehaviour
 
     void OnEnable()
     {
-        if (!onlyOnStart)
-            variable.AddOnChangeCallback(UpdateText);
+        UpdateText();
     }
 
-    void OnDisable()
+    void OnDestroy()
     {
         if (!onlyOnStart)
             variable.RemoveOnChangeCallback(UpdateText);
