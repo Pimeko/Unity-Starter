@@ -218,4 +218,34 @@ public static class TransformExtensions
         else
             transform.localPosition = newPosition;
     }
+
+    public static void SetLocalScaleX(this Transform transform, float value)
+    {
+        Vector3 newScale = new Vector3(
+                value,
+                transform.localScale.y,
+                transform.localScale.z
+            );
+        transform.localScale = newScale;
+    }
+
+    public static void SetLocalScaleY(this Transform transform, float value)
+    {
+        Vector3 newScale = new Vector3(
+                transform.localScale.x,
+                value,
+                transform.localScale.z
+            );
+        transform.localScale = newScale;
+    }
+
+    public static void SetLocalScaleZ(this Transform transform, float value)
+    {
+        Vector3 newScale = new Vector3(
+                transform.localScale.x,
+                transform.localScale.y,
+                value
+            );
+        transform.localScale = newScale;
+    }
 }
