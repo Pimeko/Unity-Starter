@@ -23,8 +23,8 @@ public class UIProgressController : MonoBehaviour
             () => rectTransform.localScale,
             newScale => rectTransform.localScale = newScale,
             new Vector3(progress.Value, rectTransform.localScale.y, rectTransform.localScale.z),
-            0.2f)
-            .SetEase(Ease.OutCirc);
+            0.35f)
+            .SetEase(Ease.OutBack);
     }
 
     void OnDestroy()
