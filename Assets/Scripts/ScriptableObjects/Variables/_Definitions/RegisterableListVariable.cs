@@ -26,13 +26,13 @@ public class RegisterableListVariable<T> : RegisterableScriptableObject
         return moduloCount ? value[index.Value % value.Count] : value[index.Value];
     }
     
-    public void Add(T item)
+    public virtual void Add(T item)
     {
         Value.Add(item);
         TriggerChange();
     }
 
-    public void Remove(T item)
+    public virtual void Remove(T item)
     {
         Value.Remove(item);
         TriggerChange();
@@ -47,6 +47,7 @@ public class RegisterableListVariable<T> : RegisterableScriptableObject
 	
     protected override void OnInit()
     {
-        Value = new List<T>(initialValue);
+        if (initialValue != null)
+            Value = new List<T>(initialValue);
     }
 }
