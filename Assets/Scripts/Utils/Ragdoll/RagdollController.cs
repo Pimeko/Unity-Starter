@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class RagdollController : MonoBehaviour
 {
+    [SerializeField]
+    CollisionDetectionMode onMode = CollisionDetectionMode.ContinuousDynamic, offMode = CollisionDetectionMode.ContinuousSpeculative;
+    
     Rigidbody[] rigidbodies;
     Rigidbody[] Rigidbodies => transform.CachedComponentsInChildren(ref rigidbodies);
     
@@ -41,7 +44,10 @@ public class RagdollController : MonoBehaviour
     {
         CurrentAnimator.enabled = false;
         foreach (var rb in Rigidbodies)
+        {
             rb.isKinematic = false;
+            rb.collisionDetectionMode = onMode;
+        }
     }
 
     [Button("Disable")]
@@ -49,7 +55,10 @@ public class RagdollController : MonoBehaviour
     {
         CurrentAnimator.enabled = true;
         foreach (var rb in Rigidbodies)
+        {
             rb.isKinematic = true;
+            rb.collisionDetectionMode = offMode;
+        }
     }
     
     void OnAnyTriggerEnter(Collider other)
