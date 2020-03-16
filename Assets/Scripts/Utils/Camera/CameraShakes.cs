@@ -23,7 +23,7 @@ public class CameraShakes : MonoBehaviour
         if (cam == null)
             cam = GetComponent<Camera>();
 
-        cinemachineBrain = GetComponent<CinemachineBrain>();
+        cinemachineBrain = cam.transform.GetComponent<CinemachineBrain>();
 
         currentSequencePosition = null;
         currentSequenceFov = null;
@@ -268,6 +268,22 @@ public class CameraShakes : MonoBehaviour
         currentSequenceFov = DOTween.Sequence()
            .Append(CameraFov(-5, .3f))
            .Append(CameraFov(0, .3f))
+           .OnComplete(() =>
+           {
+               currentVCam.m_Lens.FieldOfView = currentFov;
+               currentSequenceFov = null;
+               callback?.Invoke();
+           });
+    }
+
+    [Button, TabGroup("Zoom")]
+    public void HardZoomInZoomOut(Action callback)
+    {
+        InitFov();
+
+        currentSequenceFov = DOTween.Sequence()
+           .Append(CameraFov(-12, .05f))
+           .Append(CameraFov(0, .5f))
            .OnComplete(() =>
            {
                currentVCam.m_Lens.FieldOfView = currentFov;

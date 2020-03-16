@@ -8,10 +8,15 @@ using UnityEngine;
 public class RagdollController : MonoBehaviour
 {
     [SerializeField]
-    CollisionDetectionMode onMode = CollisionDetectionMode.ContinuousDynamic, offMode = CollisionDetectionMode.ContinuousSpeculative;
+    CollisionDetectionMode onMode = CollisionDetectionMode.ContinuousDynamic;
+    [SerializeField]
+    CollisionDetectionMode offMode = CollisionDetectionMode.ContinuousSpeculative;
     
     Rigidbody[] rigidbodies;
     Rigidbody[] Rigidbodies => transform.CachedComponentsInChildren(ref rigidbodies);
+
+    Collider[] colliders;
+    Collider[] Colliders => transform.CachedComponentsInChildren(ref colliders);
     
     Animator animator;
     Animator CurrentAnimator => transform.CachedComponent(ref animator);
@@ -40,7 +45,7 @@ public class RagdollController : MonoBehaviour
     }
 
     [Button("Enable")]
-    public void EnableRagdoll()
+    public void EnableRagdoll(bool forceEnableColliders = false)
     {
         CurrentAnimator.enabled = false;
         foreach (var rb in Rigidbodies)
@@ -48,10 +53,16 @@ public class RagdollController : MonoBehaviour
             rb.isKinematic = false;
             rb.collisionDetectionMode = onMode;
         }
+        
+        if (forceEnableColliders)
+        {
+            foreach (var collider in Colliders)
+                collider.enabled = true;
+        }
     }
 
     [Button("Disable")]
-    public void DisableRagdoll()
+    public void DisableRagdoll(bool disableColliders = false)
     {
         CurrentAnimator.enabled = true;
         foreach (var rb in Rigidbodies)
@@ -59,6 +70,18 @@ public class RagdollController : MonoBehaviour
             rb.isKinematic = true;
             rb.collisionDetectionMode = offMode;
         }
+
+        if (disableColliders)
+        {
+            foreach (var collider in Colliders)
+                collider.enabled = false;
+        }
+    }
+
+    public void AddForceToAll(Vector3 force, ForceMode mode = ForceMode.Impulse)
+    {
+        foreach (var rb in Rigidbodies)
+            rb.AddForce(force, mode);
     }
     
     void OnAnyTriggerEnter(Collider other)
