@@ -37,4 +37,14 @@ public static class Vector3Utils
             UnityEngine.Random.Range(min, max)
         );
     }
+
+    public static Vector3 Right(this Vector3 v, Vector3 up)
+    {
+        return -Vector3.Cross(v.normalized, up.normalized);
+    }
+
+    public static Vector3 Left(this Vector3 v, Vector3 up)
+    {
+        return Vector3.Cross(v.normalized, up.normalized);
+    }
 }
