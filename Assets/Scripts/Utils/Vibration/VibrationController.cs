@@ -14,6 +14,7 @@ public class VibrationController : MonoBehaviour
 
 	public enum PeriodicType
 	{
+		VERY_LIGHT,
 		LIGHT,
 		MEDIUM,
 		HEAVY
@@ -84,6 +85,9 @@ public class VibrationController : MonoBehaviour
 	{
 		switch (type)
 		{
+			case PeriodicType.VERY_LIGHT:
+				VibrateSelectionChange();
+				break;
 			case PeriodicType.MEDIUM:
 				VibrateMedium();
 				break;

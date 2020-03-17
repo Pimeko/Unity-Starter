@@ -186,7 +186,7 @@ public class CameraShakes : MonoBehaviour
         return DOTween.To(
             () => currentVCam.m_Lens.FieldOfView,
             value => currentVCam.m_Lens.FieldOfView = value,
-            currentVCam.m_Lens.FieldOfView + offset,
+            currentFov + offset,
             time
         ).SetEase((Ease)(ease == null ? Ease.Linear : ease));
     }
