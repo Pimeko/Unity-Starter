@@ -83,6 +83,7 @@ public class VibrationController : MonoBehaviour
 
 	public void BeginPeriodic(PeriodicType type, float period = .25f)
 	{
+        DOTweenUtils.KillTween(ref currentPeriodicTween);
 		switch (type)
 		{
 			case PeriodicType.VERY_LIGHT:

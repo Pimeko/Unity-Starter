@@ -35,11 +35,13 @@ public class BasicPoolSpawner : MonoBehaviour
         {
             rectTransform.localPosition = Vector3.zero;
             rectTransform.localScale = scale;
+            rectTransform.localRotation = Quaternion.identity;
         }
         else
         {
             o.transform.localPosition = Vector3.zero;
             o.transform.localScale = scale;
+            o.transform.localRotation = Quaternion.identity;
         }
         if (!keepParent)
             o.transform.parent = null;
