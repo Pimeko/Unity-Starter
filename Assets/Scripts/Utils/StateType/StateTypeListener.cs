@@ -33,26 +33,11 @@ public abstract class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS
     [SerializeField]
     T_STATE state;
     [SerializeField]
-    Dictionary<T_STATE_TYPE, T_STATE_CALLBACKS> stateCallbacks;
-    [SerializeField]
     List<T_STATE_CALLBACKS> callbacks;
 
     void Start()
     {
         state.AddOnChangeCallback(OnChange);
-    }
-
-    [Button]
-    public void DictionaryToList()
-    {
-        foreach (var current in stateCallbacks.Keys)
-        {
-            T_STATE_CALLBACKS callback = new T_STATE_CALLBACKS();
-            callback.Type = current;
-            callback.OnEnterCallbackDelayed = stateCallbacks[current].OnEnterCallbackDelayed;
-            callback.OnLeaveCallbackDelayed = stateCallbacks[current].OnLeaveCallbackDelayed;
-            callbacks.Add(callback);
-        }
     }
 
     void OnChange()
@@ -67,11 +52,6 @@ public abstract class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS
             if (currentCallbacks.Type.Equals(state.Value))
                 currentCallbacks.OnEnterCallbackDelayed?.Invoke();
         }
-
-        // if (stateCallbacks.ContainsKey(state.PreviousValue))
-        //     stateCallbacks[state.PreviousValue].OnLeaveCallbackDelayed?.Invoke();
-        // if (stateCallbacks.ContainsKey(state.Value))
-        //     stateCallbacks[state.Value].OnEnterCallbackDelayed?.Invoke();
     }
 
     void OnDestroy()
