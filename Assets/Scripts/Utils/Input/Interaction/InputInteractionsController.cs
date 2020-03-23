@@ -38,7 +38,7 @@ public class InputInteractionsController : MonoBehaviour
                 {
                     currentInputInteractionController = hit.collider.transform
                         .GetComponentOrInParent<InputInteractionController>();
-                    currentInputInteractionController.OnTouch(hit.point, playerInput.TouchPosition);
+                    currentInputInteractionController?.OnTouch(hit.point, playerInput.TouchPosition);
                 }
             }
             else
