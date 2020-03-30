@@ -7,7 +7,7 @@ public class InputTouchController : MonoBehaviour
     [SerializeField]
     InputVariable playerInput;
     [SerializeField]
-    DelayedUnityEvent onTouch;
+    DelayedUnityEvent onTouch, onRelease;
 
     bool isTouching;
     
@@ -27,9 +27,11 @@ public class InputTouchController : MonoBehaviour
                 onTouch.Invoke();
             }
         }
-        else
+        else if (isTouching)
+        {
+            onRelease?.Invoke();
             isTouching = false;
-
+        }
     }
 
     void OnDestroy()
