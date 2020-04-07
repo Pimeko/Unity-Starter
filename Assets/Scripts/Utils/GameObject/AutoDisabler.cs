@@ -8,8 +8,11 @@ public class AutoDisabler : MonoBehaviour
     [SerializeField, Min(0)]
     float duration;
 
+    Tween tween;
+
     void OnEnable()
     {
-        DOVirtual.DelayedCall(duration, () => gameObject.SetActive(false));
+        DOTweenUtils.KillTween(ref tween);
+        tween = DOVirtual.DelayedCall(duration, () => gameObject.SetActive(false));
     }
 }
