@@ -257,4 +257,52 @@ public static class TransformExtensions
             );
         transform.localScale = newScale;
     }
+
+    public static void SetRotationX(this Transform transform, float value, bool local = false)
+    {
+        if (local)
+            transform.localRotation = Quaternion.Euler(new Vector3(
+                value,
+                transform.localRotation.eulerAngles.y,
+                transform.localRotation.eulerAngles.z
+            ));
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(
+                value,
+                transform.rotation.eulerAngles.y,
+                transform.rotation.eulerAngles.z
+            ));
+    }
+
+    public static void SetRotationY(this Transform transform, float value, bool local = false)
+    {
+        if (local)
+            transform.localRotation = Quaternion.Euler(new Vector3(
+                transform.localRotation.eulerAngles.x,
+                value,
+                transform.localRotation.eulerAngles.z
+            ));
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(
+                transform.rotation.eulerAngles.x,
+                value,
+                transform.rotation.eulerAngles.z
+            ));
+    }
+
+    public static void SetRotationZ(this Transform transform, float value, bool local = false)
+    {
+        if (local)
+            transform.localRotation = Quaternion.Euler(new Vector3(
+                transform.localRotation.eulerAngles.x,
+                transform.localRotation.eulerAngles.y,
+                value
+            ));
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(
+                transform.rotation.eulerAngles.x,
+                transform.rotation.eulerAngles.y,
+                value
+            ));
+    }
 }
