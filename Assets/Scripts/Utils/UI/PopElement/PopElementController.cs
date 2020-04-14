@@ -7,6 +7,8 @@ public class PopElementController : MonoBehaviour
 {
     [SerializeField]
     float delayShow = 0, delayHide = 0;
+    [SerializeField]
+    bool autoHide = false;
     
     Animator animator;
     Animator CurrentAnimator => transform.CachedComponent(ref animator);
@@ -14,6 +16,8 @@ public class PopElementController : MonoBehaviour
     void OnEnable()
     {
         Show();
+        if (autoHide)
+            Hide();
     }
 
     public void Show()
