@@ -25,12 +25,21 @@ public class PopElementController : MonoBehaviour
 
     public void Show()
     {
-        DOVirtual.DelayedCall(delayShow, () =>
+        if (delayShow == 0)
         {
             CurrentAnimator.SetTrigger("show");
             if (autoHide)
                 Hide();
-        });
+        }
+        else
+        {
+            DOVirtual.DelayedCall(delayShow, () =>
+            {
+                CurrentAnimator.SetTrigger("show");
+                if (autoHide)
+                    Hide();
+            });
+        }
     }
 
     public void Hide()
