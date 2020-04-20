@@ -294,4 +294,18 @@ public class CameraShakes : MonoBehaviour
     #endregion
 
     #endregion
+
+    #region Perlin
+    public void BeginPerlin()
+    {
+        var perlin = currentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        perlin.m_AmplitudeGain = 1;
+    }
+    
+    public void StopPerlin()
+    {
+        var perlin = currentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        perlin.m_AmplitudeGain = 0;
+    }
+    #endregion
 }
