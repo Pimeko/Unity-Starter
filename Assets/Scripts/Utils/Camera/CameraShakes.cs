@@ -52,7 +52,7 @@ public class CameraShakes : MonoBehaviour
     #region vertical
 
     [Button, TabGroup("Vertical")]
-    public void SmallShakeVertical(Action callback)
+    public void SmallShakeVertical()
     {
         InitPosition();
 
@@ -63,12 +63,11 @@ public class CameraShakes : MonoBehaviour
            .OnComplete(() =>
            {
                currentSequencePosition = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Vertical")]
-    public void ShakeVertical(Action callback)
+    public void ShakeVertical()
     {
         InitPosition();
 
@@ -79,12 +78,11 @@ public class CameraShakes : MonoBehaviour
            .OnComplete(() =>
            {
                currentSequencePosition = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Vertical")]
-    public void LongShakeVertical(Action callback)
+    public void LongShakeVertical()
     {
         InitPosition();
 
@@ -97,7 +95,6 @@ public class CameraShakes : MonoBehaviour
            .OnComplete(() =>
            {
                currentSequencePosition = null;
-               callback?.Invoke();
            });
     }
     #endregion
@@ -105,7 +102,7 @@ public class CameraShakes : MonoBehaviour
     #region horizontal
 
     [Button, TabGroup("Horizontal")]
-    public void SmallShakeHorizontal(Action callback)
+    public void SmallShakeHorizontal()
     {
         InitPosition();
 
@@ -116,12 +113,11 @@ public class CameraShakes : MonoBehaviour
            .OnComplete(() =>
            {
                currentSequencePosition = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Horizontal")]
-    public void MediumShakeHorizontal(Action callback)
+    public void MediumShakeHorizontal()
     {
         InitPosition();
 
@@ -132,12 +128,11 @@ public class CameraShakes : MonoBehaviour
            .OnComplete(() =>
            {
                currentSequencePosition = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Horizontal")]
-    public void ShakeHorizontal(Action callback)
+    public void ShakeHorizontal()
     {
         InitPosition();
 
@@ -148,12 +143,11 @@ public class CameraShakes : MonoBehaviour
            .OnComplete(() =>
            {
                currentSequencePosition = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Horizontal")]
-    public void LongShakeHorizontal(Action callback)
+    public void LongShakeHorizontal()
     {
         InitPosition();
 
@@ -166,7 +160,6 @@ public class CameraShakes : MonoBehaviour
            .OnComplete(() =>
            {
                currentSequencePosition = null;
-               callback?.Invoke();
            });
     }
     #endregion
@@ -194,7 +187,7 @@ public class CameraShakes : MonoBehaviour
     #region Zoom Out - Zoom In
 
     [Button, TabGroup("Zoom")]
-    public void SmallZoomOutZoomIn(Action callback)
+    public void SmallZoomOutZoomIn()
     {
         InitFov();
 
@@ -205,12 +198,11 @@ public class CameraShakes : MonoBehaviour
            {
                currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Zoom")]
-    public void ZoomOutZoomIn(Action callback)
+    public void ZoomOutZoomIn()
     {
         InitFov();
 
@@ -221,12 +213,11 @@ public class CameraShakes : MonoBehaviour
            {
                currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Zoom")]
-    public void ZoomOutZoomInElastic(Action callback)
+    public void ZoomOutZoomInElastic()
     {
         InitFov();
 
@@ -237,7 +228,6 @@ public class CameraShakes : MonoBehaviour
            {
                currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
-               callback?.Invoke();
            });
     }
     #endregion
@@ -245,7 +235,7 @@ public class CameraShakes : MonoBehaviour
     #region Zoom In - Zoom Out
 
     [Button, TabGroup("Zoom")]
-    public void SmallZoomInZoomOut(Action callback)
+    public void SmallZoomInZoomOut()
     {
         InitFov();
 
@@ -256,12 +246,11 @@ public class CameraShakes : MonoBehaviour
            {
                currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Zoom")]
-    public void ZoomInZoomOut(Action callback)
+    public void ZoomInZoomOut()
     {
         InitFov();
 
@@ -272,12 +261,11 @@ public class CameraShakes : MonoBehaviour
            {
                currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
-               callback?.Invoke();
            });
     }
 
     [Button, TabGroup("Zoom")]
-    public void HardZoomInZoomOut(Action callback)
+    public void HardZoomInZoomOut()
     {
         InitFov();
 
@@ -288,7 +276,6 @@ public class CameraShakes : MonoBehaviour
            {
                currentVCam.m_Lens.FieldOfView = currentFov;
                currentSequenceFov = null;
-               callback?.Invoke();
            });
     }
     #endregion
@@ -301,7 +288,7 @@ public class CameraShakes : MonoBehaviour
         var perlin = currentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         perlin.m_AmplitudeGain = 1;
     }
-    
+
     public void StopPerlin()
     {
         var perlin = currentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();

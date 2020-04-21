@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class PopElementController : MonoBehaviour
 {
     [SerializeField]
-    float delayShow = 0, delayHide = 0;
-    [SerializeField]
     bool showOnEnable = true, autoHide = false;
+    [SerializeField, ShowIf("autoHide")]
+    float durationBeforeAutoHide = 0;
 
     Animator animator;
     Animator CurrentAnimator => transform.CachedComponent(ref animator);
@@ -17,34 +18,27 @@ public class PopElementController : MonoBehaviour
     {
         if (showOnEnable)
         {
-            Show();
             if (autoHide)
-                Hide();
+                ShowFor(durationBeforeAutoHide);
+            else
+                Show();
         }
     }
 
     public void Show()
     {
-        if (delayShow == 0)
-        {
-            CurrentAnimator.SetTrigger("show");
-            if (autoHide)
-                Hide();
-        }
-        else
-        {
-            DOVirtual.DelayedCall(delayShow, () =>
-            {
-                CurrentAnimator.SetTrigger("show");
-                if (autoHide)
-                    Hide();
-            });
-        }
+        CurrentAnimator.SetTrigger("show");
     }
 
     public void Hide()
     {
-        DOVirtual.DelayedCall(delayHide, () => CurrentAnimator.SetTrigger("hide"));
+        CurrentAnimator.SetTrigger("hide");
+    }
+
+    public void ShowFor(float duration)
+    {
+        Show();
+        DOVirtual.DelayedCall(duration, Hide);
     }
 
     void OnDisable()
