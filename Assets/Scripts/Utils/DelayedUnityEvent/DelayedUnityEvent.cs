@@ -11,8 +11,6 @@ public class DelayedUnityEvent
     public BetterEvent callback;
     
     [OdinSerialize]
-    public bool useUnityEvents;
-    [OdinSerialize, ShowIf("useUnityEvents")]
     public UnityEvent callbackUnity;
 
     [OdinSerialize]
