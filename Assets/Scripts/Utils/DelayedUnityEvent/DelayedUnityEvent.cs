@@ -8,9 +8,6 @@ using UnityEngine.Events;
 public class DelayedUnityEvent
 {
     [OdinSerialize]
-    public BetterEvent callback;
-    
-    [OdinSerialize]
     public UnityEvent callbackUnity;
 
     [OdinSerialize]
@@ -30,15 +27,15 @@ public class DelayedUnityEvent
         return delayVariable.Value;
     }
 
-    public DelayedUnityEvent(BetterEvent callback, float delay)
+    public DelayedUnityEvent(UnityEvent callback, float delay)
     {
-        this.callback = callback;
+        this.callbackUnity = callback;
         this.delay = new Vector2(delay, delay);
     }
 
-    public DelayedUnityEvent(BetterEvent callback, Vector2 delay)
+    public DelayedUnityEvent(UnityEvent callback, Vector2 delay)
     {
-        this.callback = callback;
+        this.callbackUnity = callback;
         this.delay = delay;
     }
 
@@ -46,7 +43,6 @@ public class DelayedUnityEvent
     {
         try
         {
-            callback.Invoke();
             callbackUnity?.Invoke();
         }
         catch (System.Exception e)

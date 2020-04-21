@@ -27,7 +27,7 @@ public class BasicGameEventListener: GameEventListener<BasicGameEvent>, IBasicGa
     public void AddCallback(UnityAction callback, Vector2 delay)
     {
         if (callbacks == null)
-            callbacks = new DelayedUnityEvent(new BetterEvent(), delay);
-        callbacks.callback.AddCallback(callback);
+            callbacks = new DelayedUnityEvent(new UnityEvent(), delay);
+        callbacks.callbackUnity.AddListener(callback);
     }
 }
