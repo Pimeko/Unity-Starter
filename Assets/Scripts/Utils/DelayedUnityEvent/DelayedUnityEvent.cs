@@ -41,15 +41,7 @@ public class DelayedUnityEvent
 
     void InternalInvoke()
     {
-        try
-        {
-            callbackUnity?.Invoke();
-        }
-        catch (System.Exception e)
-        {
-            // TODO: do something someday
-            throw e;
-        }
+        callbackUnity?.Invoke();
     }
 
     public void Invoke()
