@@ -10,7 +10,7 @@ public class RandomTransform : MonoBehaviour
     [SerializeField, BoxGroup("Offsets")]
     Vector3 rotationOffsets;
     [SerializeField, BoxGroup("Offsets")]
-    float minScale, maxScale;
+    float minScale = 1, maxScale = 1;
 
     void Start()
     {
