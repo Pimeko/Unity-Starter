@@ -37,6 +37,8 @@ public abstract class StateTypeListener<T_STATE, T_STATE_TYPE, T_STATE_CALLBACKS
 
     void Start()
     {
+        if (state == null)
+            throw new UnityException("No state found.");
         state.AddOnChangeCallback(OnChange);
     }
 

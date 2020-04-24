@@ -81,7 +81,7 @@ public class VibrationController : MonoBehaviour
 		LogVibration(HapticTypes.Selection);
 	}
 
-	public void BeginPeriodic(PeriodicType type, float period = .25f)
+	public void BeginPeriodic(PeriodicType type, float period = .15f)
 	{
         DOTweenUtils.KillTween(ref currentPeriodicTween);
 		switch (type)
@@ -105,6 +105,11 @@ public class VibrationController : MonoBehaviour
         {
             BeginPeriodic(type, period);
         });
+	}
+
+	public void BeginPeriodic()
+	{
+		BeginPeriodic(PeriodicType.MEDIUM);
 	}
 
 	public void StopPeriodic()
