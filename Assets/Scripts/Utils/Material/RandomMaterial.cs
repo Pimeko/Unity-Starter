@@ -10,9 +10,12 @@ public class RandomMaterial : MonoBehaviour
     void Start()
     {
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        if (meshRenderer == null)
-            throw new UnityException("No mesh renderer found.");
+        SkinnedMeshRenderer skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        
+        if (meshRenderer == null && skinnedMeshRenderer == null)
+            throw new UnityException("No renderer found.");
 
-        meshRenderer.material = materials.GetRandomItem();
+        var material = meshRenderer != null ? meshRenderer.material : skinnedMeshRenderer.material;
+        material = materials.GetRandomItem();
     }
 }
