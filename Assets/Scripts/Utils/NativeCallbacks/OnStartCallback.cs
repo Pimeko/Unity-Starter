@@ -9,4 +9,9 @@ public class OnStartCallback : NativeCallback
     {
         DoActions();
     }
+
+    void OnDisable()
+    {
+        StopActions();
+    }
 }

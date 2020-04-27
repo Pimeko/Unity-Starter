@@ -15,4 +15,9 @@ public class AutoDisabler : MonoBehaviour
         DOTweenUtils.KillTween(ref tween);
         tween = DOVirtual.DelayedCall(duration, () => gameObject.SetActive(false));
     }
+
+    void OnDisable()
+    {
+        DOTweenUtils.KillTween(ref tween);
+    }
 }

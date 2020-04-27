@@ -12,4 +12,9 @@ public class NativeCallback : MonoBehaviour
     {
         actions?.Invoke();
     }
+
+    protected void StopActions()
+    {
+        actions?.Stop();
+    }
 }

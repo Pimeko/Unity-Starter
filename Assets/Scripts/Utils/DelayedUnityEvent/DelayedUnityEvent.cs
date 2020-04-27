@@ -20,6 +20,8 @@ public class DelayedUnityEvent
     [OdinSerialize]
     public bool ignoreTimeScale;
 
+    Tween currentTween;
+
     public float GetDelay()
     {
         if (!useFloatVariable)
@@ -47,8 +49,13 @@ public class DelayedUnityEvent
     public void Invoke()
     {
         if ((delay.x > 0 && delay.y > 0) || useFloatVariable)
-            DOVirtual.DelayedCall(GetDelay(), InternalInvoke, ignoreTimeScale);
+            currentTween = DOVirtual.DelayedCall(GetDelay(), InternalInvoke, ignoreTimeScale);
         else
             InternalInvoke();
+    }
+
+    public void Stop()
+    {
+        DOTweenUtils.KillTween(ref currentTween);
     }
 }
