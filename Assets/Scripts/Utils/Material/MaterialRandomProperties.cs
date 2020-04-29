@@ -16,6 +16,9 @@ public class MaterialFloat : MaterialProperty<float> {}
 public class MaterialInt : MaterialProperty<int> {}
 
 [System.Serializable]
+public class MateriaTexture : MaterialProperty<Texture2D> {}
+
+[System.Serializable]
 public class MaterialColor : MaterialProperty<Color>
 {
     public bool fullRandom;
@@ -31,6 +34,8 @@ public class MaterialRandomProperties : MonoBehaviour
     List<MaterialInt> intProperties;
     [SerializeField]
     List<MaterialFloat> floatProperties;
+    [SerializeField]
+    List<MateriaTexture> textureProperties;
 
     Material currentMaterial;
 
@@ -58,6 +63,7 @@ public class MaterialRandomProperties : MonoBehaviour
         ApplyColorProperties();
         ApplyIntProperties();
         ApplyFloatProperties();
+        ApplyTextureProperties();
     }
 
     void ApplyColorProperties()
@@ -80,5 +86,11 @@ public class MaterialRandomProperties : MonoBehaviour
     {
         foreach (var property in floatProperties)
             currentMaterial.SetFloat(property.name, property.values.GetRandomItem());
+    }
+
+    void ApplyTextureProperties()
+    {
+        foreach (var property in textureProperties)
+            currentMaterial.SetTexture(property.name, property.values.GetRandomItem());
     }
 }

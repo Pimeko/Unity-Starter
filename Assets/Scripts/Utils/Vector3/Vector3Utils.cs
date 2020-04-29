@@ -5,6 +5,11 @@ using UnityEngine;
 
 public static class Vector3Utils
 {
+    public static float Distance(this Vector2 a, Vector2 b)
+    {
+        return Vector2.Distance(a, b);
+    }
+
     public static float Distance(this Vector3 a, Vector3 b)
     {
         return Vector3.Distance(a, b);
