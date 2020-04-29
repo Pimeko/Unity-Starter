@@ -4,6 +4,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class PopElementController : MonoBehaviour
 {
     [SerializeField]
