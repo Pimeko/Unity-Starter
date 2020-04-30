@@ -10,7 +10,7 @@ public class AnimationRandomSpeedController : MonoBehaviour
     public class AnimationSpeed
     {
         public string parameter;
-        [SerializeField, MinMaxSlider(0f, 10, true)]
+        [SerializeField, MinMaxSlider(-10f, 10f, true)]
         public Vector2 range; 
     }
 

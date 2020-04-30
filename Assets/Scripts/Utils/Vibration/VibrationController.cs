@@ -112,6 +112,11 @@ public class VibrationController : MonoBehaviour
 		BeginPeriodic(PeriodicType.MEDIUM);
 	}
 
+	public void BeginPeriodic(float period)
+	{
+		BeginPeriodic(PeriodicType.MEDIUM, period);
+	}
+
 	public void StopPeriodic()
 	{
 		DOTweenUtils.KillTween(ref currentPeriodicTween);
