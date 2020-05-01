@@ -34,6 +34,9 @@ public class PathFollower : MonoBehaviour
     public float IdleTime { get { return idleTime; } }
 
     [SerializeField]
+    bool beginOnStart = true;
+
+    [SerializeField]
     bool displayPathOnEditorView = false;
     [SerializeField, ShowIf("displayPathOnEditorView")]
     Color displayColor;
@@ -77,6 +80,12 @@ public class PathFollower : MonoBehaviour
 
         MovePosition(curveMath.CalcPositionByDistance(0));
         transform.forward = curve.Points[1].PositionWorld - curve.Points[0].PositionWorld;
+    }
+
+    void Start()
+    {
+        if (beginOnStart)
+            Begin();
     }
 
     [Button]

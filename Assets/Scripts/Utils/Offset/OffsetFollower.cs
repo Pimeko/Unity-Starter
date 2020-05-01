@@ -7,6 +7,8 @@ public class OffsetFollower : MonoBehaviour
 {
     [SerializeField]
     Transform toFollow;
+    [SerializeField]
+    bool followOnStart = true;
 
     [SerializeField]
     bool followPosition = true;
@@ -26,20 +28,22 @@ public class OffsetFollower : MonoBehaviour
     [SerializeField, ShowIfGroup("followRotation"), LabelText("Freeze Z")]
     bool freezeRotZ;
 
-
     Vector3 offset;
     bool isFollowing;
 
     void Start()
     {
-        offset = transform.position - toFollow.position;
-        isFollowing = true;
+        if (followOnStart)
+        {
+            offset = transform.position - toFollow.position;
+            isFollowing = true;
+        }
     }
 
     public void SetFollow(Transform toFollow)
     {
         this.toFollow = toFollow;
-        offset = transform.position - toFollow.position;
+        offset = toFollow == null ? Vector3.zero : transform.position - toFollow.position;
     }
 
     public void Continue()
@@ -57,7 +61,7 @@ public class OffsetFollower : MonoBehaviour
         if (!isFollowing)
             return;
 
-        if (followPosition)
+        if (followPosition && toFollow != null)
         {
             Vector3 targetPosition = toFollow.position + offset;
             if (freezePosX)
@@ -70,7 +74,7 @@ public class OffsetFollower : MonoBehaviour
             transform.position = targetPosition;
         }
 
-        if (followRotation)
+        if (followRotation && toFollow != null)
         {
             Vector3 targetRotationEuler = toFollow.rotation.eulerAngles;
             if (freezeRotX)
