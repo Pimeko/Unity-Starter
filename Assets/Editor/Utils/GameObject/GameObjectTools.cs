@@ -28,4 +28,16 @@ public class GameObjectTools : EditorWindow
             Selection.activeGameObject.ChangeTagRecursively(tagValue);
         }
     }
+
+    [MenuItem("Custom/GameObject/ClearComponents")]
+    public static void ClearComponents()
+    {
+        foreach (var comp in Selection.activeGameObject.GetComponents<Component>())
+        {
+            if (!(comp is Transform))
+            {
+                DestroyImmediate(comp);
+            }
+        }
+    }
 }
