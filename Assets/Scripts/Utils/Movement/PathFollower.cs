@@ -126,6 +126,9 @@ public class PathFollower : MonoBehaviour
 
     void Update()
     {
+        curve.transform.position += new Vector3(0, .01f, 0);
+        curve.transform.position -= new Vector3(0, .01f, 0);
+        
         DisplayInView();
 
         if (!isFollowingPath)
