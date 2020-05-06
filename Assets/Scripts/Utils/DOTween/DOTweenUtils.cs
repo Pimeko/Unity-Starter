@@ -7,10 +7,4 @@ public static class DOTweenUtils
         tween?.Kill();
         tween = null;
     }
-
-    public static void KillSequence(ref Sequence sequence)
-    {
-        sequence?.Kill();
-        sequence = null;
-    }
 }
