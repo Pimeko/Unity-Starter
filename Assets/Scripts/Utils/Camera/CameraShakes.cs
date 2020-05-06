@@ -34,19 +34,37 @@ public class CameraShakes : MonoBehaviour
     void InitPosition()
     {
         if (currentSequencePosition == null)
-            currentInitialPosition = currentVCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+        {
+            var transposer = currentVCam.GetCinemachineComponent<CinemachineTransposer>();
+            if (transposer != null)
+                currentInitialPosition = transposer.m_FollowOffset;
+            else
+                currentInitialPosition = currentVCam.transform.position;
+        }
     }
 
     Tween CameraLocalMove(Vector3 offset, float time, Ease? ease = null)
     {
         CinemachineTransposer t = currentVCam.GetCinemachineComponent<CinemachineTransposer>();
 
-        return DOTween.To(
-            () => t.m_FollowOffset,
-            value => t.m_FollowOffset = value,
-            currentInitialPosition + offset,
-            time
-        ).SetEase((Ease)(ease == null ? Ease.Linear : ease));
+        if (t != null)
+        {
+            return DOTween.To(
+                () => t.m_FollowOffset,
+                value => t.m_FollowOffset = value,
+                currentInitialPosition + offset,
+                time
+            ).SetEase((Ease)(ease == null ? Ease.Linear : ease));
+        }
+        else
+        {
+            return DOTween.To(
+                () => currentVCam.transform.position,
+                value => currentVCam.transform.position = value,
+                currentInitialPosition + offset,
+                time
+            ).SetEase((Ease)(ease == null ? Ease.Linear : ease));
+        }
     }
 
     #region vertical
