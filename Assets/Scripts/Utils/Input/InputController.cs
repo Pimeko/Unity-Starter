@@ -46,7 +46,11 @@ public class InputController : MonoBehaviour
 
     void Update()
     {
-        if (playerInput.IsTouching && Vector3.Distance(GetCurrentTouchPosition(), playerInput.TouchPosition) > 0)
+        bool checkCount = true;
+        #if !UNITY_EDITOR
+        checkCount = Input.touchCount > 0;
+        #endif
+        if (playerInput.IsTouching && checkCount && Vector3.Distance(GetCurrentTouchPosition(), playerInput.TouchPosition) > 0)
             playerInput.TouchPosition = GetCurrentTouchPosition();
     }
 
