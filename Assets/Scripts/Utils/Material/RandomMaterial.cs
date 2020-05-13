@@ -15,7 +15,9 @@ public class RandomMaterial : MonoBehaviour
         if (meshRenderer == null && skinnedMeshRenderer == null)
             throw new UnityException("No renderer found.");
 
-        var material = meshRenderer != null ? meshRenderer.material : skinnedMeshRenderer.material;
-        material = materials.GetRandomItem();
+        if (meshRenderer != null)
+            meshRenderer.material = materials.GetRandomItem();
+        else
+            skinnedMeshRenderer.material = materials.GetRandomItem();
     }
 }
