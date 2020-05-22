@@ -273,7 +273,7 @@ public class CameraShakes : MonoBehaviour
         InitFov();
 
         currentSequenceFov = DOTween.Sequence()
-           .Append(CameraFov(-5, .3f))
+           .Append(CameraFov(-8, .3f))
            .Append(CameraFov(0, .3f))
            .OnComplete(() =>
            {

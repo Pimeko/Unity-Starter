@@ -40,6 +40,8 @@ public abstract class GameEventListener<T_GAME_EVENT> : SerializedMonoBehaviour,
 
     public void AddGameEvent(T_GAME_EVENT gameEvent)
     {
+        if (gameEvents == null)
+            gameEvents = new List<T_GAME_EVENT>();
         gameEvents.Add(gameEvent);
         gameEvent.AddListener(this);
     }
