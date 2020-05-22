@@ -19,5 +19,6 @@ public class AutoDisabler : MonoBehaviour
     void OnDisable()
     {
         DOTweenUtils.KillTween(ref tween);
+        gameObject.SetActive(false);
     }
 }

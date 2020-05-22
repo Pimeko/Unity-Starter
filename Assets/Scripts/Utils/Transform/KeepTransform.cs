@@ -11,11 +11,24 @@ public class KeepTransform : MonoBehaviour
     bool keepPositionX = true, keepPositionY = true, keepPositionZ = true;
     [SerializeField]
     bool keepRotation;
-    
+    [SerializeField]
+    bool recomputeOnEnable = false;
+
     Vector3 initialPosition;
     Quaternion initialRotation;
 
+    void OnEnable()
+    {
+        if (recomputeOnEnable)
+            Compute();
+    }
+
     void Start()
+    {
+        Compute();
+    }
+
+    void Compute()
     {
         if (keepPosition)
             initialPosition = transform.position;
@@ -35,6 +48,6 @@ public class KeepTransform : MonoBehaviour
             transform.position = position;
         }
         if (keepRotation)
-            transform.rotation = initialRotation; 
+            transform.rotation = initialRotation;
     }
 }
