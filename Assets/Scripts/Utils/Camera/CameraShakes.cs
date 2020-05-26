@@ -16,7 +16,7 @@ public class CameraShakes : MonoBehaviour
 
     Vector3 currentInitialPosition;
     float currentFov;
-    Sequence currentSequencePosition, currentSequenceFov;
+    Tween currentSequencePosition, currentSequenceFov;
 
     void Start()
     {
@@ -41,6 +41,8 @@ public class CameraShakes : MonoBehaviour
             else
                 currentInitialPosition = currentVCam.transform.position;
         }
+        else
+            DOTweenUtils.KillTween(ref currentSequencePosition);
     }
 
     Tween CameraLocalMove(Vector3 offset, float time, Ease? ease = null)
@@ -190,6 +192,8 @@ public class CameraShakes : MonoBehaviour
     {
         if (currentSequenceFov == null)
             currentFov = currentVCam.m_Lens.FieldOfView;
+        else
+            DOTweenUtils.KillTween(ref currentSequenceFov);
     }
 
     Tween CameraFov(float offset, float time, Ease? ease = null)

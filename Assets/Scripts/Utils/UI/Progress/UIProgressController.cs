@@ -19,12 +19,7 @@ public class UIProgressController : MonoBehaviour
 
     void UpdateSizeParent()
     {
-        DOTween.To(
-            () => rectTransform.localScale,
-            newScale => rectTransform.localScale = newScale,
-            new Vector3(progress.Value, rectTransform.localScale.y, rectTransform.localScale.z),
-            0.35f)
-            .SetEase(Ease.OutBack);
+        rectTransform.localScale = new Vector3(progress.Value, rectTransform.localScale.y, rectTransform.localScale.z);
     }
 
     void OnDestroy()
