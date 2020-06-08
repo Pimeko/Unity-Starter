@@ -11,6 +11,8 @@ public class RagdollController : MonoBehaviour
     CollisionDetectionMode onMode = CollisionDetectionMode.ContinuousDynamic;
     [SerializeField]
     CollisionDetectionMode offMode = CollisionDetectionMode.ContinuousSpeculative;
+    [SerializeField]
+    bool enableOnStart;
     
     Rigidbody[] rigidbodies;
     Rigidbody[] Rigidbodies => transform.CachedComponentsInChildren(ref rigidbodies);
@@ -42,6 +44,11 @@ public class RagdollController : MonoBehaviour
             rbController.onTriggerEnter += OnAnyTriggerEnter;
             rbController.onTriggerExit += OnAnyTriggerExit;
         });
+
+        if (enableOnStart)
+            EnableRagdoll();
+        else
+            DisableRagdoll(true);
     }
 
     [Button("Enable")]
