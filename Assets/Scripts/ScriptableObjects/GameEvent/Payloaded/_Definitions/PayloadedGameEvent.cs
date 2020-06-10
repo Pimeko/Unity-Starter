@@ -11,6 +11,8 @@ public abstract class PayloadedGameEvent<T> : GameEvent, IPayloadedGameEvent
     [SerializeField]
     T testValue;
 
+    public System.Action<T> onInvoke;
+
     [Button]
     public void Raise()
     {
@@ -22,5 +24,6 @@ public abstract class PayloadedGameEvent<T> : GameEvent, IPayloadedGameEvent
         Log(value);
         foreach (IPayloadedGameEventListener listener in listeners)
             listener.Invoke(value);
+        onInvoke?.Invoke(value);
     }
 }
