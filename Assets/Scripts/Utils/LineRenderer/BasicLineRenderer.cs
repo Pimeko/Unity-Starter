@@ -7,7 +7,15 @@ using UnityEngine;
 public class BasicLineRenderer : MonoBehaviour
 {
     [SerializeField]
-    Transform begin, end;
+    bool useVariableForBegin, useVariableForEnd;
+    [SerializeField, HideIf("useVariableForBegin")]
+    Transform begin;
+    [SerializeField, HideIf("useVariableForEnd")]
+    Transform end;
+    [SerializeField, ShowIf("useVariableForBegin")]
+    GameObjectVariable beginVariable;
+    [SerializeField, ShowIf("useVariableForEnd")]
+    GameObjectVariable endVariable;
 
     LineRenderer lineRenderer;
     LineRenderer CurrentLineRenderer => transform.CachedComponent(ref lineRenderer);
@@ -15,7 +23,9 @@ public class BasicLineRenderer : MonoBehaviour
     [Button]
     public void Render()
     {
-        CurrentLineRenderer.SetPositions(new Vector3[] { begin.position, end.position });
+        var beginTransform = useVariableForBegin ? beginVariable.Value.transform : begin;
+        var endTransform = useVariableForEnd ? endVariable.Value.transform : end;
+        CurrentLineRenderer.SetPositions(new Vector3[] { beginTransform.position, endTransform.position });
     }
 
     void Update()
