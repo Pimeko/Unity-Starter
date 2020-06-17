@@ -16,7 +16,7 @@ public class CameraShakes : MonoBehaviour
 
     Vector3 currentInitialPosition;
     float currentFov;
-    Tween currentSequencePosition, currentSequenceFov;
+    Tween currentSequencePosition, currentSequenceFov, currentPerlin;
 
     void Start()
     {
@@ -307,8 +307,19 @@ public class CameraShakes : MonoBehaviour
     #region Perlin
     public void BeginPerlin()
     {
+        DOTweenUtils.KillTween(ref currentPerlin);
+
         var perlin = currentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        perlin.m_AmplitudeGain = 1;
+        perlin.m_AmplitudeGain = 1.5f;
+    }
+    
+    public void BeginPerlin(float duration)
+    {
+        DOTweenUtils.KillTween(ref currentPerlin);
+
+        var perlin = currentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        perlin.m_AmplitudeGain = 1.5f;
+        currentPerlin = DOVirtual.DelayedCall(duration, StopPerlin);
     }
 
     public void StopPerlin()
