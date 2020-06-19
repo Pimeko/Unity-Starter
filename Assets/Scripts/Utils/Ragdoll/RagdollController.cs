@@ -74,8 +74,8 @@ public class RagdollController : MonoBehaviour
         CurrentAnimator.enabled = true;
         foreach (var rb in Rigidbodies)
         {
-            rb.isKinematic = true;
             rb.collisionDetectionMode = offMode;
+            rb.isKinematic = true;
         }
 
         if (disableColliders)
