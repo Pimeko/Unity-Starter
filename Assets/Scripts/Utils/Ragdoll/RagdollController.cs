@@ -12,7 +12,7 @@ public class RagdollController : MonoBehaviour
     [SerializeField]
     CollisionDetectionMode offMode = CollisionDetectionMode.ContinuousSpeculative;
     [SerializeField]
-    bool enableOnStart;
+    bool enableOnStart, disableOnStart;
     
     Rigidbody[] rigidbodies;
     Rigidbody[] Rigidbodies => transform.CachedComponentsInChildren(ref rigidbodies);
@@ -36,7 +36,7 @@ public class RagdollController : MonoBehaviour
         collisionsIds = new Dictionary<int, int>();
         triggersIds = new Dictionary<int, int>();
         
-        rigidbodyControllers.ForEach(rbController =>
+        rigidbodyControllers?.ForEach(rbController =>
         {
             rbController.onCollisionEnter += OnAnyCollisionEnter;
             rbController.onCollisionEnter += OnAnyCollisionExit;
@@ -47,7 +47,7 @@ public class RagdollController : MonoBehaviour
 
         if (enableOnStart)
             EnableRagdoll();
-        else
+        else if (disableOnStart)
             DisableRagdoll(true);
     }
 
@@ -149,7 +149,7 @@ public class RagdollController : MonoBehaviour
 
     void OnDestroy()
     {
-        rigidbodyControllers.ForEach(rbController =>
+        rigidbodyControllers?.ForEach(rbController =>
         {
             rbController.onCollisionEnter -= OnAnyCollisionEnter;
             rbController.onCollisionEnter -= OnAnyCollisionExit;
