@@ -57,6 +57,11 @@ public class DisplayIntVariable : MonoBehaviour
         }
     }
 
+    public void SetVariable(IntVariable variable)
+    {
+        this.variable = variable;
+    }
+
     void OnEnable()
     {
         UpdateText();

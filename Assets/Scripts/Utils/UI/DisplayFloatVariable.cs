@@ -57,6 +57,11 @@ public class DisplayFloatVariable : MonoBehaviour
         }
     }
 
+    public void SetVariable(FloatVariable variable)
+    {
+        this.variable = variable;
+    }
+
     void OnEnable()
     {
         UpdateText();
