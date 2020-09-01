@@ -77,13 +77,12 @@ public class PathFollower : MonoBehaviour
         distanceToDo = curveMath.GetDistance(currentPointIndex);
         pointIndexGoingUp = true;
         currentIdleTween = null;
-
-        MovePosition(curveMath.CalcPositionByDistance(0));
-        transform.forward = curve.Points[1].PositionWorld - curve.Points[0].PositionWorld;
+        Replace();
     }
 
     void Start()
     {
+        Replace();
         if (beginOnStart)
             Begin();
     }
@@ -124,11 +123,22 @@ public class PathFollower : MonoBehaviour
 #endif
     }
 
+    [Button]
+    public void Replace()
+    {
+        if (curveMath == null)
+            curveMath = curve.GetComponent<BGCcMath>();
+            
+        Vector3 tangent;
+        transform.position = curveMath.CalcPositionAndTangentByDistance(0, out tangent);
+        transform.rotation = QuaternionExtensions.LookRotation(tangent);
+    }
+
     void Update()
     {
         curve.transform.position += new Vector3(0, .01f, 0);
         curve.transform.position -= new Vector3(0, .01f, 0);
-        
+
         DisplayInView();
 
         if (!isFollowingPath)
