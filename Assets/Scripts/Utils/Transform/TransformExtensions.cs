@@ -305,4 +305,10 @@ public static class TransformExtensions
                 value
             ));
     }
+
+    [MenuItem("CONTEXT/Transform/Print world position", false, 150)]
+    static void Init()
+    {
+        Debug.Log(Selection.activeGameObject.transform.position);
+    }
 }
