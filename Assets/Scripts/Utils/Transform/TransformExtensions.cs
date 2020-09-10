@@ -306,9 +306,11 @@ public static class TransformExtensions
             ));
     }
 
+    # if UNITY_EDITOR
     [MenuItem("CONTEXT/Transform/Print world position", false, 150)]
-    static void Init()
+    static void PrintWorldPosition()
     {
         Debug.Log(Selection.activeGameObject.transform.position);
     }
+    # endif
 }
