@@ -312,5 +312,11 @@ public static class TransformExtensions
     {
         Debug.Log(Selection.activeGameObject.transform.position);
     }
+
+    [MenuItem("CONTEXT/Transform/Print world rotation (Euler)", false, 150)]
+    static void PrintWorldRotation()
+    {
+        Debug.Log(Selection.activeGameObject.transform.rotation.eulerAngles);
+    }
     # endif
 }

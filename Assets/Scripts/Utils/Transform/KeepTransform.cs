@@ -10,7 +10,17 @@ public class KeepTransform : MonoBehaviour
     [SerializeField, ShowIf("keepPosition")]
     bool keepPositionX = true, keepPositionY = true, keepPositionZ = true;
     [SerializeField]
+    bool specificPositionValue;
+    [SerializeField, ShowIf("specificPositionValue")]
+    Vector3 specificPosition;
+
+    [SerializeField]
     bool keepRotation;
+    [SerializeField]
+    bool specificRotationValue;
+    [SerializeField, ShowIf("specificRotationValue")]
+    Vector3 specificRotation;
+    
     [SerializeField]
     bool recomputeOnEnable = false;
 
@@ -45,9 +55,9 @@ public class KeepTransform : MonoBehaviour
                 keepPositionY ? initialPosition.y : transform.position.y,
                 keepPositionZ ? initialPosition.z : transform.position.z
             );
-            transform.position = position;
+            transform.position = specificPositionValue ? specificPosition : position;
         }
         if (keepRotation)
-            transform.rotation = initialRotation;
+            transform.rotation = specificRotationValue ? Quaternion.Euler(specificRotation) : initialRotation;
     }
 }
