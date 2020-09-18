@@ -61,6 +61,8 @@ public static class ListExtensions
 
     public static T Last<T>(this List<T> list)
     {
+        if (list.Count == 0)
+            throw new System.Exception("Trying to get last element of empty list.");
         return list[list.Count - 1];
     }
 
