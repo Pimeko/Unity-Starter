@@ -38,6 +38,18 @@ public class RegisterableListVariable<T> : RegisterableScriptableObject
         TriggerChange();
     }
 
+    public virtual void RemoveAt(int index)
+    {
+        Value.RemoveAt(index);
+        TriggerChange();
+    }
+
+    public virtual void Clear()
+    {
+        Value.Clear();
+        TriggerChange();
+    }
+
     [Button]
     public void Shuffle()
     {
