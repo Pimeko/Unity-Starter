@@ -10,7 +10,11 @@ public class RandomTransform : MonoBehaviour
     [SerializeField, BoxGroup("Offsets")]
     Vector3 rotationOffsets;
     [SerializeField, BoxGroup("Offsets")]
+    bool uniformScale = true;
+    [SerializeField, BoxGroup("Offsets"), ShowIf("uniformScale")]
     float minScale = 1, maxScale = 1;
+    [SerializeField, BoxGroup("Offsets"), HideIf("uniformScale")]
+    Vector3 minScaleVec = Vector3.one, maxScaleVec = Vector3.one;
 
     void Start()
     {
@@ -31,12 +35,23 @@ public class RandomTransform : MonoBehaviour
             GetRandom(rotationOffsets.z)
         ));
 
-        float randomScale = Random.Range(minScale, maxScale);
-        transform.localScale = new Vector3(
-            randomScale,
-            randomScale,
-            randomScale
-        );
+        if (uniformScale)
+        {
+            float randomScale = Random.Range(minScale, maxScale);
+            transform.localScale = new Vector3(
+                randomScale,
+                randomScale,
+                randomScale
+            );
+        }
+        else
+        {
+            transform.localScale = new Vector3(
+                Random.Range(minScaleVec.x, maxScaleVec.x),
+                Random.Range(minScaleVec.y, maxScaleVec.y),
+                Random.Range(minScaleVec.z, maxScaleVec.z)
+            );
+        }
     }
 
     float GetRandom(float x)

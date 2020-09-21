@@ -48,7 +48,7 @@ public class DelayedUnityEvent
 
     public void Invoke()
     {
-        if ((delay.x > 0 && delay.y > 0) || useFloatVariable)
+        if (delay.y > 0 || useFloatVariable)
             currentTween = DOVirtual.DelayedCall(GetDelay(), InternalInvoke, ignoreTimeScale);
         else
             InternalInvoke();
