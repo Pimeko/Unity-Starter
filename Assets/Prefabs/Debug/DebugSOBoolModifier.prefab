@@ -209,7 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   labelText: {fileID: 2637798046890625384}
   stringGetter: {fileID: 5558892770618018667}
-  variable: {fileID: 11400000, guid: 94b6ff4e6c548694482b4eb059b000d0, type: 2}
+  variable: {fileID: 0}
 --- !u!1 &5558892769895043708
 GameObject:
   m_ObjectHideFlags: 0
