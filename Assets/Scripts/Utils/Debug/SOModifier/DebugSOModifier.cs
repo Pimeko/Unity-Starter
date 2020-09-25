@@ -7,41 +7,28 @@ using UnityEngine;
 public abstract class DebugSOModifier<T, T_SO> : MonoBehaviour
     where T_SO : SimpleRegisterableScriptableObject<T>
 {
-    [SerializeField, FoldoutGroup("Texts")]
+    [SerializeField]
     TMP_Text labelText;
-    [SerializeField, FoldoutGroup("Texts")]
-    TMP_InputField valueText;
-    [SerializeField, FoldoutGroup("Properties")]
-    string label;
-    [SerializeField, FoldoutGroup("Properties")]
+    [SerializeField]
+    protected StringGetter stringGetter;
+    [SerializeField]
     protected T_SO variable;
 
     void OnEnable()
     {
-        valueText.text = variable.Value.ToString();
+        stringGetter.Set(variable.Value.ToString());
+        stringGetter.onValueChange += OnValueChange;
     }
 
     void Start()
     {
-        ApplyLabel();
+        labelText.text = variable.name;
     }
 
-    [Button]
-    public void ApplyLabel()
+    protected abstract void OnValueChange(string value);
+
+    void OnDestroy()
     {
-        labelText.text = label;
+        stringGetter.onValueChange -= OnValueChange;
     }
-
-    void Update()
-    {
-        if (valueText.text != "")
-            ChangeValue(valueText.text);
-    }
-    
-    // public void OnValueChanged(string value)
-    // {
-    //     ChangeValue(value);
-    // }
-
-    protected abstract void ChangeValue(string value);
 }

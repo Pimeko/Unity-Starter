@@ -28,4 +28,8 @@ public class SerializedDictionaryValue<T_KEY>
 {
     [SerializeField]
     public T_KEY Key;
+
+    // Override this class with value's property
+    // Example:
+    // public int x;
 }
