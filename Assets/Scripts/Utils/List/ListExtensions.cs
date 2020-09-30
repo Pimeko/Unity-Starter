@@ -21,6 +21,13 @@ public static class ListExtensions
             list.Add(element);
     }
 
+    public static void AddIfNotInside<T>(this List<T> list, T element)
+    {
+        if (list.Contains(element))
+            return;
+        list.Add(element);
+    }
+
     public static void ForEach<T>(this List<T> elements, System.Action<T, int> action)
     {
         for (int i = 0; i < elements.Count; i++)
@@ -53,7 +60,7 @@ public static class ListExtensions
             list[n] = value;
         }
     }
-    
+
     public static int FindIndex<T>(this List<T> list, T element)
     {
         return list.FindIndex(el => el.Equals(element));

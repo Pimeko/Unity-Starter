@@ -15,17 +15,17 @@ public class BasicPoolSpawner : MonoBehaviour
         distributionPool = GetComponent<DistributionPool>();
     }
 
-    public void Spawn()
+    public GameObject Spawn()
     {
-        SpawnAt(transform);
+        return SpawnAt(transform);
     }
 
-    public void SpawnButNotParent()
+    public GameObject SpawnButNotParent()
     {
-        SpawnAt(transform, false);
+        return SpawnAt(transform, false);
     }
 
-    public void SpawnAt(Transform t, bool keepParent = true)
+    public GameObject SpawnAt(Transform t, bool keepParent = true)
     {
         GameObject o = currentPool.Value.GetPooledObject(distributionPool.Draw());
         RectTransform rectTransform = o.GetComponent<RectTransform>();
@@ -46,5 +46,7 @@ public class BasicPoolSpawner : MonoBehaviour
         if (!keepParent)
             o.transform.parent = null;
         o.SetActive(true);
+
+        return o;
     }
 }
