@@ -15,12 +15,22 @@ public class BasicPoolSpawner : MonoBehaviour
         distributionPool = GetComponent<DistributionPool>();
     }
 
-    public GameObject Spawn()
+    public void Spawn()
+    {
+        SpawnAt(transform);
+    }
+
+    public void SpawnButNotParent()
+    {
+        SpawnAt(transform, false);
+    }
+
+    public GameObject SpawnRes()
     {
         return SpawnAt(transform);
     }
 
-    public GameObject SpawnButNotParent()
+    public GameObject SpawnButNotParentRes()
     {
         return SpawnAt(transform, false);
     }

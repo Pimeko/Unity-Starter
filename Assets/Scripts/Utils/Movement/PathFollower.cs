@@ -34,7 +34,7 @@ public class PathFollower : MonoBehaviour
     public float IdleTime { get { return idleTime; } }
 
     [SerializeField]
-    bool beginOnStart = true;
+    bool beginOnStart = true, loop = true;
 
     [SerializeField]
     bool displayPathOnEditorView = false;
@@ -128,7 +128,7 @@ public class PathFollower : MonoBehaviour
     {
         if (curveMath == null)
             curveMath = curve.GetComponent<BGCcMath>();
-            
+
         Vector3 tangent;
         transform.position = curveMath.CalcPositionAndTangentByDistance(0, out tangent);
         transform.rotation = QuaternionExtensions.LookRotation(tangent);
@@ -176,7 +176,8 @@ public class PathFollower : MonoBehaviour
                         currentIdleTween = null;
                     });
                 }
-                distanceDone %= distanceTotal;
+                if (loop)
+                    distanceDone %= distanceTotal;
             }
         }
         else
@@ -185,7 +186,8 @@ public class PathFollower : MonoBehaviour
             MovePosition(curveMath.CalcPositionAndTangentByDistance(distanceDone, out tangent));
             LerpRotation(QuaternionExtensions.LookRotation(tangent));
             distanceDone += Time.deltaTime * movementSpeed;
-            distanceDone %= distanceTotal;
+            if (loop)
+                distanceDone %= distanceTotal;
         }
     }
 
