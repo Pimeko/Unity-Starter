@@ -15,6 +15,8 @@ public class PopElementController : MonoBehaviour
     Animator animator;
     Animator CurrentAnimator => transform.CachedComponent(ref animator);
 
+    Tween currentTween;
+
     void OnEnable()
     {
         if (showOnEnable)
@@ -34,12 +36,13 @@ public class PopElementController : MonoBehaviour
     public void Hide()
     {
         CurrentAnimator.SetTrigger("hide");
+        DOTweenUtils.KillTween(ref currentTween);
     }
 
     public void ShowFor(float duration)
     {
         Show();
-        DOVirtual.DelayedCall(duration, Hide);
+        currentTween = DOVirtual.DelayedCall(duration, Hide);
     }
 
     void OnDisable()
