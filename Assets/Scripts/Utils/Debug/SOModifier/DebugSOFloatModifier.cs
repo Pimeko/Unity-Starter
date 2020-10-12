@@ -9,7 +9,6 @@ public class DebugSOFloatModifier : DebugSOModifier<float, FloatVariable>
     {
         CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
         ci.NumberFormat.CurrencyDecimalSeparator = ".";
-        print("yeah " + (float)double.Parse(value, NumberStyles.Any, ci));
         variable.Value = (float)double.Parse(value, NumberStyles.Any, ci);
     }
 }

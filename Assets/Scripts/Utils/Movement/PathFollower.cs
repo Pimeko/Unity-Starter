@@ -21,7 +21,7 @@ public class PathFollower : MonoBehaviour
 
     [SerializeField]
     float movementSpeed = 3;
-    public float MovementSpeed { get { return movementSpeed; } }
+    public float MovementSpeed { get { return movementSpeed; } set { movementSpeed = value; } }
     [SerializeField]
     float rotationSpeed = 4;
     public float RotationSpeed { get { return rotationSpeed; } }
