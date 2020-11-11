@@ -9,6 +9,8 @@ public class OffsetFollower : MonoBehaviour
     Transform toFollow;
     [SerializeField]
     bool followOnStart = true;
+    [SerializeField]
+    bool onFixedUpdate = false;
 
     [SerializeField]
     bool followPosition = true;
@@ -56,10 +58,8 @@ public class OffsetFollower : MonoBehaviour
         isFollowing = false;
     }
 
-    void Update()
+    void UpdateData()
     {
-        if (!isFollowing)
-            return;
 
         if (followPosition && toFollow != null)
         {
@@ -86,5 +86,19 @@ public class OffsetFollower : MonoBehaviour
 
             transform.rotation = Quaternion.Euler(targetRotationEuler);
         }
+    }
+
+    void Update()
+    {
+        if (onFixedUpdate || !isFollowing)
+            return;
+        UpdateData();
+    }
+
+    void FixedUpdate()
+    {
+        if (!onFixedUpdate || !isFollowing)
+            return;
+        UpdateData();
     }
 }
