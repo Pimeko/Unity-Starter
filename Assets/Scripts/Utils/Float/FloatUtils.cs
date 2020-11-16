@@ -21,4 +21,9 @@ public static class FloatUtils
         if (value < min)
             value = min;
     }
+
+    public static float ChangeRange(ref this float value, Vector2 oldRange, Vector2 newRange)
+    {
+        return (((value - oldRange.x) * (newRange.y - newRange.x)) / (oldRange.y - oldRange.x)) + newRange.x;
+    }
 }
