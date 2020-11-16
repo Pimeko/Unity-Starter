@@ -11,11 +11,12 @@ public class ParticlesColor : MonoBehaviour
 
     void Start()
     {
-        UpdateColor();
+        UpdateColor(color);
     }
 
-    void UpdateColor()
+    public void UpdateColor(Color color)
     {
+        this.color = color;
         if (particles == null)
             particles = GetComponentsInChildren<ParticleSystem>();
 
@@ -28,6 +29,6 @@ public class ParticlesColor : MonoBehaviour
 
     void OnValidate()
     {
-        UpdateColor();
+        UpdateColor(color);
     }
 }
