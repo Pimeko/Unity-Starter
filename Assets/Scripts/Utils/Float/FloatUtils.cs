@@ -22,6 +22,11 @@ public static class FloatUtils
             value = min;
     }
 
+    public static void Clamp(ref this float value, float min, float max)
+    {
+        value = Mathf.Clamp(value, min, max);
+    }
+
     public static float ChangeRange(ref this float value, Vector2 oldRange, Vector2 newRange)
     {
         return (((value - oldRange.x) * (newRange.y - newRange.x)) / (oldRange.y - oldRange.x)) + newRange.x;
