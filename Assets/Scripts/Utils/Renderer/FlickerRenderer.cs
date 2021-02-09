@@ -10,6 +10,8 @@ public class FlickerRenderer : MonoBehaviour
     Color flickerColor = Color.white;
     [SerializeField]
     float duration = 1;
+    [SerializeField]
+    bool findInChildren = false;
     
     Material currentMaterial;
     Tween sequence;
@@ -19,8 +21,10 @@ public class FlickerRenderer : MonoBehaviour
     
     void Start()
     {
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        SkinnedMeshRenderer skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        MeshRenderer meshRenderer = findInChildren ? transform.GetComponentOrInChildren<MeshRenderer>()
+            : GetComponent<MeshRenderer>();
+        SkinnedMeshRenderer skinnedMeshRenderer = findInChildren ? transform.GetComponentOrInChildren<SkinnedMeshRenderer>()
+            : GetComponent<SkinnedMeshRenderer>();
         
         if (meshRenderer == null && skinnedMeshRenderer == null)
             throw new UnityException("No renderer found.");
