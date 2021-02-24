@@ -29,7 +29,7 @@ public class AnimationRandomSpeedController : MonoBehaviour
         SetRandomSpeed();
     }
 
-    void SetRandomSpeed()
+    public void SetRandomSpeed()
     {
         if (animator.enabled)
         {
