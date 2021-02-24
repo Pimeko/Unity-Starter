@@ -34,7 +34,7 @@ public static class ListExtensions
             action?.Invoke(elements[i], i);
     }
 
-    public static void Shuffle<T>(this List<T> list)
+    public static List<T> Shuffle<T>(this List<T> list)
     {
         for (int t = 0; t < list.Count; t++)
         {
@@ -43,6 +43,7 @@ public static class ListExtensions
             list[t] = list[r];
             list[r] = tmp;
         }
+        return list;
     }
 
     public static void ShuffleWithSeed<T>(this List<T> list, int seed = 0)
