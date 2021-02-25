@@ -3,33 +3,43 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraScalerAdapter : MonoBehaviour
 {
     [SerializeField]
     CameraScalerDataVariable data;
 
-    Camera cam;
-
-    void Awake()
-    {
-        cam = GetComponent<Camera>();
-    }
+    CinemachineVirtualCamera virtualCamera;
+    CinemachineTransposer cinemachineTransposer;
 
     void Start()
     {
-        DOVirtual.DelayedCall(.2f, UpdateValues);
+        virtualCamera = GetComponent<CinemachineVirtualCamera>();
+        cinemachineTransposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        UpdateValues();
     }
 
     [Button]
     public void UpdateValues()
     {
-        CameraScalerData currentData = data.Value[ScalerDataUtils.GetCurrentScalerType()];
+        var type = ScalerDataUtils.GetCurrentScalerType();
+        CameraScalerData currentData = data.Value[type];
         if (currentData.useFov)
-            DOVirtual.Float(cam.fieldOfView, currentData.fov, .15f, newValue => cam.fieldOfView = newValue).SetEase(Ease.InCirc);
+        {
+            DOVirtual.Float(
+                virtualCamera.m_Lens.FieldOfView,
+                currentData.fov,
+                .15f,
+                newValue => virtualCamera.m_Lens.FieldOfView = newValue).SetEase(Ease.InCirc);
+        }
         if (currentData.usePosition)
-            transform.DOMove(currentData.position, .15f).SetEase(Ease.InCirc);
-        if (currentData.useRotation)
-            transform.DORotate(currentData.rotation, .15f).SetEase(Ease.InCirc);
+        {
+            DOTween.To(
+                () => cinemachineTransposer.m_FollowOffset,
+                offset => cinemachineTransposer.m_FollowOffset = offset,
+                currentData.offsetPosition,
+                .15f).SetEase(Ease.InCirc);
+        }
     }
 }

@@ -6,13 +6,11 @@ using UnityEngine;
 [System.Serializable]
 public class CameraScalerData
 {
-    public bool useFov = true, usePosition = true, useRotation = true;
+    public bool useFov = true, usePosition = true;
     [ShowIf("useFov")]
     public float fov;
     [ShowIf("usePosition")]
-    public Vector3 position;
-    [ShowIf("useRotation")]
-    public Vector3 rotation;
+    public Vector3 offsetPosition;
 }
 
 [CreateAssetMenu(menuName = "Variable/Scaler Data/Camera")]
