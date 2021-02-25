@@ -9,6 +9,13 @@ public static class ListExtensions
     {
         return list[Random.Range(0, list.Count)];
     }
+    
+    public static List<T> GetRandomDistinctItems<T>(this List<T> list, int n)
+    {
+        if (n >= list.Count)
+            throw new System.Exception("Asking for too many random items.");
+        return list.Shuffle().Take(n).ToList();
+    }
 
     public static bool AllTheSameValue<T>(this List<T> list, System.Func<T, bool> predicate)
     {
