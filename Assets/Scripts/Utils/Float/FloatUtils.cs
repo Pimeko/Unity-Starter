@@ -31,4 +31,9 @@ public static class FloatUtils
     {
         return (((value - oldRange.x) * (newRange.y - newRange.x)) / (oldRange.y - oldRange.x)) + newRange.x;
     }
+
+    public static float ChangeRange(this float value, Vector2 oldRange, Vector2 newRange)
+    {
+        return (((value - oldRange.x) * (newRange.y - newRange.x)) / (oldRange.y - oldRange.x)) + newRange.x;
+    }
 }

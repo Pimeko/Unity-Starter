@@ -14,10 +14,19 @@ public class SlowMotionController : MonoBehaviour
         OutDuration : .5f
         OutEaseType : OutCirc
     */
-    
+
+    Tween currentTween;
+
+    void Start()
+    {
+        currentTween = null;
+    }
+
     public void Do(SlowMotionType type)
     {
-        DOTween.Sequence()
+        DOTweenUtils.KillTween(ref currentTween);
+
+        currentTween = DOTween.Sequence()
             .Append(DOVirtual.Float(Time.timeScale, .1f, type.InDuration, newTimeScale =>
             {
                 Time.timeScale = newTimeScale;
@@ -30,5 +39,12 @@ public class SlowMotionController : MonoBehaviour
                 Time.fixedDeltaTime = newTimeScale * 0.02f;
             }).SetEase(type.OutEaseType))
             .SetUpdate(true);
+    }
+
+    public void Stop()
+    {
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = 0.02f;
+        DOTweenUtils.KillTween(ref currentTween);
     }
 }
