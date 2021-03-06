@@ -69,6 +69,11 @@ public class PathFollower : MonoBehaviour
         curveMath = curve.GetComponent<BGCcMath>();
         rb = GetComponent<Rigidbody>();
 
+        // Replace();
+    }
+
+    void Start()
+    {
         distanceDone = 0;
         distanceTotal = curveMath.GetDistance();
 
@@ -77,11 +82,6 @@ public class PathFollower : MonoBehaviour
         distanceToDo = curveMath.GetDistance(currentPointIndex);
         pointIndexGoingUp = true;
         currentIdleTween = null;
-        Replace();
-    }
-
-    void Start()
-    {
         Replace();
         if (beginOnStart)
             Begin();
@@ -136,9 +136,6 @@ public class PathFollower : MonoBehaviour
 
     void Update()
     {
-        curve.transform.position += new Vector3(0, .01f, 0);
-        curve.transform.position -= new Vector3(0, .01f, 0);
-
         DisplayInView();
 
         if (!isFollowingPath)
