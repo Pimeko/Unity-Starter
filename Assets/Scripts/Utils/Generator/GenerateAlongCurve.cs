@@ -10,7 +10,7 @@ public class GenerateAlongCurve : MonoBehaviour
     [SerializeField]
     BGCcMath curveMath;
     [SerializeField]
-    GameObject prefab;
+    List<GameObject> prefabs;
     [SerializeField]
     Material material;
     [SerializeField]
@@ -32,9 +32,10 @@ public class GenerateAlongCurve : MonoBehaviour
         float totalDistance = curveMath.GetDistance();
 
         float distance = 0;
+        int nbPrefabsDone = 0;
         while (distance < totalDistance)
         {
-            var instance = Instantiate(prefab);
+            var instance = Instantiate(prefabs[nbPrefabsDone]);
             instance.transform.SetParent(parent);
             if (material != null)
                 instance.GetComponentInChildren<MeshRenderer>().material = material;
@@ -45,6 +46,8 @@ public class GenerateAlongCurve : MonoBehaviour
             instance.transform.position = position + instance.transform.right * offset.x + instance.transform.up * offset.y + instance.transform.forward * offset.z;
 
             distance += distanceBetweenEach;
+            nbPrefabsDone++;
+            nbPrefabsDone %= prefabs.Count;
         }
     }
 
