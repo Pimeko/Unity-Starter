@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using BansheeGz.BGSpline.Components;
 using BansheeGz.BGSpline.Curve;
 using Sirenix.OdinInspector;
+# if UNITY_EDITOR
+using UnityEditor;
+# endif
 using UnityEngine;
 
 public class GenerateAlongCurve : MonoBehaviour
@@ -35,7 +38,11 @@ public class GenerateAlongCurve : MonoBehaviour
         int nbPrefabsDone = 0;
         while (distance < totalDistance)
         {
+            # if UNITY_EDITOR
+            var instance = PrefabUtility.InstantiatePrefab(prefabs[nbPrefabsDone]) as GameObject;
+            # else
             var instance = Instantiate(prefabs[nbPrefabsDone]);
+            # endif
             instance.transform.SetParent(parent);
             if (material != null)
                 instance.GetComponentInChildren<MeshRenderer>().material = material;
