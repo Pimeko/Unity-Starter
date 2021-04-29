@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -9,67 +10,87 @@ public class FlickerRenderer : MonoBehaviour
     [SerializeField]
     Color flickerColor = Color.white;
     [SerializeField]
-    float duration = 1;
-    [SerializeField]
-    bool findInChildren = false;
-    
-    Material currentMaterial;
-    Tween sequence;
+    float nbFlickers, delayBetweenFlickers;
 
-    Color initialColor;
-    float stepDuration;
-    
+    Material[] currentMaterials;
+    Color[] initialColors;
+
+    int nbFlickersDone;
+    float elapsedTime;
+
+    bool isFlickering, isInitialColor;
+
     void Start()
     {
-        MeshRenderer meshRenderer = findInChildren ? transform.GetComponentOrInChildren<MeshRenderer>()
-            : GetComponent<MeshRenderer>();
-        SkinnedMeshRenderer skinnedMeshRenderer = findInChildren ? transform.GetComponentOrInChildren<SkinnedMeshRenderer>()
-            : GetComponent<SkinnedMeshRenderer>();
-        
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        SkinnedMeshRenderer skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+
         if (meshRenderer == null && skinnedMeshRenderer == null)
             throw new UnityException("No renderer found.");
 
-        currentMaterial = meshRenderer != null ? meshRenderer.material : skinnedMeshRenderer.material;
-        initialColor = currentMaterial.color;
+        if (meshRenderer != null)
+        {
+            currentMaterials = meshRenderer.materials;
+            initialColors = meshRenderer.materials.Select(e => e.color).ToArray();
+        }
+        else
+        {
+            currentMaterials = skinnedMeshRenderer.materials;
+            initialColors = skinnedMeshRenderer.materials.Select(e => e.color).ToArray();
+        }
 
-        sequence = null;
+        isFlickering = false;
     }
 
     [Button]
     public void Flicker()
     {
-        stepDuration = duration / 5f;
+        elapsedTime = 0;
+        nbFlickersDone = 0;
+        isInitialColor = false;
 
-        DOTweenUtils.KillTween(ref sequence);
-        sequence = DOTween.Sequence()
-            .AppendCallback(DoFlickerColor)
-            .AppendInterval(stepDuration)
-            .AppendCallback(DoInitialColor)
-            .AppendInterval(stepDuration)
+        isFlickering = true;
 
-            .AppendCallback(DoFlickerColor)
-            .AppendInterval(stepDuration)
-            .AppendCallback(DoInitialColor)
-            .AppendInterval(stepDuration)
-
-            .AppendCallback(DoFlickerColor)
-            .AppendInterval(stepDuration)
-            .AppendCallback(DoInitialColor)
-            .AppendInterval(stepDuration)
-
-            .AppendCallback(DoFlickerColor)
-            .AppendInterval(stepDuration)
-            .AppendCallback(DoInitialColor)
-            .AppendInterval(stepDuration);
+        ApplyFlickerColor();
     }
 
-    void DoFlickerColor()
+    void ApplyInitialColor()
     {
-        currentMaterial.color = flickerColor;
+        for (int i = 0; i < currentMaterials.Length; i++)
+            currentMaterials[i].color = initialColors[i];
     }
 
-    void DoInitialColor()
+    void ApplyFlickerColor()
     {
-        currentMaterial.color = initialColor;
+        for (int i = 0; i < currentMaterials.Length; i++)
+            currentMaterials[i].color = flickerColor;
+    }
+
+    void Update()
+    {
+        if (!isFlickering)
+            return;
+
+        if (elapsedTime > delayBetweenFlickers)
+        {
+            if (isInitialColor)
+                ApplyFlickerColor();
+            else
+                ApplyInitialColor();
+            isInitialColor = !isInitialColor;
+
+            nbFlickersDone++;
+            if (nbFlickersDone == nbFlickers * 2)
+            {
+                isFlickering = false;
+                ApplyInitialColor();
+            }
+            else
+                elapsedTime = 0;
+        }
+        else
+        {
+            elapsedTime += Time.deltaTime;
+        }
     }
 }
