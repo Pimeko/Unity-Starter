@@ -19,30 +19,37 @@ public class GenerateAlongCurve : MonoBehaviour
     [SerializeField]
     float distanceBetweenEach;
     [SerializeField]
-    Transform testParent;
+    Transform editorParent;
     [SerializeField]
     Vector3 offset;
+    [SerializeField]
+    bool deleteEditorOnStart = false;
 
     void Start()
     {
-        Destroy(testParent.gameObject);
-
-        Generate(transform);
+        if (deleteEditorOnStart)
+        {
+            Destroy(editorParent.gameObject);
+            Generate(transform);
+        }
     }
 
     void Generate(Transform parent)
     {
+        if (distanceBetweenEach <= 0)
+            throw new UnityException("Distance between each must be > 0");
+        
         float totalDistance = curveMath.GetDistance();
 
         float distance = 0;
         int nbPrefabsDone = 0;
         while (distance < totalDistance)
         {
-            # if UNITY_EDITOR
+#if UNITY_EDITOR
             var instance = PrefabUtility.InstantiatePrefab(prefabs[nbPrefabsDone]) as GameObject;
-            # else
+#else
             var instance = Instantiate(prefabs[nbPrefabsDone]);
-            # endif
+#endif
             instance.transform.SetParent(parent);
             if (material != null)
                 instance.GetComponentInChildren<MeshRenderer>().material = material;
@@ -58,17 +65,17 @@ public class GenerateAlongCurve : MonoBehaviour
         }
     }
 
-    [Button]
+    [Button("Generate")]
     public void Test()
     {
         Clear();
-        Generate(testParent);
+        Generate(editorParent);
     }
 
     [Button]
     public void Clear()
     {
-        var children = testParent.GetFirstChildren();
+        var children = editorParent.GetFirstChildren();
         foreach (Transform child in children)
             DestroyImmediate(child.gameObject);
     }
