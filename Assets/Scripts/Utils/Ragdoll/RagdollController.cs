@@ -12,7 +12,7 @@ public class RagdollController : MonoBehaviour
     [SerializeField]
     CollisionDetectionMode offMode = CollisionDetectionMode.ContinuousSpeculative;
     [SerializeField]
-    bool enableOnStart, disableOnStart;
+    bool kinematicOnStart, disableCollidersOnStart;
     
     Rigidbody[] rigidbodies;
     Rigidbody[] Rigidbodies => transform.CachedComponentsInChildren(ref rigidbodies);
@@ -45,10 +45,10 @@ public class RagdollController : MonoBehaviour
             rbController.onTriggerExit += OnAnyTriggerExit;
         });
 
-        if (enableOnStart)
-            EnableRagdoll();
-        else if (disableOnStart)
-            DisableRagdoll(true);
+        if (kinematicOnStart)
+            DisableRagdoll(disableCollidersOnStart);
+        else
+            EnableRagdoll(!disableCollidersOnStart);
     }
 
     [Button("Enable")]
