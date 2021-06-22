@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 using UnityEditor;
 # endif
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GenerateAlongCurve : MonoBehaviour
 {
@@ -24,21 +25,22 @@ public class GenerateAlongCurve : MonoBehaviour
     Vector3 offset;
     [SerializeField]
     bool deleteEditorOnStart = false;
+    [SerializeField]
+    UnityEvent onGenerated;
 
     void Start()
     {
         if (deleteEditorOnStart)
-        {
             Destroy(editorParent.gameObject);
-            Generate(transform);
-        }
+        Generate(transform);
+        onGenerated?.Invoke();
     }
 
     void Generate(Transform parent)
     {
         if (distanceBetweenEach <= 0)
             throw new UnityException("Distance between each must be > 0");
-        
+
         float totalDistance = curveMath.GetDistance();
 
         float distance = 0;

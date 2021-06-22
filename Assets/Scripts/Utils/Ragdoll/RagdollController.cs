@@ -71,7 +71,6 @@ public class RagdollController : MonoBehaviour
     [Button("Disable")]
     public void DisableRagdoll(bool disableColliders = false)
     {
-        CurrentAnimator.enabled = true;
         foreach (var rb in Rigidbodies)
         {
             rb.collisionDetectionMode = offMode;
@@ -83,6 +82,7 @@ public class RagdollController : MonoBehaviour
             foreach (var collider in Colliders)
                 collider.enabled = false;
         }
+        CurrentAnimator.enabled = true;
     }
 
     public void AddForceToAll(Vector3 force, ForceMode mode = ForceMode.Impulse)
