@@ -153,10 +153,11 @@ public class ObjectPoolController : MonoBehaviour
         return null;
     }
 
-    public void GenerateAt(ObjectPoolTypeVariable type, Vector3 position)
+    public GameObject GenerateAt(ObjectPoolTypeVariable type, Vector3 position)
     {
         var pooledObject = GetPooledObject(type);
         pooledObject.transform.position = position;
         pooledObject.SetActive(true);
+        return pooledObject;
     }
 }
