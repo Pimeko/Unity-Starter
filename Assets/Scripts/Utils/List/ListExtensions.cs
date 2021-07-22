@@ -5,6 +5,11 @@ using UnityEngine;
 
 public static class ListExtensions
 {
+    public static T GetRandomItem<T>(this T[] list)
+    {
+        return list[Random.Range(0, list.Length)];
+    }
+
     public static T GetRandomItem<T>(this List<T> list)
     {
         return list[Random.Range(0, list.Count)];
@@ -17,6 +22,11 @@ public static class ListExtensions
         return list.Shuffle().Take(n).ToList();
     }
 
+    public static bool AllTheSameValue<T>(this List<T> list)
+    {
+        return !list.Distinct().Skip(1).Any();
+    }
+
     public static bool AllTheSameValue<T>(this List<T> list, System.Func<T, bool> predicate)
     {
         return list.Select(predicate).Distinct().ToList().Count > 1;
@@ -25,6 +35,12 @@ public static class ListExtensions
     public static void Add<T>(this List<T> list, List<T> other)
     {
         foreach (T element in other)
+            list.Add(element);
+    }
+
+    public static void AddN<T>(this List<T> list, T element, int n)
+    {
+        for (int i = 0; i < n; i++)
             list.Add(element);
     }
 
