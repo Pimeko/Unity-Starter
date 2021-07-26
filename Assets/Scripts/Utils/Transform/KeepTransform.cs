@@ -10,14 +10,14 @@ public class KeepTransform : MonoBehaviour
     [SerializeField, ShowIf("keepPosition")]
     bool keepPositionX = true, keepPositionY = true, keepPositionZ = true;
     [SerializeField]
-    bool specificPositionValue;
+    bool localPosition, specificPositionValue;
     [SerializeField, ShowIf("specificPositionValue")]
     Vector3 specificPosition;
 
     [SerializeField]
     bool keepRotation;
     [SerializeField]
-    bool specificRotationValue;
+    bool localRotation, specificRotationValue;
     [SerializeField, ShowIf("specificRotationValue")]
     Vector3 specificRotation;
     
@@ -41,23 +41,32 @@ public class KeepTransform : MonoBehaviour
     void Compute()
     {
         if (keepPosition)
-            initialPosition = transform.position;
+            initialPosition = localPosition ? transform.localPosition : transform.position;
         if (keepRotation)
-            initialRotation = transform.rotation;
+            initialRotation = localRotation ? transform.localRotation : transform.rotation;
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (keepPosition)
         {
+            var t = localPosition ? transform.localPosition : transform.position;
             Vector3 position = new Vector3(
-                keepPositionX ? initialPosition.x : transform.position.x,
-                keepPositionY ? initialPosition.y : transform.position.y,
-                keepPositionZ ? initialPosition.z : transform.position.z
+                keepPositionX ? initialPosition.x : t.x,
+                keepPositionY ? initialPosition.y : t.y,
+                keepPositionZ ? initialPosition.z : t.z
             );
-            transform.position = specificPositionValue ? specificPosition : position;
+            if (localPosition)
+                transform.localPosition = specificPositionValue ? specificPosition : position;
+            else
+                transform.position = specificPositionValue ? specificPosition : position;
         }
         if (keepRotation)
-            transform.rotation = specificRotationValue ? Quaternion.Euler(specificRotation) : initialRotation;
+        {
+            if (localRotation)
+                transform.localRotation = specificRotationValue ? Quaternion.Euler(specificRotation) : initialRotation;
+            else
+                transform.rotation = specificRotationValue ? Quaternion.Euler(specificRotation) : initialRotation;
+        }
     }
 }
