@@ -4,36 +4,39 @@ using UnityEngine;
 
 public class ScrollingTexture : MonoBehaviour
 {
-    public float scrollSpeed;
-    float currentScrollSpeed;
-    private Vector2 savedOffset;
+    [SerializeField]
+    Vector2 scrollSpeed;
+
     MeshRenderer currentRenderer;
+    Vector2 currentOffset;
+    bool isScrolling;
 
     void Start()
     {
         currentRenderer = GetComponent<MeshRenderer>();
-        savedOffset = currentRenderer.sharedMaterial.GetTextureOffset("_MainTex");
-
-        currentScrollSpeed = scrollSpeed;
+        isScrolling = true;
+        currentOffset = currentRenderer.sharedMaterial.GetTextureOffset("_MainTex");
     }
 
     public void Resume()
     {
-        currentScrollSpeed = scrollSpeed;
+        isScrolling = true;
     }
 
     public void Stop()
     {
-        currentScrollSpeed = 0;
+        isScrolling = false;
     }
 
     void Update()
     {
-        if (currentScrollSpeed != 0)
+        if (isScrolling)
         {
-            float y = Mathf.Repeat(Time.time * currentScrollSpeed, 1);
-            Vector2 offset = new Vector2(savedOffset.x % 1, y % 1);
-            currentRenderer.sharedMaterial.SetTextureOffset("_MainTex", offset);
+            currentOffset = new Vector2(
+                (scrollSpeed.x * Time.time) % 1, 
+                (scrollSpeed.y * Time.time) % 1);
+
+            currentRenderer.sharedMaterial.SetTextureOffset("_MainTex", currentOffset);
         }
     }
 }
