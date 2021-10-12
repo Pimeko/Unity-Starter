@@ -19,6 +19,14 @@ public class RegisterableListVariable<T> : RegisterableScriptableObject
     IntVariable index;
 	public IntVariable Index { get { return index; } }
 
+    public int Count
+    {
+        get
+        {
+            return Value.Count;
+        }
+    }
+
     public T GetCurrent(bool moduloCount = false)
     {
         if (index == null)

@@ -26,6 +26,14 @@ public class RagdollController : MonoBehaviour
     List<RigidbodyController> rigidbodyControllers;
     Dictionary<int, int> collisionsIds, triggersIds;
 
+    public Vector3 RootPosition
+    {
+        get
+        {
+            return Rigidbodies[0].position;
+        }
+    }
+
     public Action<Collider> onAnyTriggerEnter, onAnyTriggerExit;
     public Action<Collision> onAnyCollisionEnter, onAnyCollisionExit;
 
@@ -54,7 +62,8 @@ public class RagdollController : MonoBehaviour
     [Button("Enable")]
     public void EnableRagdoll(bool forceEnableColliders = false)
     {
-        CurrentAnimator.enabled = false;
+        if (CurrentAnimator != null)
+            CurrentAnimator.enabled = false;
         foreach (var rb in Rigidbodies)
         {
             rb.isKinematic = false;
@@ -82,7 +91,8 @@ public class RagdollController : MonoBehaviour
             foreach (var collider in Colliders)
                 collider.enabled = false;
         }
-        CurrentAnimator.enabled = true;
+        if (CurrentAnimator != null)
+            CurrentAnimator.enabled = true;
     }
 
     public void AddForceToAll(Vector3 force, ForceMode mode = ForceMode.Impulse)
