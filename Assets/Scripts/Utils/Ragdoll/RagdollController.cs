@@ -13,16 +13,16 @@ public class RagdollController : MonoBehaviour
     CollisionDetectionMode offMode = CollisionDetectionMode.ContinuousSpeculative;
     [SerializeField]
     bool kinematicOnStart, disableCollidersOnStart;
-    
+
     Rigidbody[] rigidbodies;
     Rigidbody[] Rigidbodies => transform.CachedComponentsInChildren(ref rigidbodies);
 
     Collider[] colliders;
     Collider[] Colliders => transform.CachedComponentsInChildren(ref colliders);
-    
+
     Animator animator;
     Animator CurrentAnimator => transform.CachedComponent(ref animator);
-    
+
     List<RigidbodyController> rigidbodyControllers;
     Dictionary<int, int> collisionsIds, triggersIds;
 
@@ -37,13 +37,12 @@ public class RagdollController : MonoBehaviour
     public Action<Collider> onAnyTriggerEnter, onAnyTriggerExit;
     public Action<Collision> onAnyCollisionEnter, onAnyCollisionExit;
 
-    void Start()
+    Vector3 initialRootLocalPosition;
+
+    void Awake()
     {
         rigidbodyControllers = GetComponentsInChildren<RigidbodyController>().ToList();
 
-        collisionsIds = new Dictionary<int, int>();
-        triggersIds = new Dictionary<int, int>();
-        
         rigidbodyControllers?.ForEach(rbController =>
         {
             rbController.onCollisionEnter += OnAnyCollisionEnter;
@@ -53,10 +52,20 @@ public class RagdollController : MonoBehaviour
             rbController.onTriggerExit += OnAnyTriggerExit;
         });
 
+        initialRootLocalPosition = Rigidbodies[0].transform.localPosition;
+    }
+
+    void OnEnable()
+    {
+        collisionsIds = new Dictionary<int, int>();
+        triggersIds = new Dictionary<int, int>();
+        
         if (kinematicOnStart)
             DisableRagdoll(disableCollidersOnStart);
         else
             EnableRagdoll(!disableCollidersOnStart);
+
+        Rigidbodies[0].transform.localPosition = initialRootLocalPosition;
     }
 
     [Button("Enable")]
@@ -69,7 +78,7 @@ public class RagdollController : MonoBehaviour
             rb.isKinematic = false;
             rb.collisionDetectionMode = onMode;
         }
-        
+
         if (forceEnableColliders)
         {
             foreach (var collider in Colliders)
@@ -100,7 +109,7 @@ public class RagdollController : MonoBehaviour
         foreach (var rb in Rigidbodies)
             rb.AddForce(force, mode);
     }
-    
+
     void OnAnyTriggerEnter(Collider other)
     {
         int id = other.gameObject.GetInstanceID();
@@ -128,7 +137,7 @@ public class RagdollController : MonoBehaviour
             }
         }
     }
-    
+
     void OnAnyCollisionEnter(Collision other)
     {
         int id = other.gameObject.GetInstanceID();
