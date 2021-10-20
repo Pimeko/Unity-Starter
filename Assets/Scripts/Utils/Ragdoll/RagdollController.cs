@@ -23,14 +23,29 @@ public class RagdollController : MonoBehaviour
     Animator animator;
     Animator CurrentAnimator => transform.CachedComponent(ref animator);
 
-    List<RigidbodyController> rigidbodyControllers;
+    public List<RigidbodyController> rigidbodyControllers;
     Dictionary<int, int> collisionsIds, triggersIds;
+
+    public Rigidbody Root
+    {
+        get
+        {
+            return Rigidbodies[0];
+        }
+    }
 
     public Vector3 RootPosition
     {
         get
         {
             return Rigidbodies[0].position;
+        }
+    }
+    public Quaternion RootRotation
+    {
+        get
+        {
+            return Rigidbodies[0].rotation;
         }
     }
 
@@ -59,7 +74,7 @@ public class RagdollController : MonoBehaviour
     {
         collisionsIds = new Dictionary<int, int>();
         triggersIds = new Dictionary<int, int>();
-        
+
         if (kinematicOnStart)
             DisableRagdoll(disableCollidersOnStart);
         else
@@ -102,6 +117,42 @@ public class RagdollController : MonoBehaviour
         }
         if (CurrentAnimator != null)
             CurrentAnimator.enabled = true;
+    }
+
+    public void FreezeBones()
+    {
+        foreach (var rb in Rigidbodies)
+        {
+            var position = rb.transform.position;
+            var rotation = rb.transform.rotation;
+            rb.collisionDetectionMode = offMode;
+            rb.isKinematic = true;
+            rb.transform.position = position;
+            rb.transform.rotation = rotation;
+        }
+    }
+
+    public void ResetBones()
+    {
+        animator.Rebind();
+        foreach (var rb in Rigidbodies)
+        {
+            var position = rb.transform.position;
+            var rotation = rb.transform.rotation;
+            rb.collisionDetectionMode = offMode;
+            rb.isKinematic = true;
+            rb.transform.position = position;
+            rb.transform.rotation = rotation;
+        }
+    }
+
+    public void ResetRigidbodies()
+    {
+        foreach (var rb in Rigidbodies)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 
     public void AddForceToAll(Vector3 force, ForceMode mode = ForceMode.Impulse)
