@@ -36,4 +36,19 @@ public static class FloatUtils
     {
         return (((value - oldRange.x) * (newRange.y - newRange.x)) / (oldRange.y - oldRange.x)) + newRange.x;
     }
+
+    public static float RoundToDecimal(this float value, int nbDecimal)
+    {
+        if (nbDecimal == 0)
+            return (int)value;
+        else if (nbDecimal == 1)
+            return Mathf.Round(value * 10f) / 10f;
+        else if (nbDecimal == 2)
+            return Mathf.Round(value * 100f) / 100f;
+        else if (nbDecimal == 3)
+            return Mathf.Round(value * 1000f) / 1000f;
+
+        float mult = Mathf.Pow(10f, (float)nbDecimal);
+        return Mathf.Round(value * mult) / mult;
+    }
 }
