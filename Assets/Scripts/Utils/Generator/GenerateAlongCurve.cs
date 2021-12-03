@@ -32,8 +32,11 @@ public class GenerateAlongCurve : MonoBehaviour
     {
         if (deleteEditorOnStart)
             Destroy(editorParent.gameObject);
-        Generate(transform);
-        onGenerated?.Invoke();
+        else
+        {
+            Generate(transform);
+            onGenerated?.Invoke();
+        }
     }
 
     void Generate(Transform parent)
