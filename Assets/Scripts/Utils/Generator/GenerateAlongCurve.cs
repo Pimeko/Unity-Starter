@@ -24,7 +24,7 @@ public class GenerateAlongCurve : MonoBehaviour
     [SerializeField]
     Vector3 offset;
     [SerializeField]
-    bool deleteEditorOnStart = false;
+    bool deleteEditorOnStart = false, generateOnStart = false;
     [SerializeField]
     UnityEvent onGenerated;
 
@@ -32,7 +32,8 @@ public class GenerateAlongCurve : MonoBehaviour
     {
         if (deleteEditorOnStart)
             Destroy(editorParent.gameObject);
-        else
+
+        if (generateOnStart)
         {
             Generate(transform);
             onGenerated?.Invoke();
