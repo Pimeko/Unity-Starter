@@ -28,6 +28,11 @@ public class PopElementController : MonoBehaviour
         }
     }
 
+    public void Rebind()
+    {
+        CurrentAnimator.Rebind();
+    }
+
     public void Show()
     {
         CurrentAnimator.SetTrigger("show");
