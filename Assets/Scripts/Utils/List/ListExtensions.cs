@@ -14,6 +14,12 @@ public static class ListExtensions
     {
         return list[Random.Range(0, list.Count)];
     }
+
+    public static T GetRandomItem<T>(this List<T> list, out int index)
+    {
+        index = Random.Range(0, list.Count);
+        return list[index];
+    }
     
     public static List<T> GetRandomDistinctItems<T>(this List<T> list, int n)
     {
