@@ -25,12 +25,18 @@ public class ObjectPoolController : MonoBehaviour
     List<ObjectPoolItem> objectPoolItems;
     [SerializeField]
     ObjectPoolControllerContainerVariable currentPool;
+    [SerializeField]
+    bool dontDestroyOnLoad;
+    [SerializeField]
+    BasicGameEvent onPoolStarted;
 
     Dictionary<ObjectPoolTypeVariable, List<GameObject>> pooledObjects;
     bool isUI;
 
     void Awake()
     {
+        if (dontDestroyOnLoad)
+            GameObject.DontDestroyOnLoad(gameObject);
         isUI = GetComponent<RectTransform>() != null;
     }
 
@@ -61,6 +67,9 @@ public class ObjectPoolController : MonoBehaviour
             for (int i = 0; i < objectPoolItem.AmountToPool; i++)
                 InstantiatePooledObject(objectPoolItem, parent.transform);
         }
+
+        if (onPoolStarted != null)
+            onPoolStarted.Raise();
     }
 
     GameObject InstantiatePooledObject(ObjectPoolItem objectPoolItem, Transform parent)
