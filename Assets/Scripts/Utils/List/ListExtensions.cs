@@ -15,6 +15,14 @@ public static class ListExtensions
         return list[Random.Range(0, list.Count)];
     }
 
+    public static T GetAndRemoveRandomItem<T>(this List<T> list)
+    {
+        var index = Random.Range(0, list.Count);
+        var result = list[index];
+        list.RemoveAt(index);
+        return result;
+    }
+
     public static T GetRandomItem<T>(this List<T> list, out int index)
     {
         index = Random.Range(0, list.Count);
