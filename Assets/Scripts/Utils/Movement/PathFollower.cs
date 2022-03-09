@@ -129,8 +129,8 @@ public class PathFollower : MonoBehaviour
         if (curveMath == null)
             curveMath = curve.GetComponent<BGCcMath>();
 
-        Vector3 tangent;
-        transform.position = curveMath.CalcPositionAndTangentByDistance(0, out tangent);
+        transform.position = curveMath.CalcPositionByDistance(0);
+        var tangent = (curveMath.CalcPositionByDistance(1) - curveMath.CalcPositionByDistance(0)).normalized;
         transform.rotation = QuaternionExtensions.LookRotation(tangent);
     }
 
