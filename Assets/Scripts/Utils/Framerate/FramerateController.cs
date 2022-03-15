@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class FramerateController : MonoBehaviour
 {
+	[SerializeField]
+	int targetFrameRate = 120;
+	
 	void Start () 
 	{
-		Application.targetFrameRate = 120;
+		Application.targetFrameRate = targetFrameRate;
         QualitySettings.vSyncCount = 0;
 	}
 
     void Update()
     {
-		Application.targetFrameRate = 120;
+		Application.targetFrameRate = targetFrameRate;
     }
 }

@@ -164,6 +164,9 @@ public class ObjectPoolController : MonoBehaviour
 
     public GameObject GenerateAt(ObjectPoolTypeVariable type, Vector3 position)
     {
+        if (type == null)
+            throw new UnityException("No type provided for object pool's generation.");
+            
         var pooledObject = GetPooledObject(type);
         pooledObject.transform.position = position;
         pooledObject.SetActive(true);
