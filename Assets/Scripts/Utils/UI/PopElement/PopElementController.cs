@@ -50,6 +50,12 @@ public class PopElementController : MonoBehaviour
         currentTween = DOVirtual.DelayedCall(duration, Hide);
     }
 
+    public void HideIn(float duration)
+    {
+        DOTweenUtils.KillTween(ref currentTween);
+        currentTween = DOVirtual.DelayedCall(duration, Hide);
+    }
+
     void OnDisable()
     {
         transform.localScale = Vector3.zero;
