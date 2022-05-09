@@ -35,12 +35,12 @@ public class PopElementController : MonoBehaviour
 
     public void Show()
     {
-        CurrentAnimator.SetTrigger("show");
+        CurrentAnimator.SetBool("isShowing", true);
     }
 
     public void Hide()
     {
-        CurrentAnimator.SetTrigger("hide");
+        CurrentAnimator.SetBool("isShowing", false);
         DOTweenUtils.KillTween(ref currentTween);
     }
 

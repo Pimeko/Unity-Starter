@@ -40,7 +40,7 @@ public class ObjectPoolController : MonoBehaviour
         isUI = GetComponent<RectTransform>() != null;
     }
 
-    void Start()
+    void OnEnable()
     {
         currentPool.Value = this;
 

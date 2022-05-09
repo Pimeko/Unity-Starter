@@ -24,6 +24,10 @@ public class GenerateAlongCurve : MonoBehaviour
     [SerializeField]
     Vector3 offset;
     [SerializeField]
+    bool useFacingRotation = true;
+    [SerializeField, HideIf("useFacingRotation")]
+    Vector3 targetRotation;
+    [SerializeField]
     bool deleteEditorOnStart = false, generateOnStart = false;
     [SerializeField]
     UnityEvent onGenerated;
@@ -62,7 +66,7 @@ public class GenerateAlongCurve : MonoBehaviour
 
             Vector3 tangent;
             var position = curveMath.CalcPositionAndTangentByDistance(distance, out tangent);
-            instance.transform.rotation = QuaternionExtensions.LookRotation(tangent);
+            instance.transform.rotation = useFacingRotation ? QuaternionExtensions.LookRotation(tangent) : Quaternion.Euler(targetRotation);
             instance.transform.position = position + instance.transform.right * offset.x + instance.transform.up * offset.y + instance.transform.forward * offset.z;
 
             distance += distanceBetweenEach;
