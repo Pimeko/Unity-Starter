@@ -21,6 +21,11 @@ public class SerializedDictionary<T_KEY, T_VALUE>
             return null;
         }
     }
+
+    public bool HasKey(T_KEY key)
+    {
+        return this[key] != null;
+    }
 }
 
 [System.Serializable]
