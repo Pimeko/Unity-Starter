@@ -30,6 +30,12 @@ public class OffsetFollower : MonoBehaviour
     [SerializeField, ShowIfGroup("followRotation"), LabelText("Freeze Z")]
     bool freezeRotZ;
 
+    [SerializeField]
+    bool lerp = false;
+    [SerializeField, ShowIf("lerp")]
+    float deltaTimeLerp;
+    
+
     Vector3 offset;
     bool isFollowing;
 
@@ -58,18 +64,17 @@ public class OffsetFollower : MonoBehaviour
         isFollowing = false;
     }
 
-    void UpdateData()
+    void UpdateData(bool usePhysics)
     {
-
         if (followPosition && toFollow != null)
         {
             Vector3 targetPosition = toFollow.position + offset;
             if (freezePosX)
-                targetPosition.x = transform.position.x;
+                targetPosition.x = ApplyValue(targetPosition.x, transform.position.x, usePhysics);
             if (freezePosY)
-                targetPosition.y = transform.position.y;
+                targetPosition.y = ApplyValue(targetPosition.y, transform.position.y, usePhysics);
             if (freezePosZ)
-                targetPosition.z = transform.position.z;
+                targetPosition.z = ApplyValue(targetPosition.z, transform.position.z, usePhysics);
 
             transform.position = targetPosition;
         }
@@ -78,27 +83,34 @@ public class OffsetFollower : MonoBehaviour
         {
             Vector3 targetRotationEuler = toFollow.rotation.eulerAngles;
             if (freezeRotX)
-                targetRotationEuler.x = transform.rotation.eulerAngles.x;
+                targetRotationEuler.x = ApplyValue(targetRotationEuler.x, transform.rotation.eulerAngles.x, usePhysics);
             if (freezeRotY)
-                targetRotationEuler.y = transform.rotation.eulerAngles.y;
+                targetRotationEuler.y = ApplyValue(targetRotationEuler.y, transform.rotation.eulerAngles.y, usePhysics);
             if (freezeRotZ)
-                targetRotationEuler.z = transform.rotation.eulerAngles.z;
+                targetRotationEuler.z = ApplyValue(targetRotationEuler.z, transform.rotation.eulerAngles.z, usePhysics);
 
             transform.rotation = Quaternion.Euler(targetRotationEuler);
         }
+    }
+
+    float ApplyValue(float from, float to, bool usePhysics)
+    {
+        if (lerp)
+            return Mathf.Lerp(from, to, (usePhysics ? Time.deltaTime : Time.fixedDeltaTime) * deltaTimeLerp);
+        return to;
     }
 
     void Update()
     {
         if (onFixedUpdate || !isFollowing)
             return;
-        UpdateData();
+        UpdateData(false);
     }
 
     void FixedUpdate()
     {
         if (!onFixedUpdate || !isFollowing)
             return;
-        UpdateData();
+        UpdateData(true);
     }
 }
