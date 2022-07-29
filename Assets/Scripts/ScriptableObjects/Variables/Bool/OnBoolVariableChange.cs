@@ -11,6 +11,14 @@ public class OnBoolVariableChange : MonoBehaviour
     DelayedUnityEvent onTrue, onFalse;
     [SerializeField]
     bool evaluateOnStart = false;
+    [SerializeField]
+    bool evaluateOnEnable = false;
+
+    void OnEnable()
+    {
+        if (evaluateOnEnable)
+            Evaluate();
+    }
 
     void Start()
     {
@@ -18,7 +26,7 @@ public class OnBoolVariableChange : MonoBehaviour
         if (evaluateOnStart)
             Evaluate();
     }
-       
+
     public void Evaluate()
     {
         if (variable.Value)
