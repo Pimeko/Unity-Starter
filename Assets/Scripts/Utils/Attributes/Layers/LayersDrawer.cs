@@ -1,25 +1,22 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
 #if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 #endif
+using UnityEditor;
+using UnityEngine;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-public class LayerAttribute : System.Attribute {}
+public class LayerAttribute : Attribute {}
 
 #if UNITY_EDITOR
-public sealed class LayerDrawer : OdinAttributeDrawer<LayerAttribute, int>
+public class LayerDrawer : OdinValueDrawer<int>
 {
-    [Obsolete]
-    protected override void DrawPropertyLayout(IPropertyValueEntry<int> entry, LayerAttribute attribute, GUIContent label)
+    protected override void DrawPropertyLayout(GUIContent label)
     {
-        if (label != null)
-            entry.SmartValue = UnityEditor.EditorGUILayout.LayerField(label, entry.SmartValue);
-        else
-            entry.SmartValue = UnityEditor.EditorGUILayout.LayerField("", entry.SmartValue);
+        // Dessiner le champ en tant que LayerField
+        this.ValueEntry.SmartValue = label != null 
+            ? EditorGUILayout.LayerField(label, this.ValueEntry.SmartValue)
+            : EditorGUILayout.LayerField(this.ValueEntry.SmartValue);
     }
 }
 #endif

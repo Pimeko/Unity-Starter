@@ -36,10 +36,10 @@ public class PathFollower : MonoBehaviour
     [SerializeField]
     bool beginOnStart = true, loop = true;
 
-    [SerializeField]
-    bool displayPathOnEditorView = false;
-    [SerializeField, ShowIf("displayPathOnEditorView")]
-    Color displayColor;
+    // [SerializeField]
+    // bool displayPathOnEditorView = false;
+    // [SerializeField, ShowIf("displayPathOnEditorView")]
+    // Color displayColor;
 
     public Action<PathFollowerState> onStateChange;
     [SerializeField, ReadOnly]
@@ -113,14 +113,14 @@ public class PathFollower : MonoBehaviour
 
     void DisplayInView()
     {
-#if UNITY_EDITOR
-        if (!displayPathOnEditorView)
-            return;
+// #if UNITY_EDITOR
+//         if (!displayPathOnEditorView)
+//             return;
 
-        for (int i = 0; i < curve.PointsCount - 1; i++)
-            DebugExtension.DebugCylinder(curve.Points[i].PositionWorld, curve.Points[i + 1].PositionWorld, displayColor, .3f, 0, false);
-        DebugExtension.DebugCylinder(curve.Points[curve.PointsCount - 1].PositionWorld, curve.Points[0].PositionWorld, displayColor, .3f, 0, false);
-#endif
+//         for (int i = 0; i < curve.PointsCount - 1; i++)
+//             DebugExtension.DebugCylinder(curve.Points[i].PositionWorld, curve.Points[i + 1].PositionWorld, displayColor, .3f, 0, false);
+//         DebugExtension.DebugCylinder(curve.Points[curve.PointsCount - 1].PositionWorld, curve.Points[0].PositionWorld, displayColor, .3f, 0, false);
+// #endif
     }
 
     [Button]

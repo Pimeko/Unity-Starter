@@ -8,18 +8,17 @@ using Sirenix.OdinInspector.Editor;
 #endif
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-public class TagAttribute : System.Attribute {}
+public class TagAttribute : System.Attribute { }
 
 #if UNITY_EDITOR
 public sealed class TagDrawer : OdinAttributeDrawer<TagAttribute, string>
 {
-    [Obsolete]
-    protected override void DrawPropertyLayout(IPropertyValueEntry<string> entry, TagAttribute attribute, GUIContent label)
+    protected override void DrawPropertyLayout(GUIContent label)
     {
-        if (label != null)
-            entry.SmartValue = UnityEditor.EditorGUILayout.TagField(label, entry.SmartValue);
-        else
-            entry.SmartValue = UnityEditor.EditorGUILayout.TagField("", entry.SmartValue);
+        // Dessiner le champ en tant que TagField
+        this.ValueEntry.SmartValue = label != null
+            ? EditorGUILayout.TagField(label, this.ValueEntry.SmartValue)
+            : EditorGUILayout.TagField(this.ValueEntry.SmartValue);
     }
 }
 #endif
